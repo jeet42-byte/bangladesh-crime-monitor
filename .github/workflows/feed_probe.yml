@@ -61,6 +61,13 @@ jobs:
               ("Daily Janakantha",      "https://www.dailyjanakantha.com/rss/rss.xml"),
               ("Amader Shomoy",         "https://www.dainikamadershomoy.com/rss.xml"),
               ("Protidiner Bangladesh", "https://www.protidinerbangladesh.com/rss/rss.xml"),
+              # --- official / government sources ---
+              ("CID press releases",    "https://news.cid.gov.bd/feed"),
+              ("CID site",              "https://news.cid.gov.bd/"),
+              ("CID main",              "https://www.cid.gov.bd/"),
+              ("DMP",                   "https://dmp.gov.bd/feed/"),
+              ("Bangladesh Police",     "https://www.police.gov.bd/"),
+              ("BSS news",              "https://www.bssnews.net/"),
           ]
 
           def probe(item):
