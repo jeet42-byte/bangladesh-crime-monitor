@@ -720,9 +720,24 @@ def extract_crime_entities(
         str(data.get("incident_date") or ""), published_at
     )
 
-    location = resolve_thana(data.get("thana_name") or "", fallback=True)
-    assert location is not None  # fallback=True always yields a location
-    geocode_fallback = not (data.get("thana_name") or "").strip()
+    # An incident that cannot be placed is dropped, not pinned to a default.
+    # Guessing a location is worse than omitting the record: it puts a
+    # Bagerhat murder on a Dhaka street and inflates whichever thana is used
+    # as the default into a fake hotspot.
+    reported_place = (data.get("thana_name") or "").strip()
+    location = resolve_thana(reported_place)
+    if location is None:
+        logger.info(
+            "Dropping incident with unresolvable location %r: %s",
+            reported_place,
+            title[:70],
+        )
+        return None
+
+    # True when the match landed on a district centroid rather than a named
+    # thana, i.e. the position is accurate to roughly a district, not a
+    # neighbourhood.
+    geocode_fallback = location["thana_name"] == location["district"]
 
     fir = (data.get("fir_or_gd") or "").strip() or None
 

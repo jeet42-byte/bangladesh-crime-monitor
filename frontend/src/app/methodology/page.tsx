@@ -32,7 +32,7 @@ const PIPELINE_STAGES = [
   {
     icon: Database,
     title: "3 · Normalisation",
-    body: "The model is never trusted for geography. It names a thana; a gazetteer resolves that name — through aliases, Bengali spellings and fuzzy matching — to one canonical jurisdiction and its centroid coordinates.",
+    body: "The model is never trusted for geography. It names a place; a gazetteer resolves that name — through aliases, Bengali spellings and fuzzy matching — to one of the 50 Dhaka Metropolitan thanas, or failing that to one of the country's 64 districts. A place that resolves to neither is discarded, because a guessed location is worse than a missing record.",
   },
   {
     icon: GitBranch,
@@ -73,7 +73,8 @@ const CONFIDENCE_TIERS = [
 const LIMITATIONS = [
   "This is a record of what was reported, not of what happened. Offences that never reach a newsroom or an official feed do not appear here, and under-reporting is not evenly distributed across offence types or neighbourhoods.",
   "Coverage intensity is not crime intensity. A thana that receives more press attention will show more incidents than a comparable thana that receives less, independent of actual crime rates.",
-  "Locations are thana centroids, not scenes. A marker shows which police jurisdiction is responsible, not where an incident occurred within it. Do not read a pin as a street address.",
+  "Locations are centroids, not scenes. Inside the Dhaka Metropolitan Police area a marker sits at the centre of the responsible thana; elsewhere in the country only district-level precision is available, so the marker sits at the district centre and may be many kilometres from the actual location. Never read a pin as a street address.",
+  "An incident whose location cannot be resolved to a known thana or district is discarded rather than placed. Records are therefore missing, not misplaced — but reporting that names no recoverable location will not appear here at all.",
   "Categories are assigned by a language model. It is accurate on clear-cut reporting and less so on ambiguous or partial reports; a small share of records will be miscategorised.",
   "Dates default to the publication date when the source does not state when the incident occurred, and to midnight BST when it gives a date but no time.",
   "The archive begins when this system started collecting. It is not a historical series and cannot support year-over-year comparison across that boundary.",

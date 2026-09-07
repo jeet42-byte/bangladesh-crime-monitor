@@ -283,6 +283,124 @@ for _alias, _canonical in _RAW_ALIASES.items():
     _LOOKUP.setdefault(_normalise(_alias), _canonical)
 
 
+# ---------------------------------------------------------------------------
+# District gazetteer - all 64 districts of Bangladesh
+#
+# The thana table above covers only the Dhaka Metropolitan Police area. The
+# news feeds are national, so most incidents happen somewhere it cannot name.
+# Resolving those to a district centroid is coarse but truthful; the previous
+# behaviour - quietly pinning them to the Dhaka centroid - put a Bagerhat
+# murder on a Dhaka street and manufactured a hotspot in Ramna.
+# ---------------------------------------------------------------------------
+DISTRICT_COORDINATES: Dict[str, tuple[float, float]] = {
+    # Barishal
+    "Barguna": (22.1596, 90.1265), "Barishal": (22.7010, 90.3535),
+    "Bhola": (22.6859, 90.6482), "Jhalokati": (22.6406, 90.1987),
+    "Patuakhali": (22.3596, 90.3298), "Pirojpur": (22.5791, 89.9759),
+    # Chattogram
+    "Bandarban": (22.1953, 92.2184), "Brahmanbaria": (23.9571, 91.1119),
+    "Chandpur": (23.2333, 90.6712), "Chattogram": (22.3569, 91.7832),
+    "Cumilla": (23.4607, 91.1809), "Cox's Bazar": (21.4272, 92.0058),
+    "Feni": (23.0159, 91.3976), "Khagrachhari": (23.1193, 91.9847),
+    "Lakshmipur": (22.9425, 90.8410), "Noakhali": (22.8696, 91.0995),
+    "Rangamati": (22.6533, 92.1750),
+    # Dhaka
+    "Dhaka": (23.8103, 90.4125), "Faridpur": (23.6070, 89.8429),
+    "Gazipur": (23.9999, 90.4203), "Gopalganj": (23.0050, 89.8266),
+    "Kishoreganj": (24.4449, 90.7766), "Madaripur": (23.1641, 90.1897),
+    "Manikganj": (23.8617, 90.0003), "Munshiganj": (23.5422, 90.5305),
+    "Narayanganj": (23.6238, 90.5000), "Narsingdi": (23.9322, 90.7151),
+    "Rajbari": (23.7574, 89.6444), "Shariatpur": (23.2423, 90.4348),
+    "Tangail": (24.2513, 89.9167),
+    # Khulna
+    "Bagerhat": (22.6516, 89.7859), "Chuadanga": (23.6402, 88.8410),
+    "Jashore": (23.1667, 89.2081), "Jhenaidah": (23.5450, 89.1726),
+    "Khulna": (22.8456, 89.5403), "Kushtia": (23.9013, 89.1206),
+    "Magura": (23.4855, 89.4198), "Meherpur": (23.7622, 88.6318),
+    "Narail": (23.1725, 89.5125), "Satkhira": (22.7185, 89.0705),
+    # Mymensingh
+    "Jamalpur": (24.9375, 89.9372), "Mymensingh": (24.7471, 90.4203),
+    "Netrokona": (24.8103, 90.8656), "Sherpur": (25.0205, 90.0153),
+    # Rajshahi
+    "Bogura": (24.8465, 89.3773), "Joypurhat": (25.0968, 89.0227),
+    "Naogaon": (24.7936, 88.9318), "Natore": (24.4206, 89.0003),
+    "Chapainawabganj": (24.5965, 88.2775), "Pabna": (24.0064, 89.2372),
+    "Rajshahi": (24.3745, 88.6042), "Sirajganj": (24.4533, 89.7006),
+    # Rangpur
+    "Dinajpur": (25.6217, 88.6354), "Gaibandha": (25.3288, 89.5281),
+    "Kurigram": (25.8054, 89.6362), "Lalmonirhat": (25.9923, 89.2847),
+    "Nilphamari": (25.9317, 88.8560), "Panchagarh": (26.3411, 88.5542),
+    "Rangpur": (25.7439, 89.2752), "Thakurgaon": (26.0337, 88.4616),
+    # Sylhet
+    "Habiganj": (24.3745, 91.4155), "Moulvibazar": (24.4829, 91.7774),
+    "Sunamganj": (25.0658, 91.3950), "Sylhet": (24.8949, 91.8687),
+}
+
+# Spelling variants, well-known upazilas and towns, mapped to their district.
+_DISTRICT_ALIASES: Dict[str, str] = {
+    "comilla": "Cumilla", "barisal": "Barishal", "jessore": "Jashore",
+    "chittagong": "Chattogram", "bogra": "Bogura", "coxs bazar": "Cox's Bazar",
+    "cox bazar": "Cox's Bazar", "nawabganj": "Chapainawabganj",
+    "chapai nawabganj": "Chapainawabganj", "maulvibazar": "Moulvibazar",
+    "moulavibazar": "Moulvibazar", "sunamgonj": "Sunamganj",
+    "khagrachari": "Khagrachhari", "jhenaidaha": "Jhenaidah",
+    # Upazilas and towns that appear far more often than their district name.
+    "savar": "Dhaka", "keraniganj": "Dhaka", "dohar": "Dhaka",
+    "nawabganj dhaka": "Dhaka", "ashulia": "Dhaka",
+    "tongi": "Gazipur", "kaliakair": "Gazipur", "sreepur": "Gazipur",
+    "rupganj": "Narayanganj", "siddhirganj": "Narayanganj",
+    "araihazar": "Narayanganj", "sonargaon": "Narayanganj",
+    "raipur": "Lakshmipur", "ramganj": "Lakshmipur",
+    "begumganj": "Noakhali", "companiganj": "Noakhali",
+    "patiya": "Chattogram", "hathazari": "Chattogram", "sitakunda": "Chattogram",
+    "teknaf": "Cox's Bazar", "ukhiya": "Cox's Bazar",
+    "bhairab": "Kishoreganj", "bhaluka": "Mymensingh",
+    "mongla": "Bagerhat", "sharsha": "Jashore", "benapole": "Jashore",
+    "kaliganj": "Satkhira", "shibganj": "Chapainawabganj",
+}
+
+_DISTRICT_LOOKUP: Dict[str, str] = {}
+for _name in DISTRICT_COORDINATES:
+    _DISTRICT_LOOKUP[_normalise(_name)] = _name
+for _alias, _canon in _DISTRICT_ALIASES.items():
+    _DISTRICT_LOOKUP.setdefault(_normalise(_alias), _canon)
+
+
+def resolve_district(name: str) -> Optional[ThanaLocation]:
+    """Resolve a place name to a district centroid, or None."""
+    if not name:
+        return None
+    needle = _normalise(name)
+    if not needle:
+        return None
+
+    canonical = _DISTRICT_LOOKUP.get(needle)
+    if not canonical:
+        for key in sorted(_DISTRICT_LOOKUP, key=len, reverse=True):
+            if len(key) < 4:
+                continue
+            if key in needle or needle in key:
+                canonical = _DISTRICT_LOOKUP[key]
+                break
+    if not canonical:
+        matches = difflib.get_close_matches(
+            needle, _DISTRICT_LOOKUP.keys(), n=1, cutoff=0.86
+        )
+        if matches:
+            canonical = _DISTRICT_LOOKUP[matches[0]]
+
+    if not canonical:
+        return None
+
+    lat, lon = DISTRICT_COORDINATES[canonical]
+    return {
+        "thana_name": canonical,
+        "lat": lat,
+        "lon": lon,
+        "district": canonical,
+    }
+
+
 def list_thanas() -> List[str]:
     """Canonical thana names, alphabetically."""
     return sorted(THANA_COORDINATES)
@@ -300,9 +418,9 @@ def resolve_thana(
     thana_name: Optional[str],
     *,
     fuzzy_cutoff: float = 0.82,
-    fallback: bool = True,
+    fallback: bool = False,
 ) -> Optional[ThanaLocation]:
-    """Resolve any surface form to a canonical thana.
+    """Resolve any surface form to a DMP thana, else a district centroid.
 
     Resolution order:
 
@@ -311,9 +429,14 @@ def resolve_thana(
        covers "Merul Badda, Dhaka" and "near Gulshan-2 circle".
     3. Fuzzy match via ``difflib``, catching transliteration drift such as
        "Jatrabary" or "Khilkhet".
+    4. District gazetteer, for the whole country outside the DMP area.
 
-    Returns ``DHAKA_CENTROID`` when nothing matches and ``fallback`` is set,
-    otherwise ``None``.
+    ``fallback`` defaults to False and should stay that way. It previously
+    defaulted to True, which pinned every unrecognised place to the Dhaka
+    centroid: once national feeds were added, roughly half of all records
+    claimed to be in Ramna while actually describing incidents in Bagerhat,
+    Panchagarh and Noakhali. An incident that cannot be placed should be
+    dropped, not placed wrongly.
     """
     if not thana_name or not thana_name.strip():
         return DHAKA_CENTROID if fallback else None
@@ -339,6 +462,12 @@ def resolve_thana(
     if matches:
         return THANA_COORDINATES[_LOOKUP[matches[0]]]
 
+    # 4. Outside the DMP area: fall back to district-level precision, which is
+    # coarse but honest, rather than to a Dhaka thana that is simply wrong.
+    district = resolve_district(thana_name)
+    if district is not None:
+        return district
+
     return DHAKA_CENTROID if fallback else None
 
 
@@ -349,6 +478,8 @@ def resolve_many(names: Iterable[str]) -> Dict[str, Optional[ThanaLocation]]:
 
 __all__ = [
     "THANA_COORDINATES",
+    "DISTRICT_COORDINATES",
+    "resolve_district",
     "DHAKA_CENTROID",
     "ThanaLocation",
     "get_coordinates",
