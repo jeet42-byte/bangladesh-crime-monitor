@@ -45,7 +45,13 @@ class Settings(BaseSettings):
 
     # --- LLM --------------------------------------------------------------
     GEMINI_API_KEY: str = ""
-    GEMINI_MODEL: str = "gemini-2.0-flash"
+    # A floating alias, not a pinned version, and deliberately so: this
+    # pipeline runs unattended on a cron. When a pinned model is retired -
+    # which is what happened to gemini-2.0-flash - every call 404s, the
+    # extractor falls back to keyword classification, and the confidence gate
+    # then silently rejects every row. The dashboard just stops updating. The
+    # alias trades reproducibility for not dying quietly.
+    GEMINI_MODEL: str = "gemini-flash-latest"
 
     # --- Scraper ----------------------------------------------------------
     FB_PAGE_ACCESS_TOKEN: str = ""

@@ -24,6 +24,7 @@ import hashlib
 import json
 import logging
 import re
+import time
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 
@@ -251,7 +252,10 @@ def _get_model() -> Any:
             generation_config={
                 "temperature": 0.1,
                 "top_p": 0.85,
-                "max_output_tokens": 1024,
+                # Current Flash models spend output tokens on internal
+                # reasoning before emitting the JSON, so a 1024 ceiling can
+                # truncate the structured payload mid-object.
+                "max_output_tokens": 4096,
                 "response_mime_type": "application/json",
                 "response_schema": RESPONSE_SCHEMA,
             },
@@ -264,24 +268,122 @@ def _get_model() -> Any:
         return None
 
 
+# Free-tier Gemini enforces a low requests-per-minute ceiling, and the shared
+# capacity behind `-latest` aliases returns 503 under load. A scrape window
+# fires 30-60 calls back to back, so without pacing and retries a large share
+# of articles would silently drop to the keyword path and be discarded by the
+# confidence gate - the run would look like a quiet news day.
+_MIN_SECONDS_BETWEEN_CALLS = 1.5
+_TRANSIENT_MARKERS = ("429", "503", "quota", "rate limit", "overloaded",
+                      "high demand", "unavailable", "resource_exhausted")
+_MAX_ATTEMPTS = 4
+_BACKOFF_SECONDS = (4, 12, 30)
+
+_last_call_at = 0.0
+
+
+def _is_transient(message: str) -> bool:
+    lowered = message.lower()
+    return any(marker in lowered for marker in _TRANSIENT_MARKERS)
+
+
+def _parse_json_response(text: str) -> Optional[Dict[str, Any]]:
+    """Parse the model's JSON, tolerating fences or surrounding prose."""
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
+
+    # Some models wrap structured output in ```json fences despite the
+    # response_mime_type, and reasoning models can emit a preamble.
+    fenced = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.DOTALL)
+    if fenced:
+        try:
+            return json.loads(fenced.group(1))
+        except json.JSONDecodeError:
+            pass
+
+    start, end = text.find("{"), text.rfind("}")
+    if start != -1 and end > start:
+        try:
+            return json.loads(text[start : end + 1])
+        except json.JSONDecodeError:
+            pass
+
+    return None
+
+
 def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
-    """One synchronous Gemini call returning the parsed JSON object."""
+    """One Gemini extraction, paced and retried through transient failures."""
+    global _last_call_at
+
     model = _get_model()
     if model is None:
         return None
 
-    try:
-        response = model.generate_content(raw_text[:24000])
-        text = (response.text or "").strip()
-        if not text:
+    for attempt in range(1, _MAX_ATTEMPTS + 1):
+        # Pace calls so a burst does not trip the per-minute quota.
+        elapsed = time.monotonic() - _last_call_at
+        if elapsed < _MIN_SECONDS_BETWEEN_CALLS:
+            time.sleep(_MIN_SECONDS_BETWEEN_CALLS - elapsed)
+
+        try:
+            _last_call_at = time.monotonic()
+            response = model.generate_content(raw_text[:24000])
+            text = (response.text or "").strip()
+
+            if not text:
+                logger.warning(
+                    "Gemini returned an empty response (finish_reason may be "
+                    "MAX_TOKENS or a safety block); falling back."
+                )
+                return None
+
+            parsed = _parse_json_response(text)
+            if parsed is not None:
+                return parsed
+
+            logger.warning(
+                "Gemini returned unparseable output (%d chars); falling back.",
+                len(text),
+            )
             return None
-        return json.loads(text)
-    except json.JSONDecodeError:
-        logger.warning("Gemini returned non-JSON output; falling back.")
-        return None
-    except Exception as exc:  # noqa: BLE001 - quota, network, safety blocks
-        logger.warning("Gemini call failed (%s); falling back.", exc)
-        return None
+
+        except Exception as exc:  # noqa: BLE001 - quota, network, safety blocks
+            message = str(exc)
+
+            # A retired or misspelled model 404s on every single call, so the
+            # whole run silently degrades to keyword extraction and the
+            # confidence gate then drops everything. That is indistinguishable
+            # from "no news today" in the logs unless called out at ERROR.
+            if "404" in message or "no longer available" in message.lower():
+                logger.error(
+                    "Gemini model %r is unavailable - every extraction this "
+                    "run will fall back to keyword classification and will "
+                    "almost certainly be rejected by the confidence gate. Set "
+                    "GEMINI_MODEL to a current model. Detail: %s",
+                    settings.GEMINI_MODEL,
+                    message,
+                )
+                return None
+
+            if _is_transient(message) and attempt < _MAX_ATTEMPTS:
+                wait = _BACKOFF_SECONDS[attempt - 1]
+                logger.info(
+                    "Gemini transient failure (attempt %d/%d): %s - retrying "
+                    "in %ds",
+                    attempt,
+                    _MAX_ATTEMPTS,
+                    message[:120],
+                    wait,
+                )
+                time.sleep(wait)
+                continue
+
+            logger.warning("Gemini call failed (%s); falling back.", message[:200])
+            return None
+
+    return None
 
 
 # ===========================================================================
