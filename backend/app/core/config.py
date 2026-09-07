@@ -76,6 +76,17 @@ class Settings(BaseSettings):
     # through the app every time the service restarted.
     OWNER_PASSWORD_FORCE: bool = False
 
+    # --- API exposure -----------------------------------------------------
+    # When false the read endpoints require a session (a signed-in account or
+    # a short-lived guest token issued to the site itself), and the
+    # interactive docs and OpenAPI schema are not served at all.
+    PUBLIC_API: bool = False
+    # Serve /docs, /redoc and /openapi.json. Publishing the schema of an
+    # otherwise closed API hands a scraper the full endpoint map.
+    ENABLE_DOCS: bool = False
+    # Lifetime of an anonymous guest session token.
+    GUEST_TOKEN_TTL_MINUTES: int = 180
+
     # --- Email ------------------------------------------------------------
     EMAIL_FROM: str = "Bangladesh Crime Monitor <onboarding@resend.dev>"
     RESEND_API_KEY: str = ""

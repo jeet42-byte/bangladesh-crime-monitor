@@ -26,17 +26,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 DESCRIPTION = """
-Public OSINT crime-tracking API for Bangladesh.
+OSINT crime-tracking API for Bangladesh.
 
-Every record is derived from **publicly available reporting** and describes an
-**allegation as reported**, not an adjudicated finding. Records carry a
-`source_confidence` score and a link back to the original source so any claim
-can be checked against it.
+Read endpoints require a session and are intended for the Bangladesh Crime
+Monitor site, not for third-party reuse.
 
-* `GET /api/v1/crimes/feed` - paginated incident feed
-* `GET /api/v1/crimes/geojson` - map layer as a GeoJSON FeatureCollection
-* `GET /api/v1/analytics/*` - aggregates for charts and metric cards
-* `POST /api/v1/ingest/batch` - write path, requires `X-Ingest-Key`
+Every record is derived from publicly available reporting and describes an
+**allegation as reported**, not an adjudicated finding. Each record links back
+to the original source so any claim can be checked against it.
 """
 
 
@@ -154,9 +151,11 @@ def create_app() -> FastAPI:
         description=DESCRIPTION,
         version="1.0.0",
         lifespan=lifespan,
-        docs_url="/docs",
-        redoc_url="/redoc",
-        openapi_url="/openapi.json",
+        # Publishing the schema of a closed API hands a scraper the full
+        # endpoint map, so the docs are off unless explicitly enabled.
+        docs_url="/docs" if settings.ENABLE_DOCS else None,
+        redoc_url="/redoc" if settings.ENABLE_DOCS else None,
+        openapi_url="/openapi.json" if settings.ENABLE_DOCS else None,
     )
 
     app.add_middleware(
@@ -191,7 +190,7 @@ def create_app() -> FastAPI:
         return {
             "service": settings.PROJECT_NAME,
             "version": "1.0.0",
-            "docs": "/docs",
+            "docs": "/docs" if settings.ENABLE_DOCS else None,
             "disclaimer": (
                 "Records describe allegations as publicly reported, not "
                 "adjudicated findings."

@@ -24,6 +24,7 @@ import type {
   TrendsResponse,
 } from "@/types/crime";
 import { daysAgoISO, sourceFilterToPlatform } from "@/lib/utils";
+import { clearGuestToken, readerHeader } from "@/lib/auth";
 
 export const API_BASE_URL = (
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"
@@ -55,6 +56,8 @@ async function request<T>(
     }
   }
 
+  let retriedAuth = false;
+
   for (let attempt = 0; attempt <= COLD_START_RETRIES; attempt += 1) {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
@@ -63,7 +66,11 @@ async function request<T>(
       const response = await fetch(url.toString(), {
         ...init,
         signal: controller.signal,
-        headers: { Accept: "application/json", ...(init.headers ?? {}) },
+        headers: {
+          Accept: "application/json",
+          ...(await readerHeader()),
+          ...(init.headers ?? {}),
+        },
         // Incident data changes on a 6-hour cadence; a short revalidation
         // window keeps Vercel from hammering a free-tier backend while still
         // feeling live.
@@ -71,7 +78,14 @@ async function request<T>(
       });
 
       if (!response.ok) {
-        // 4xx is a real answer - the request was wrong, retrying won't help.
+        // A 401 usually means the cached guest token expired mid-session.
+        // Drop it and try once with a fresh one before giving up.
+        if (response.status === 401 && !retriedAuth) {
+          retriedAuth = true;
+          clearGuestToken();
+          continue;
+        }
+        // Other 4xx are real answers - the request was wrong, retrying won't help.
         if (response.status >= 400 && response.status < 500) {
           console.warn(`[api] ${response.status} ${path}`);
           return null;

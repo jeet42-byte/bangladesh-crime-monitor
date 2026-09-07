@@ -157,6 +157,27 @@ def create_access_token(
     return jwt.encode(payload, settings.SECRET_KEY, algorithm=JWT_ALGORITHM)
 
 
+def create_guest_token() -> str:
+    """A short-lived token for an unauthenticated site visitor.
+
+    It carries no identity and is tied to no database row - it exists so the
+    site's own pages can read the API while a passer-by with the URL cannot.
+    Anyone can request one, so this raises the cost of casual scraping rather
+    than preventing it; a public web app cannot do better than that.
+    """
+    now = datetime.now(timezone.utc)
+    payload: Dict[str, Any] = {
+        "sub": "guest",
+        "role": "guest",
+        "iat": int(now.timestamp()),
+        "exp": int(
+            (now + timedelta(minutes=settings.GUEST_TOKEN_TTL_MINUTES)).timestamp()
+        ),
+        "iss": "bangladesh-crime-monitor",
+    }
+    return jwt.encode(payload, settings.SECRET_KEY, algorithm=JWT_ALGORITHM)
+
+
 def decode_access_token(token: str) -> Optional[Dict[str, Any]]:
     """Return the claims, or None when the token is invalid or expired."""
     try:

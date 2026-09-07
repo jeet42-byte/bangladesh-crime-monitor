@@ -5,14 +5,19 @@ from __future__ import annotations
 from datetime import date, datetime, timedelta, timezone
 from typing import List, Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
 from sqlalchemy import Integer, and_, cast, func, select
 
-from app.api.deps import DbSession
+from app.api.deps import DbSession, require_reader
 from app.db.models import CrimeIncident
 
-router = APIRouter(prefix="/analytics", tags=["analytics"])
+router = APIRouter(
+    prefix="/analytics",
+    tags=["analytics"],
+    # Applied at the router so a new endpoint cannot be added without the gate.
+    dependencies=[Depends(require_reader)],
+)
 
 # All calendar bucketing happens in Bangladesh Standard Time so a chart tick
 # labelled "12 Mar" means the Bangladeshi day, not the UTC one.

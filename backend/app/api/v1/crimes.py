@@ -6,14 +6,19 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional
 from uuid import UUID
 
-from fastapi import APIRouter, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
 from sqlalchemy import Select, func, select
 
-from app.api.deps import DbSession
+from app.api.deps import DbSession, require_reader
 from app.db.models import CRIME_CATEGORIES, SOURCE_PLATFORMS, CrimeIncident, Jurisdiction
 
-router = APIRouter(prefix="/crimes", tags=["crimes"])
+router = APIRouter(
+    prefix="/crimes",
+    tags=["crimes"],
+    # Applied at the router so a new endpoint cannot be added without the gate.
+    dependencies=[Depends(require_reader)],
+)
 
 MAX_LIMIT = 200
 GEOJSON_MAX_FEATURES = 2000

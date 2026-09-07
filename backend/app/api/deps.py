@@ -129,3 +129,70 @@ async def require_owner(user: Annotated["User", Depends(get_current_user)]) -> "
 CurrentUser = Annotated["User", Depends(get_current_user)]
 OptionalUser = Annotated["User | None", Depends(get_optional_user)]
 OwnerUser = Annotated["User", Depends(require_owner)]
+
+
+# ===========================================================================
+# Read access
+# ===========================================================================
+async def require_reader(
+    session: DbSession,
+    credentials: Annotated[
+        HTTPAuthorizationCredentials | None, Depends(_bearer)
+    ] = None,
+) -> str:
+    """Gate the read endpoints.
+
+    Returns the caller's role: "owner", "member" or "guest".
+
+    When ``PUBLIC_API`` is true this is a no-op and the endpoints behave as an
+    open dataset. When it is false a caller must present either a signed-in
+    account's token or a guest token issued by /auth/guest.
+
+    This is a deterrent, not a wall. Guest tokens are issued to anyone who
+    asks, because the site's own pages need them - so a determined scraper can
+    obtain one exactly as the browser does. It stops the API being trivially
+    consumable from a URL, and nothing stronger is achievable for data a
+    public web page renders.
+    """
+    from app.core.security import decode_access_token
+    from app.db.models import User
+
+    if settings.PUBLIC_API:
+        return "public"
+
+    denied = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail=(
+            "This API requires a session. Use the site at "
+            "https://bangladesh-crime-monitor.vercel.app, or sign in for an "
+            "account token."
+        ),
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+
+    if credentials is None or not credentials.credentials:
+        raise denied
+
+    claims = decode_access_token(credentials.credentials)
+    if not claims:
+        raise denied
+
+    role = str(claims.get("role") or "")
+    if role == "guest":
+        return "guest"
+
+    # An account token still has to correspond to a live, active user: a
+    # deactivated account must lose access immediately, not at token expiry.
+    try:
+        user_id = uuid.UUID(str(claims.get("sub")))
+    except (ValueError, TypeError):
+        raise denied from None
+
+    user = await session.get(User, user_id)
+    if user is None or not user.is_active or not user.is_verified:
+        raise denied
+
+    return user.role
+
+
+ReaderRole = Annotated[str, Depends(require_reader)]

@@ -43,7 +43,7 @@ const PIPELINE_STAGES = [
   {
     icon: Sparkles,
     title: "5 · Publication",
-    body: "Records land in PostgreSQL and are served through a public read-only API. Nothing is hand-edited between extraction and publication; corrections are made by changing the pipeline or removing the record.",
+    body: "Records land in PostgreSQL and are served to this site through a session-authenticated API. Nothing is hand-edited between extraction and publication; corrections are made by changing the pipeline or removing the record.",
   },
 ] as const;
 
@@ -297,51 +297,33 @@ function MethodologyPage() {
         </div>
       </section>
 
-      {/* API */}
+      {/* Access */}
       <section>
         <h2 className="mb-2 text-base font-semibold text-zinc-100">
-          Open API
+          Access to the data
         </h2>
-        <p className="mb-4 text-sm leading-relaxed text-zinc-400">
-          The read endpoints are public and unauthenticated, so the same data
-          behind this dashboard can be checked or reused directly.
-        </p>
-        <div className="panel divide-y divide-surface-border/50 font-mono text-xs">
-          {[
-            ["GET", "/api/v1/crimes/feed", "Paginated incident feed"],
-            ["GET", "/api/v1/crimes/geojson", "Map layer (FeatureCollection)"],
-            ["GET", "/api/v1/analytics/summary", "Headline aggregates"],
-            ["GET", "/api/v1/analytics/trends", "Daily counts"],
-            ["GET", "/api/v1/analytics/categories", "Category breakdown"],
-          ].map(([method, path, description]) => (
-            <div key={path} className="flex flex-wrap items-center gap-3 p-3">
-              <span className="chip border-emerald-500/40 bg-emerald-500/10 text-emerald-500">
-                {method}
-              </span>
-              <a
-                href={`${API_BASE_URL}${path}`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="text-accent-soft hover:text-accent"
-              >
-                {path}
-              </a>
-              <span className="ml-auto text-zinc-500">{description}</span>
-            </div>
-          ))}
+        <div className="panel space-y-3 p-5 text-sm leading-relaxed text-zinc-400">
+          <p>
+            The compiled dataset is not published as an open API or a bulk
+            download. Reading it through this site requires a session, and the
+            interactive API documentation is not served.
+          </p>
+          <p>
+            That is a deliberate limit on redistribution of the compiled
+            product, not an attempt to obscure the underlying facts.{" "}
+            <strong className="text-zinc-300">
+              Every record carries a link to the original report
+            </strong>
+            , which is public and freely readable, so any individual claim on
+            this site can still be checked against its source.
+          </p>
+          <p>
+            It is also worth being plain about the limit of the measure:
+            anything a web page renders can be retrieved by someone determined
+            enough. This raises the cost of casual scraping; it is not a
+            guarantee of exclusivity.
+          </p>
         </div>
-        <p className="mt-3 text-xs text-zinc-500">
-          Full interactive documentation is at{" "}
-          <a
-            href={`${API_BASE_URL}/docs`}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="text-accent-soft hover:text-accent"
-          >
-            {API_BASE_URL}/docs
-          </a>
-          .
-        </p>
       </section>
     </div>
   );

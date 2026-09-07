@@ -21,6 +21,8 @@ import { API_BASE_URL } from "@/lib/api";
 
 const TOKEN_KEY = "bcm.session";
 const GUEST_KEY = "bcm.guest";
+const GUEST_TOKEN_KEY = "bcm.guest_token";
+const GUEST_EXPIRY_KEY = "bcm.guest_token_exp";
 
 // ---------------------------------------------------------------------------
 // Storage
@@ -81,6 +83,76 @@ export function clearGuest(): void {
 export function authHeader(): Record<string, string> {
   const token = getToken();
   return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
+// ---------------------------------------------------------------------------
+// Guest sessions
+//
+// The read API is no longer open, so even an unauthenticated visitor needs a
+// token to load the Command Center. One is minted on demand and cached until
+// shortly before it expires.
+// ---------------------------------------------------------------------------
+
+let guestTokenInFlight: Promise<string | null> | null = null;
+
+function cachedGuestToken(): string | null {
+  const token = safeGet(GUEST_TOKEN_KEY);
+  const expiry = Number(safeGet(GUEST_EXPIRY_KEY) ?? 0);
+  // Refresh a minute early so a request cannot start with a live token and
+  // arrive with an expired one.
+  if (token && expiry > Date.now() + 60_000) return token;
+  return null;
+}
+
+export async function getGuestToken(): Promise<string | null> {
+  const cached = cachedGuestToken();
+  if (cached) return cached;
+
+  // Several components mount at once on first paint; without this they would
+  // each mint a separate token and burn through the rate limit.
+  if (guestTokenInFlight) return guestTokenInFlight;
+
+  guestTokenInFlight = (async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/v1/auth/guest`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) return null;
+      const data = (await response.json()) as {
+        access_token: string;
+        expires_in: number;
+      };
+      safeSet(GUEST_TOKEN_KEY, data.access_token);
+      safeSet(
+        GUEST_EXPIRY_KEY,
+        String(Date.now() + data.expires_in * 1000)
+      );
+      return data.access_token;
+    } catch {
+      return null;
+    } finally {
+      guestTokenInFlight = null;
+    }
+  })();
+
+  return guestTokenInFlight;
+}
+
+export function clearGuestToken(): void {
+  safeRemove(GUEST_TOKEN_KEY);
+  safeRemove(GUEST_EXPIRY_KEY);
+}
+
+/**
+ * Authorization header for read endpoints: the account token when signed in,
+ * otherwise a guest token minted on demand.
+ */
+export async function readerHeader(): Promise<Record<string, string>> {
+  const token = getToken();
+  if (token) return { Authorization: `Bearer ${token}` };
+  const guest = await getGuestToken();
+  return guest ? { Authorization: `Bearer ${guest}` } : {};
 }
 
 // ---------------------------------------------------------------------------

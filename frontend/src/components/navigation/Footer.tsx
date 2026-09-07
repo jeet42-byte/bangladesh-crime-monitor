@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { AlertTriangle, ExternalLink, Phone, ShieldAlert } from "lucide-react";
 
-import { API_BASE_URL } from "@/lib/api";
 
 const EMERGENCY_CONTACTS = [
   { label: "National Emergency", number: "999" },
@@ -115,55 +114,29 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* API */}
+        {/* Access */}
         <div>
-          <h2 className="label-mono mb-3">Open API</h2>
+          <h2 className="label-mono mb-3">Access</h2>
           <ul className="space-y-2 text-sm">
             <li>
-              <a
-                href={`${API_BASE_URL}/docs`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200"
-              >
-                Interactive docs
-                <ExternalLink className="h-3 w-3" aria-hidden />
-              </a>
+              <Link href="/login" className="text-zinc-400 hover:text-zinc-200">
+                Sign in or create an account
+              </Link>
             </li>
             <li>
-              <a
-                href={`${API_BASE_URL}/openapi.json`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200"
+              <Link
+                href="/corrections"
+                className="text-zinc-400 hover:text-zinc-200"
               >
-                OpenAPI schema
-                <ExternalLink className="h-3 w-3" aria-hidden />
-              </a>
-            </li>
-            <li>
-              <a
-                href={`${API_BASE_URL}/api/v1/crimes/geojson`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200"
-              >
-                GeoJSON layer
-                <ExternalLink className="h-3 w-3" aria-hidden />
-              </a>
-            </li>
-            <li>
-              <a
-                href={`${API_BASE_URL}/health`}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="inline-flex items-center gap-1.5 text-zinc-400 hover:text-zinc-200"
-              >
-                Service health
-                <ExternalLink className="h-3 w-3" aria-hidden />
-              </a>
+                Corrections &amp; removal
+              </Link>
             </li>
           </ul>
+          <p className="mt-3 text-[11px] leading-relaxed text-zinc-600">
+            The data behind this site is not offered as a public API or bulk
+            download. Every record links to its original source, which remains
+            freely readable.
+          </p>
         </div>
       </div>
 

@@ -60,6 +60,9 @@ RATE_LIMITS: dict[str, tuple[int, timedelta]] = {
     "login": (10, timedelta(minutes=15)),
     "verify": (10, timedelta(minutes=15)),
     "resend": (4, timedelta(hours=1)),
+    # Generous: one visitor legitimately refreshes and reopens tabs. Tight
+    # enough that a scraper cannot mint thousands of sessions from one host.
+    "guest": (40, timedelta(hours=1)),
 }
 
 ACCOUNT_LOCK_THRESHOLD = 8
@@ -501,6 +504,35 @@ async def logout(user: OptionalUser) -> MessageOut:
     # The client discards the token; this endpoint exists so the frontend has
     # one place to call and so the intent is explicit in the API surface.
     return MessageOut(message="Signed out. Discard the access token.")
+
+
+class GuestTokenOut(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int
+
+
+@router.post(
+    "/guest",
+    response_model=GuestTokenOut,
+    summary="Issue a short-lived anonymous session for the site itself",
+)
+async def guest_session(request: Request, session: DbSession) -> GuestTokenOut:
+    """Mint a guest token so the public pages can read the API.
+
+    Anyone can call this - the site's own pages have to, and they run in the
+    visitor's browser. It therefore raises the cost of scraping rather than
+    preventing it: a scraper must now hold a session and respect the rate
+    limit instead of curling a URL. That is the honest ceiling for data a
+    public web page renders.
+    """
+    await _enforce_rate_limit(session, "guest", _client_ip(request))
+    from app.core.security import create_guest_token
+
+    return GuestTokenOut(
+        access_token=create_guest_token(),
+        expires_in=settings.GUEST_TOKEN_TTL_MINUTES * 60,
+    )
 
 
 class ChangePasswordIn(BaseModel):
