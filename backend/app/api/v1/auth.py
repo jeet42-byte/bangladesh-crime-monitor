@@ -283,7 +283,18 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
             return MessageOut(message=REGISTRATION_ACK)
         # Unverified re-registration: reissue rather than error, since the
         # most likely cause is a code that never arrived.
-        console = await _send_code(session, existing)
+        try:
+            console = await _send_code(session, existing)
+        except EmailDeliveryError as exc:
+            logger.error("Verification email failed on re-registration: %s", exc)
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=(
+                    "Verification email could not be sent. This is a server "
+                    "configuration problem, not something you did - please "
+                    "try again later."
+                ),
+            ) from exc
         return MessageOut(message=REGISTRATION_ACK, delivered_to_console=console)
 
     username_taken = (
@@ -312,12 +323,19 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
     try:
         console = await _send_code(session, user)
     except EmailDeliveryError as exc:
+        # Roll the account back. Leaving it would hold the address hostage:
+        # the row exists but is unverified, so the owner can neither sign in
+        # nor register again, and "resend" fails for the same reason the
+        # first send did. Deleting makes a retry work once mail is fixed.
         logger.error("Verification email failed for a new account: %s", exc)
+        await session.delete(user)
+        await session.commit()
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail=(
-                "Account created, but the verification email could not be "
-                "sent. Use 'Resend code' shortly."
+                "Verification email could not be sent, so no account was "
+                "created. This is a server configuration problem, not "
+                "something you did - please try again later."
             ),
         ) from exc
 
