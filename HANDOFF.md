@@ -66,13 +66,30 @@ official press releases. One owner account (`ahnaf`).
 
 ## 4. Blocking issue
 
-**`RESEND_API_KEY` is unset, so "Create account" returns 503.** Since
+**No mail provider is configured, so "Create account" returns 503.** Since
 Analytics / Archive / Methodology are gated behind an account, nobody but the
-owner can currently get past the Command Center. Get a key at resend.com and
-set it on Render — that is the single highest-value action outstanding.
+owner can currently get past the Command Center. This is the single
+highest-value action outstanding.
 
 The 503 is deliberate: with no provider the app refuses rather than telling
-someone to check an inbox while writing the code to a log.
+someone to check an inbox while writing the code to a log. A failed send now
+also deletes the half-created account, so the address is not left stranded.
+
+**It must be an HTTPS email API, not SMTP.** Measured from the deployed
+service: `smtp.gmail.com` times out on ports 25, 465 *and* 587 from Render's
+free tier. A Gmail App Password cannot work there no matter how it is
+configured — do not retry that route.
+
+Remaining options, both requiring a one-off manual step:
+
+- **Resend** (`RESEND_API_KEY`) — sign up with Google, create a key, set it on
+  Render. Roughly 90 seconds. Note the free tier only delivers to your own
+  verified address until a sending domain is verified, so public signups from
+  other people's addresses will bounce until then.
+- **Gmail API over HTTPS** — no new service, uses the Google account already
+  in use, but needs an OAuth client created in the Cloud Console UI plus a
+  consent flow to mint a refresh token, and a sender implementation in
+  `app/services/email.py`. Perhaps 15 minutes of setup.
 
 ---
 
