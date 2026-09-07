@@ -59,6 +59,14 @@ NON_CRIMINAL_CATEGORIES: frozenset[str] = frozenset(
     {"Industrial Accident", "Labour Unrest"}
 )
 
+COLLECTION_MODES: tuple[str, ...] = ("live", "backfill")
+REVIEW_STATUSES: tuple[str, ...] = ("unreviewed", "approved", "rejected")
+
+#: The only status the public may see. Everything that renders to a visitor
+#: filters on this - if you are writing a new public query and you did not
+#: apply it, the query is wrong.
+PUBLIC_REVIEW_STATUS = "approved"
+
 SOURCE_PLATFORMS: tuple[str, ...] = (
     "news_portal",
     "facebook_public",
@@ -140,6 +148,21 @@ class CrimeIncident(Base):
     raw_content_hash: Mapped[str] = mapped_column(
         String(64), nullable=False, unique=True
     )
+
+    # Staging. Backfilled history is held out of the public feed until a
+    # human approves it - see db_migrations/005_review_queue.sql for why the
+    # asymmetry with live collection is deliberate.
+    collection_mode: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="live"
+    )
+    review_status: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="approved"
+    )
+    reviewed_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    reviewed_by: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    review_note: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     source_handle: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
     verification_level: Mapped[str] = mapped_column(
@@ -290,3 +313,16 @@ class AuthAttempt(Base):
     occurred_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
+
+
+def public_incidents():
+    """Predicate selecting only records a visitor may see.
+
+    Every public-facing query must apply this. It is a function returning a
+    SQLAlchemy expression rather than a constant so it reads as a filter at
+    the call site and cannot be accidentally used as a value.
+
+    Records excluded here are not deleted or hidden from their author - they
+    are backfilled history awaiting review, or history a reviewer rejected.
+    """
+    return CrimeIncident.review_status == PUBLIC_REVIEW_STATUS

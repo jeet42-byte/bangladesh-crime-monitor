@@ -7,6 +7,7 @@ import {
   Activity,
   BarChart3,
   Building2,
+  ClipboardCheck,
   Crosshair,
   Database,
   FileText,
@@ -30,11 +31,20 @@ const NAV_ITEMS = [
   { href: "/methodology", label: "Methodology", icon: FileText, gated: true },
 ] as const;
 
+// Shown only to the owner: it is a maintenance surface, not a section of the
+// portal, and it decides what everyone else can see.
+const OWNER_NAV = {
+  href: "/review",
+  label: "Review",
+  icon: ClipboardCheck,
+} as const;
+
 type StreamState = "checking" | "live" | "degraded";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { status } = useAuth();
+  const { status, user } = useAuth();
+  const isOwner = status === "authenticated" && user?.role === "owner";
   // Signed-out visitors see which sections need an account before clicking,
   // rather than discovering it on arrival.
   const locked = status !== "authenticated" && status !== "loading";
@@ -133,6 +143,22 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {isOwner && (
+            <Link
+              href={OWNER_NAV.href}
+              aria-current={pathname.startsWith(OWNER_NAV.href) ? "page" : undefined}
+              className={cn(
+                "flex items-center gap-2 rounded-lg border border-amber-500/30 px-3 py-2 text-sm transition-colors",
+                pathname.startsWith(OWNER_NAV.href)
+                  ? "bg-amber-500/15 text-amber-300"
+                  : "text-amber-400/80 hover:bg-amber-500/10 hover:text-amber-300"
+              )}
+            >
+              <OWNER_NAV.icon className="h-4 w-4" aria-hidden />
+              {OWNER_NAV.label}
+            </Link>
+          )}
         </nav>
 
         <div className="ml-auto flex items-center gap-3">
@@ -211,6 +237,17 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          {isOwner && (
+            <Link
+              href={OWNER_NAV.href}
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center gap-3 rounded-lg px-3 py-3 text-sm text-amber-400/80 hover:text-amber-300"
+            >
+              <OWNER_NAV.icon className="h-4 w-4" aria-hidden />
+              {OWNER_NAV.label}
+            </Link>
+          )}
         </nav>
       )}
     </header>

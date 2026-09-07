@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy import text
 
-from app.api.v1 import analytics, assets, auth, crimes, ingest, ttp
+from app.api.v1 import analytics, assets, auth, crimes, ingest, review, ttp
 from app.core.config import settings
 from app.db.database import AsyncSessionLocal, dispose_engine
 from app.services.email import describe_backend
@@ -186,6 +186,7 @@ def create_app() -> FastAPI:
     app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
     app.include_router(ttp.router, prefix=settings.API_V1_PREFIX)
     app.include_router(assets.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(review.router, prefix=settings.API_V1_PREFIX)
 
     @app.get("/", tags=["meta"], summary="Service banner")
     async def root() -> dict:

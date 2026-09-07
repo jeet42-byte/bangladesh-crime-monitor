@@ -27,7 +27,7 @@ from pydantic import BaseModel
 from sqlalchemy import func, select
 
 from app.api.deps import DbSession, require_reader
-from app.db.models import CrimeIncident
+from app.db.models import CrimeIncident, public_incidents
 from app.services.commercial_sites import (
     COMMERCIAL_SITES,
     SITE_TYPE_LABEL,
@@ -262,6 +262,7 @@ async def site_exposure(
         await session.execute(
             select(CrimeIncident)
             .where(
+                public_incidents(),
                 CrimeIncident.incident_date >= since,
                 CrimeIncident.latitude >= min_lat,
                 CrimeIncident.latitude <= max_lat,
@@ -313,13 +314,14 @@ async def site_exposure(
     national_records = await session.scalar(
         select(func.count())
         .select_from(CrimeIncident)
-        .where(CrimeIncident.incident_date >= since)
+        .where(public_incidents(), CrimeIncident.incident_date >= since)
     )
     district_records = (
         await session.scalar(
             select(func.count())
             .select_from(CrimeIncident)
             .where(
+                public_incidents(),
                 CrimeIncident.incident_date >= since,
                 CrimeIncident.district == site.district,
             )

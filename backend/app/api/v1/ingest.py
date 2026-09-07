@@ -12,6 +12,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.api.deps import DbSession, IngestAuth
 from app.db.models import (
+    COLLECTION_MODES,
     CRIME_CATEGORIES,
     SOURCE_PLATFORMS,
     VERIFICATION_LEVELS,
@@ -45,6 +46,10 @@ class IncidentIn(BaseModel):
     raw_content_hash: str = Field(..., min_length=64, max_length=64)
     source_handle: Optional[str] = Field(default=None, max_length=120)
     verification_level: str = Field(default="single_source")
+    # 'backfill' stages the record for review instead of publishing it. The
+    # default keeps every existing caller - the live cron included - writing
+    # straight to the public archive exactly as before.
+    collection_mode: str = Field(default="live")
 
     @field_validator("crime_category")
     @classmethod
@@ -55,6 +60,15 @@ class IncidentIn(BaseModel):
                 f"crime_category must be one of {', '.join(CRIME_CATEGORIES)}"
             )
         return normalised
+
+    @field_validator("collection_mode")
+    @classmethod
+    def _valid_mode(cls, value: str) -> str:
+        if value not in COLLECTION_MODES:
+            raise ValueError(
+                f"collection_mode must be one of {', '.join(COLLECTION_MODES)}"
+            )
+        return value
 
     @field_validator("source_platform")
     @classmethod
@@ -152,6 +166,14 @@ async def ingest_batch(
                 "raw_content_hash": incident.raw_content_hash,
                 "source_handle": incident.source_handle,
                 "verification_level": incident.verification_level,
+                "collection_mode": incident.collection_mode,
+                # Backfilled history stages for review; live collection
+                # publishes as it always has.
+                "review_status": (
+                    "unreviewed"
+                    if incident.collection_mode == "backfill"
+                    else "approved"
+                ),
             }
         )
 

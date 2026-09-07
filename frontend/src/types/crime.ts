@@ -391,3 +391,46 @@ export interface ExposureResponse {
   district_level_incidents: number;
   generated_at: string;
 }
+
+// ---------------------------------------------------------------------------
+// Review queue
+// ---------------------------------------------------------------------------
+
+export type CollectionMode = "live" | "backfill";
+export type ReviewStatus = "unreviewed" | "approved" | "rejected";
+
+export interface ReviewItem {
+  id: string;
+  title: string;
+  narrative: string;
+  crime_category: CrimeCategory;
+  is_criminal_offence: boolean;
+  penal_code_tags: string[];
+  incident_date: string;
+  thana_name: string;
+  district: string;
+  latitude: number;
+  longitude: number;
+  source_platform: SourcePlatform;
+  source_handle: string | null;
+  source_url: string;
+  source_confidence: number;
+  verification_level: VerificationLevel;
+  collection_mode: CollectionMode;
+  review_status: ReviewStatus;
+  reviewed_at: string | null;
+  reviewed_by: string | null;
+  review_note: string | null;
+  created_at: string;
+  /** Days between the incident and when the row was written. */
+  ingest_lag_days: number;
+}
+
+export interface ReviewQueueResponse {
+  items: ReviewItem[];
+  total: number;
+  limit: number;
+  offset: number;
+  has_more: boolean;
+  counts: Partial<Record<ReviewStatus, number>>;
+}

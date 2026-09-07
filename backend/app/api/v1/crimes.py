@@ -107,7 +107,13 @@ def _apply_filters(
     end_date: Optional[datetime],
     search: Optional[str],
 ) -> Select:
-    """Attach every active filter to a SELECT over ``crime_incidents``."""
+    """Attach every active filter to a SELECT over ``crime_incidents``.
+
+    Always applies the public-visibility filter first, so a caller cannot
+    build a public query that forgets it.
+    """
+    statement = statement.where(public_incidents())
+
     if thana:
         statement = statement.where(CrimeIncident.thana_name == thana)
     if category:

@@ -335,6 +335,10 @@ async def stage_extract(args: argparse.Namespace) -> int:
 
         incident.source_handle = article["outlet"]
         payload = incident.to_ingest_payload()
+        # Stage rather than publish. Three years of machine-extracted history
+        # through a wide gate is not material to put in front of readers
+        # unseen - see db_migrations/005_review_queue.sql.
+        payload["collection_mode"] = "backfill"
         produced.append(payload)
 
         if index % 25 == 0:

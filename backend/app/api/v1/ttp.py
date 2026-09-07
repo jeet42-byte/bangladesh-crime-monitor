@@ -15,10 +15,10 @@ from typing import Dict, List, Optional
 
 from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
-from sqlalchemy import func, or_, select
+from sqlalchemy import and_, func, or_, select
 
 from app.api.deps import DbSession, require_reader
-from app.db.models import CrimeIncident
+from app.db.models import CrimeIncident, public_incidents
 from app.services.ttp_library import (
     PROFILES,
     SUPPORT_NOTE,
@@ -102,7 +102,10 @@ async def _prevalence(
     session: DbSession, profile: TTPProfile, since: datetime
 ) -> tuple[int, int, Optional[datetime]]:
     """Return (matched, category_total, last_seen) for one profile."""
-    in_window = CrimeIncident.incident_date >= since
+    # Bundled with the window so every prevalence query carries it.
+    in_window = and_(
+        public_incidents(), CrimeIncident.incident_date >= since
+    )
     in_category = CrimeIncident.crime_category.in_(list(profile.categories))
 
     category_total = await session.scalar(
@@ -186,7 +189,7 @@ async def list_profiles(
     archive_total = await session.scalar(
         select(func.count())
         .select_from(CrimeIncident)
-        .where(CrimeIncident.incident_date >= since)
+        .where(public_incidents(), CrimeIncident.incident_date >= since)
     )
 
     profiles: List[ProfileOut] = []

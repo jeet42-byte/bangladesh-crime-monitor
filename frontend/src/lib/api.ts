@@ -25,6 +25,8 @@ import type {
   TTPResponse,
   SitesResponse,
   ExposureResponse,
+  ReviewQueueResponse,
+  ReviewStatus,
 } from "@/types/crime";
 import { daysAgoISO, sourceFilterToPlatform } from "@/lib/utils";
 import { clearGuestToken, readerHeader } from "@/lib/auth";
@@ -344,4 +346,39 @@ export async function fetchExposure(
     radius_km: radiusKm,
     days,
   });
+}
+
+// ---------------------------------------------------------------------------
+// Review queue (owner only)
+// ---------------------------------------------------------------------------
+
+export async function fetchReviewQueue(
+  status: ReviewStatus | "all" = "unreviewed",
+  limit = 50,
+  offset = 0
+): Promise<ReviewQueueResponse | null> {
+  return request<ReviewQueueResponse>("/api/v1/review/queue", {
+    status,
+    collection_mode: "backfill",
+    limit,
+    offset,
+  });
+}
+
+/** Records a decision. Returns false when the write did not land. */
+export async function decideReview(
+  ids: string[],
+  status: ReviewStatus,
+  note?: string
+): Promise<boolean> {
+  const result = await request<{ updated: number }>(
+    "/api/v1/review",
+    {},
+    {
+      method: "POST",
+      body: JSON.stringify({ ids, status, note: note ?? null }),
+      headers: { "Content-Type": "application/json" },
+    }
+  );
+  return result !== null && result.updated > 0;
 }

@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from sqlalchemy import Integer, and_, cast, func, select
 
 from app.api.deps import DbSession, require_reader
-from app.db.models import CrimeIncident
+from app.db.models import CrimeIncident, public_incidents
 
 router = APIRouter(
     prefix="/analytics",
@@ -138,6 +138,11 @@ async def get_summary(
                 func.count(),
                 func.max(CrimeIncident.created_at),
             )
+            # These are conditional aggregates over the whole table rather
+            # than a windowed query, so the visibility filter has to be
+            # attached explicitly - there is no .where() here to join.
+            .select_from(CrimeIncident)
+            .where(public_incidents())
         )
     ).one()
 
@@ -154,7 +159,7 @@ async def get_summary(
     category_row = (
         await session.execute(
             select(CrimeIncident.crime_category, func.count().label("n"))
-            .where(CrimeIncident.incident_date >= window_start)
+            .where(public_incidents(), CrimeIncident.incident_date >= window_start)
             .group_by(CrimeIncident.crime_category)
             .order_by(func.count().desc())
             .limit(1)
@@ -165,7 +170,7 @@ async def get_summary(
     thana_row = (
         await session.execute(
             select(CrimeIncident.thana_name, func.count().label("n"))
-            .where(CrimeIncident.incident_date >= window_start)
+            .where(public_incidents(), CrimeIncident.incident_date >= window_start)
             .group_by(CrimeIncident.thana_name)
             .order_by(func.count().desc())
             .limit(1)
@@ -221,7 +226,7 @@ async def get_trends(
 
     statement = (
         select(_bst_date(CrimeIncident.incident_date).label("day"), func.count())
-        .where(CrimeIncident.incident_date >= window_start)
+        .where(public_incidents(), CrimeIncident.incident_date >= window_start)
         .group_by("day")
         .order_by("day")
     )
@@ -266,7 +271,7 @@ async def get_categories(
 
     statement = (
         select(CrimeIncident.crime_category, func.count().label("n"))
-        .where(CrimeIncident.incident_date >= window_start)
+        .where(public_incidents(), CrimeIncident.incident_date >= window_start)
         .group_by(CrimeIncident.crime_category)
         .order_by(func.count().desc())
     )
@@ -310,7 +315,7 @@ async def get_thana_ranking(
             func.avg(CrimeIncident.latitude).label("lat"),
             func.avg(CrimeIncident.longitude).label("lon"),
         )
-        .where(CrimeIncident.incident_date >= window_start)
+        .where(public_incidents(), CrimeIncident.incident_date >= window_start)
         .group_by(CrimeIncident.thana_name)
         .order_by(func.count().desc())
         .limit(limit)
@@ -351,7 +356,7 @@ async def get_hourly_distribution(
     rows = (
         await session.execute(
             select(hour_expression, func.count())
-            .where(CrimeIncident.incident_date >= window_start)
+            .where(public_incidents(), CrimeIncident.incident_date >= window_start)
             .group_by("hour")
             .order_by("hour")
         )
@@ -384,7 +389,7 @@ async def get_source_mix(
                     cast(CrimeIncident.source_confidence, Integer)
                 ).label("avg_confidence"),
             )
-            .where(CrimeIncident.incident_date >= window_start)
+            .where(public_incidents(), CrimeIncident.incident_date >= window_start)
             .group_by(CrimeIncident.source_platform)
             .order_by(func.count().desc())
         )
