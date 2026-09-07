@@ -1,0 +1,97 @@
+name: Feed reachability probe
+
+# Temporary diagnostic: checks which news feeds are reachable from a GitHub
+# runner, whose datacentre IPs several Bangladeshi outlets refuse. Run it by
+# hand when adding or replacing a source; it writes a table to the job summary.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install feedparser httpx
+      - name: Probe feeds
+        env:
+          PYTHONIOENCODING: utf-8
+        run: |
+          python - <<'PY'
+          import os, feedparser, httpx, concurrent.futures as cf
+
+          UA = ("Mozilla/5.0 (compatible; BangladeshCrimeMonitor/1.0; "
+                "+https://github.com/jeet42-byte/bangladesh-crime-monitor) "
+                "OSINT research bot")
+
+          CANDIDATES = [
+              # --- currently configured ---
+              ("The Daily Star",        "https://www.thedailystar.net/rss.xml"),
+              ("Daily Star City",       "https://www.thedailystar.net/city/rss.xml"),
+              ("Daily Star Country",    "https://www.thedailystar.net/country/rss.xml"),
+              ("Prothom Alo",           "https://www.prothomalo.com/feed"),
+              ("Dhaka Tribune",         "https://www.dhakatribune.com/feed/"),
+              ("TBS News",              "https://www.tbsnews.net/bangladesh/rss.xml"),
+              ("bdnews24 bn",           "https://bangla.bdnews24.com/feed"),
+              ("bdnews24 en",           "https://bdnews24.com/feed"),
+              ("Jugantor",              "https://www.jugantor.com/feed/rss.xml"),
+              ("Kaler Kantho",          "https://www.kalerkantho.com/rss.xml"),
+              # --- replacement candidates ---
+              ("Jagonews24",            "https://www.jagonews24.com/rss/rss.xml"),
+              ("Jagonews24 crime",      "https://www.jagonews24.com/rss/country.xml"),
+              ("Dhaka Post",            "https://www.dhakapost.com/rss/rss.xml"),
+              ("Dhaka Post country",    "https://www.dhakapost.com/rss/country.xml"),
+              ("Ajker Patrika",         "https://www.ajkerpatrika.com/feed"),
+              ("Dhaka Mail",            "https://www.dhakamail.com/rss/rss.xml"),
+              ("Prothom Alo crime",     "https://www.prothomalo.com/collection/latest/feed"),
+              ("Daily Star crime",      "https://www.thedailystar.net/crime-justice/rss.xml"),
+              ("TBS crime",             "https://www.tbsnews.net/crime/rss.xml"),
+              ("Samakal",               "https://samakal.com/feed"),
+              ("Barta24",               "https://barta24.com/rss/rss.xml"),
+              ("Somoy News",            "https://www.somoynews.tv/rss/rss.xml"),
+              ("Jamuna TV",             "https://jamuna.tv/feed"),
+              ("Bangla Tribune",        "https://www.banglatribune.com/feed"),
+              ("Risingbd",              "https://www.risingbd.com/rss/rss.xml"),
+              ("Daily Janakantha",      "https://www.dailyjanakantha.com/rss/rss.xml"),
+              ("Amader Shomoy",         "https://www.dainikamadershomoy.com/rss.xml"),
+              ("Protidiner Bangladesh", "https://www.protidinerbangladesh.com/rss/rss.xml"),
+          ]
+
+          def probe(item):
+              name, url = item
+              try:
+                  r = httpx.get(url, headers={"User-Agent": UA}, timeout=25,
+                                follow_redirects=True)
+                  if r.status_code != 200:
+                      return name, url, f"HTTP {r.status_code}", 0, ""
+                  p = feedparser.parse(r.content)
+                  if not p.entries:
+                      return name, url, "0 entries", 0, ""
+                  return name, url, "OK", len(p.entries), p.entries[0].title[:60]
+              except Exception as e:
+                  return name, url, type(e).__name__, 0, ""
+
+          with cf.ThreadPoolExecutor(8) as ex:
+              rows = list(ex.map(probe, CANDIDATES))
+
+          ok = [r for r in rows if r[2] == "OK"]
+          print(f"{len(ok)}/{len(rows)} reachable from this runner")
+
+          lines = ["### Feed reachability from GitHub runner", "",
+                   "| status | outlet | entries | url |", "|---|---|---|---|"]
+          for name, url, status, n, title in rows:
+              mark = "PASS" if status == "OK" else "FAIL"
+              lines.append(f"| {mark} | {name} | {n} | `{url}` |")
+              print(f"  {mark}  {name:24} {status:14} {n:4}  {title}")
+
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          if summary:
+              with open(summary, "a", encoding="utf-8") as fh:
+                  fh.write("\n".join(lines) + "\n")
+          PY
