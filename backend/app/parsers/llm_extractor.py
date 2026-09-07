@@ -155,9 +155,13 @@ RESPONSE_SCHEMA: Dict[str, Any] = {
         "incident_date": {
             "type": "string",
             "description": (
-                "Date the incident occurred, ISO-8601 (YYYY-MM-DD or full "
-                "timestamp), Bangladesh time. Use the publication date only "
-                "when the incident date is not stated."
+                "Date the incident occurred, ISO-8601 (YYYY-MM-DD), "
+                "Bangladesh time. The article's publication date is given at "
+                "the top of the input: the incident occurred on or shortly "
+                "before it. When the text gives a day and month but no year, "
+                "use the publication date's year - never a year from your own "
+                "prior knowledge. When no date is stated at all, return the "
+                "publication date."
             ),
         },
         "thana_name": {
@@ -580,27 +584,76 @@ def _heuristic_extract(raw_text: str) -> Dict[str, Any]:
 # ===========================================================================
 # Date parsing
 # ===========================================================================
+# How far before its publication date an incident may plausibly be dated.
+# Crime reporting occasionally covers an older case, but a gap wider than
+# this in a freshly published article means the year was invented.
+MAX_DAYS_BEFORE_PUBLICATION = 45
+
+
 def _parse_incident_date(value: str, published_at: Optional[datetime]) -> datetime:
-    """Best-effort ISO parse, defaulting to publication time, then now."""
+    """Parse the model's date, anchored to the article's publication date.
+
+    Language models do not know today's date. Given "5 September" with no
+    year, they fill the year in from their own prior - which in practice
+    means the year their training data ended. Observed in production: every
+    article published in September 2026 came back dated 2024 or 2025, and the
+    downstream age filter then discarded the entire run.
+
+    So the publication date is treated as authoritative: anything implausibly
+    far from it is replaced rather than trusted.
+    """
+    fallback = None
+    if published_at is not None:
+        fallback = (
+            published_at
+            if published_at.tzinfo
+            else published_at.replace(tzinfo=BST)
+        )
+
     if value:
         cleaned = value.strip().replace("Z", "+00:00")
         for attempt in (cleaned, cleaned[:10]):
             try:
                 parsed = datetime.fromisoformat(attempt)
-                if parsed.tzinfo is None:
-                    parsed = parsed.replace(tzinfo=BST)
-                # Guard against hallucinated far-future dates.
-                if parsed <= datetime.now(timezone.utc) + timedelta(days=1):
-                    return parsed
             except ValueError:
                 continue
 
-    if published_at is not None:
-        return (
-            published_at
-            if published_at.tzinfo
-            else published_at.replace(tzinfo=BST)
-        )
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=BST)
+
+            # Never accept a date in the future.
+            if parsed > datetime.now(timezone.utc) + timedelta(days=1):
+                break
+
+            if fallback is None:
+                return parsed
+
+            # Published articles describe incidents that already happened, so
+            # a date after publication is wrong; so is one long before it.
+            if parsed > fallback + timedelta(days=1):
+                logger.info(
+                    "Extracted date %s postdates publication %s; using "
+                    "publication date.",
+                    parsed.date(),
+                    fallback.date(),
+                )
+                return fallback
+
+            if (fallback - parsed).days > MAX_DAYS_BEFORE_PUBLICATION:
+                logger.info(
+                    "Extracted date %s is %d days before publication %s - "
+                    "the year was almost certainly invented; using "
+                    "publication date.",
+                    parsed.date(),
+                    (fallback - parsed).days,
+                    fallback.date(),
+                )
+                return fallback
+
+            return parsed
+
+    if fallback is not None:
+        return fallback
     return datetime.now(BST)
 
 
@@ -628,9 +681,29 @@ def extract_crime_entities(
             f"expected one of {sorted(SOURCE_CONFIDENCE)}"
         )
 
-    data = _call_gemini(raw_text)
+    # The model has no idea what today's date is, so state it explicitly.
+    # Without this anchor it resolves a bare "5 September" using its training
+    # cutoff year and every record lands one to two years in the past.
+    if published_at is not None:
+        anchor = published_at.astimezone(BST).strftime("%Y-%m-%d")
+        prompt_text = (
+            f"ARTICLE PUBLICATION DATE: {anchor} (Bangladesh time).\n"
+            f"Resolve any incomplete date in the text against this date.\n\n"
+            f"{raw_text}"
+        )
+    else:
+        today = datetime.now(BST).strftime("%Y-%m-%d")
+        prompt_text = (
+            f"TODAY'S DATE: {today} (Bangladesh time).\n"
+            f"Resolve any incomplete date in the text against this date.\n\n"
+            f"{raw_text}"
+        )
+
+    data = _call_gemini(prompt_text)
     used_llm = data is not None
     if data is None:
+        # The heuristic path reads the original text; the date banner would
+        # only confuse its keyword and location scanning.
         data = _heuristic_extract(raw_text)
 
     if not data.get("is_crime_report", False):
