@@ -10,11 +10,14 @@ from typing import AsyncIterator
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from datetime import datetime, timezone
+
 from sqlalchemy import text
 
-from app.api.v1 import analytics, crimes, ingest
+from app.api.v1 import analytics, auth, crimes, ingest
 from app.core.config import settings
 from app.db.database import AsyncSessionLocal, dispose_engine
+from app.services.email import describe_backend
 
 logging.basicConfig(
     level=getattr(logging, settings.LOG_LEVEL.upper(), logging.INFO),
@@ -35,6 +38,70 @@ can be checked against it.
 * `GET /api/v1/analytics/*` - aggregates for charts and metric cards
 * `POST /api/v1/ingest/batch` - write path, requires `X-Ingest-Key`
 """
+
+
+
+async def _seed_owner() -> None:
+    """Create or refresh the owner account from environment configuration.
+
+    The password arrives as an environment variable and is hashed before it
+    touches the database. It is never logged. Re-running is safe: an existing
+    owner keeps their password unless OWNER_PASSWORD is set to something new.
+    """
+    from sqlalchemy import func, select
+
+    from app.core.security import hash_password, verify_password
+    from app.db.models import User
+
+    if not settings.OWNER_EMAIL:
+        return
+
+    email = settings.OWNER_EMAIL.strip().lower()
+    credentials_blob = "|".join(auth.OWNER_CREDENTIALS)
+
+    async with AsyncSessionLocal() as session:
+        existing = (
+            await session.execute(
+                select(User).where(func.lower(User.email) == email)
+            )
+        ).scalar_one_or_none()
+
+        if existing is None:
+            if not settings.OWNER_PASSWORD:
+                logger.warning(
+                    "OWNER_EMAIL is set but OWNER_PASSWORD is not; the owner "
+                    "account was not created."
+                )
+                return
+            session.add(
+                User(
+                    email=email,
+                    username=settings.OWNER_USERNAME,
+                    password_hash=hash_password(settings.OWNER_PASSWORD),
+                    role="owner",
+                    is_verified=True,
+                    verified_at=datetime.now(timezone.utc),
+                    display_name=auth.OWNER_DISPLAY_NAME,
+                    credentials=credentials_blob,
+                )
+            )
+            await session.commit()
+            logger.info("Owner account created for %s", email)
+            return
+
+        # Keep role and attribution in step with the code, and rotate the
+        # password only when the configured one differs from what is stored.
+        existing.role = "owner"
+        existing.is_verified = True
+        existing.display_name = auth.OWNER_DISPLAY_NAME
+        existing.credentials = credentials_blob
+        if settings.OWNER_PASSWORD and not verify_password(
+            settings.OWNER_PASSWORD, existing.password_hash
+        ):
+            existing.password_hash = hash_password(settings.OWNER_PASSWORD)
+            logger.info("Owner password rotated from configuration.")
+        await session.commit()
+        logger.info("Owner account refreshed for %s", email)
 
 
 @asynccontextmanager
@@ -60,6 +127,13 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         logger.error("Database health check failed at startup: %s", exc)
         app.state.db_healthy = False
 
+    try:
+        await _seed_owner()
+    except Exception as exc:  # noqa: BLE001 - never block startup on seeding
+        logger.error("Owner seeding failed: %s", exc)
+
+    logger.info("Email delivery backend: %s", describe_backend())
+
     yield
 
     logger.info("Shutting down; disposing connection pool")
@@ -81,9 +155,13 @@ def create_app() -> FastAPI:
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.CORS_ORIGINS,
-        allow_credentials=False,  # the API is public and cookie-free
+        # Sessions are Bearer tokens in the Authorization header, not cookies,
+        # so credentialed CORS is not needed and SameSite/CSRF questions do
+        # not arise. The trade-off is that the token is readable by scripts on
+        # the page; it is short-lived and grants no privileged data access.
+        allow_credentials=False,
         allow_methods=["GET", "POST", "OPTIONS"],
-        allow_headers=["Content-Type", "X-Ingest-Key"],
+        allow_headers=["Content-Type", "X-Ingest-Key", "Authorization"],
         max_age=600,
     )
 
@@ -99,6 +177,7 @@ def create_app() -> FastAPI:
     app.include_router(crimes.router, prefix=settings.API_V1_PREFIX)
     app.include_router(analytics.router, prefix=settings.API_V1_PREFIX)
     app.include_router(ingest.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(auth.router, prefix=settings.API_V1_PREFIX)
 
     @app.get("/", tags=["meta"], summary="Service banner")
     async def root() -> dict:
@@ -118,7 +197,13 @@ def create_app() -> FastAPI:
         try:
             async with AsyncSessionLocal() as session:
                 await session.execute(text("SELECT 1"))
-            return JSONResponse({"status": "ok", "database": "reachable"})
+            return JSONResponse(
+                {
+                    "status": "ok",
+                    "database": "reachable",
+                    "email": describe_backend(),
+                }
+            )
         except Exception as exc:  # noqa: BLE001
             logger.warning("health check failed: %s", exc)
             return JSONResponse(

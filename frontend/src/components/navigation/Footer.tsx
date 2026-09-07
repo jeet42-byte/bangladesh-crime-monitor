@@ -159,6 +159,25 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Ownership. Stated exactly as provided by the operator; nothing here
+          is inferred or embellished. */}
+      <div className="border-t border-surface-border/50 bg-surface-raised/30">
+        <div className="mx-auto max-w-[1600px] px-4 py-6 sm:px-6">
+          <h2 className="label-mono mb-3">Compiled and maintained by</h2>
+          <div className="flex flex-wrap items-start gap-x-8 gap-y-3">
+            <p className="text-sm font-semibold text-zinc-100">Ahnaf Akif</p>
+            <ul className="space-y-1 text-xs leading-relaxed text-zinc-400">
+              <li>Former Major, Bangladesh Army</li>
+              <li>
+                Researcher and student, Criminology and Criminal Justice,
+                University of Dhaka
+              </li>
+              <li>Cybersecurity, United International University</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
       <div className="border-t border-surface-border/50">
         <div className="mx-auto flex max-w-[1600px] flex-col gap-2 px-4 py-5 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p>

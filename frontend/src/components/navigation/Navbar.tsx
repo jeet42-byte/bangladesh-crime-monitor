@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 
+import AccountMenu from "@/components/auth/AccountMenu";
 import { fetchHealth } from "@/lib/api";
 import { cn, currentBSTClock } from "@/lib/utils";
 
@@ -147,6 +148,8 @@ export default function Navbar() {
             </span>
             <span className="font-mono text-[10px] text-zinc-500">BST</span>
           </div>
+
+          <AccountMenu />
 
           {/* Mobile toggle */}
           <button

@@ -53,6 +53,37 @@ class Settings(BaseSettings):
     # alias trades reproducibility for not dying quietly.
     GEMINI_MODEL: str = "gemini-flash-lite-latest"
 
+    # --- Auth -------------------------------------------------------------
+    # Signs session tokens and keys the one-time-code HMAC. Rotating it logs
+    # everyone out and invalidates outstanding verification codes, which is
+    # the intended behaviour for a compromised secret.
+    # Generate with: python -c "import secrets; print(secrets.token_urlsafe(48))"
+    SECRET_KEY: str = Field(
+        default="",
+        description="HMAC/JWT signing secret. Must be set in production.",
+    )
+    # Registration can be closed without redeploying the frontend.
+    ALLOW_REGISTRATION: bool = True
+
+    # Owner account, seeded on startup when all three are present. The
+    # password is read from the environment and immediately hashed; it is
+    # never written to the database or the logs in plaintext.
+    OWNER_EMAIL: str = ""
+    OWNER_USERNAME: str = "ahnaf"
+    OWNER_PASSWORD: str = ""
+
+    # --- Email ------------------------------------------------------------
+    EMAIL_FROM: str = "Bangladesh Crime Monitor <onboarding@resend.dev>"
+    RESEND_API_KEY: str = ""
+    SMTP_HOST: str = ""
+    SMTP_PORT: int = 587
+    SMTP_USERNAME: str = ""
+    SMTP_PASSWORD: str = ""
+    SMTP_USE_SSL: bool = False
+    # Print verification codes to the log instead of emailing them. Local
+    # testing only - it makes "check your inbox" a lie.
+    ALLOW_CONSOLE_EMAIL: bool = False
+
     # --- Scraper ----------------------------------------------------------
     FB_PAGE_ACCESS_TOKEN: str = ""
     BACKEND_URL: str = "http://127.0.0.1:8000"
@@ -118,7 +149,23 @@ class Settings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_settings() -> Settings:
     """Cached accessor so the environment is parsed exactly once."""
-    return Settings()  # type: ignore[call-arg]
+    resolved = Settings()  # type: ignore[call-arg]
+
+    if not resolved.SECRET_KEY:
+        # An empty signing key would let anyone forge a session token, so
+        # generate an ephemeral one rather than run unsigned. It changes on
+        # every restart, which logs everyone out - loud, but not insecure.
+        import logging
+        import secrets
+
+        resolved.SECRET_KEY = secrets.token_urlsafe(48)
+        logging.getLogger(__name__).error(
+            "SECRET_KEY is not set. Using a random per-process key: sessions "
+            "will be invalidated on every restart and will not work across "
+            "multiple instances. Set SECRET_KEY in the environment."
+        )
+
+    return resolved
 
 
 settings = get_settings()

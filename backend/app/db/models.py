@@ -13,14 +13,18 @@ from decimal import Decimal
 from typing import List, Optional
 
 from sqlalchemy import (
+    BigInteger,
+    Boolean,
     CheckConstraint,
     DateTime,
+    ForeignKey,
     Index,
     Integer,
     Numeric,
     String,
     Text,
     func,
+    text,
 )
 from sqlalchemy.dialects.postgresql import ARRAY, UUID as PGUUID
 from sqlalchemy.orm import Mapped, mapped_column
@@ -143,3 +147,111 @@ class CrimeIncident(Base):
 
     def __repr__(self) -> str:  # pragma: no cover - debugging aid
         return f"<CrimeIncident {self.crime_category} @ {self.thana_name}>"
+
+
+# ===========================================================================
+# Authentication
+# ===========================================================================
+USER_ROLES: tuple[str, ...] = ("owner", "member")
+
+
+class User(Base):
+    """A registered account.
+
+    Guests are deliberately absent from this table: guest access is
+    unauthenticated, stores nothing, and creates no row.
+    """
+
+    __tablename__ = "users"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        PGUUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+
+    # CITEXT in the database; declared here as String because SQLAlchemy has
+    # no core CITEXT type. Case-insensitive uniqueness is enforced by the
+    # column type itself, not by the application.
+    email: Mapped[str] = mapped_column(String(254), nullable=False, unique=True)
+    username: Mapped[str] = mapped_column(String(32), nullable=False, unique=True)
+
+    password_hash: Mapped[str] = mapped_column(Text, nullable=False)
+    role: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="member"
+    )
+
+    is_verified: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, server_default=text("false")
+    )
+    is_active: Mapped[bool] = mapped_column(
+        Boolean, nullable=False, server_default=text("true")
+    )
+
+    display_name: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    credentials: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    verified_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    last_login_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    failed_login_count: Mapped[int] = mapped_column(
+        Integer, nullable=False, server_default=text("0")
+    )
+    locked_until: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+
+    def __repr__(self) -> str:  # pragma: no cover
+        return f"<User {self.username} ({self.role})>"
+
+
+class EmailVerificationCode(Base):
+    """A hashed, single-use one-time code."""
+
+    __tablename__ = "email_verification_codes"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        PGUUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        PGUUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+
+    code_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    purpose: Mapped[str] = mapped_column(
+        String(30), nullable=False, server_default="verify_email"
+    )
+
+    expires_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+    consumed_at: Mapped[Optional[datetime]] = mapped_column(
+        DateTime(timezone=True), nullable=True
+    )
+    attempts: Mapped[int] = mapped_column(
+        Integer, nullable=False, server_default=text("0")
+    )
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class AuthAttempt(Base):
+    """Rate-limiting ledger.
+
+    Stored in the database rather than process memory because Render restarts
+    the container freely, and an in-memory limiter resets its counters with it.
+    """
+
+    __tablename__ = "auth_attempts"
+
+    id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True)
+    bucket: Mapped[str] = mapped_column(String(80), nullable=False)
+    occurred_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
