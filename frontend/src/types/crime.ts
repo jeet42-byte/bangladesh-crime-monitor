@@ -22,9 +22,19 @@ export const SOURCE_PLATFORMS = [
   "news_portal",
   "facebook_public",
   "police_report",
+  "telegram_channel",
 ] as const;
 
 export type SourcePlatform = (typeof SOURCE_PLATFORMS)[number];
+
+/** How well corroborated a claim is, as distinct from who published it. */
+export const VERIFICATION_LEVELS = [
+  "unverified",
+  "single_source",
+  "corroborated",
+] as const;
+
+export type VerificationLevel = (typeof VERIFICATION_LEVELS)[number];
 
 /** Severity band driving marker colour and the card's left rule. */
 export type SeverityLevel = "critical" | "high" | "medium" | "low" | "unknown";
@@ -52,6 +62,9 @@ export interface CrimeIncident {
   source_platform: SourcePlatform;
   source_url: string;
   source_confidence: number;
+  /** Outlet or channel the record came from, e.g. "Channel 24". */
+  source_handle: string | null;
+  verification_level: VerificationLevel;
   created_at: string;
 }
 
@@ -79,6 +92,8 @@ export interface CrimeFeatureProperties {
   source_platform: SourcePlatform;
   source_url: string;
   source_confidence: number;
+  source_handle: string | null;
+  verification_level: VerificationLevel;
   fir_or_gd: string | null;
 }
 

@@ -44,6 +44,11 @@ class IncidentOut(BaseModel):
     source_platform: str
     source_url: str
     source_confidence: int
+    # Which outlet or channel the record came from, and how well corroborated
+    # it is. Both were stored but never served, so the UI could not show
+    # provenance at all.
+    source_handle: Optional[str]
+    verification_level: str
     created_at: datetime
 
 
@@ -86,6 +91,8 @@ def _serialise(row: CrimeIncident) -> IncidentOut:
         source_platform=row.source_platform,
         source_url=row.source_url,
         source_confidence=row.source_confidence,
+        source_handle=row.source_handle,
+        verification_level=row.verification_level,
         created_at=row.created_at,
     )
 
@@ -269,6 +276,8 @@ async def get_geojson(
                     "source_platform": row.source_platform,
                     "source_url": row.source_url,
                     "source_confidence": row.source_confidence,
+                    "source_handle": row.source_handle,
+                    "verification_level": row.verification_level,
                     "fir_or_gd": row.fir_or_gd,
                 },
             }

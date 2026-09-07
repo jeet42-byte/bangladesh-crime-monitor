@@ -30,6 +30,8 @@ import {
   TRUST_DOT,
   TRUST_LABEL,
   trustTier,
+  VERIFICATION_CLASS,
+  VERIFICATION_LABEL,
 } from "@/lib/utils";
 import RequireAuth from "@/components/auth/RequireAuth";
 
@@ -316,6 +318,21 @@ function DatabasePage() {
                           <span aria-hidden>{TRUST_DOT[tier]}</span>
                           {TRUST_LABEL[tier]}
                         </span>
+                        {row.source_handle && (
+                          <p className="mt-1 text-[11px] text-zinc-300">
+                            {row.source_handle}
+                          </p>
+                        )}
+                        {row.verification_level !== "single_source" && (
+                          <span
+                            className={cn(
+                              "chip mt-1",
+                              VERIFICATION_CLASS[row.verification_level]
+                            )}
+                          >
+                            {VERIFICATION_LABEL[row.verification_level]}
+                          </span>
+                        )}
                         <a
                           href={row.source_url}
                           target="_blank"

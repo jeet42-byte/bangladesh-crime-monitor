@@ -12,6 +12,7 @@ import type {
   SourceFilter,
   SourcePlatform,
   TrustTier,
+  VerificationLevel,
 } from "@/types/crime";
 
 export const BST_TIMEZONE = "Asia/Dhaka";
@@ -100,6 +101,24 @@ const TRUST_BY_PLATFORM: Record<SourcePlatform, TrustTier> = {
   police_report: "official",
   news_portal: "news",
   facebook_public: "social",
+  telegram_channel: "social",
+};
+
+/**
+ * Corroboration state, shown separately from the trust tier because they
+ * answer different questions: the tier says who published a claim, this says
+ * whether anyone else confirmed it.
+ */
+export const VERIFICATION_LABEL: Record<VerificationLevel, string> = {
+  unverified: "Unconfirmed",
+  single_source: "Single source",
+  corroborated: "Corroborated",
+};
+
+export const VERIFICATION_CLASS: Record<VerificationLevel, string> = {
+  unverified: "border-amber-500/40 bg-amber-500/10 text-amber-400",
+  single_source: "border-surface-border bg-surface-overlay/60 text-zinc-400",
+  corroborated: "border-emerald-500/40 bg-emerald-500/10 text-emerald-400",
 };
 
 export function trustTier(platform: SourcePlatform): TrustTier {
@@ -272,6 +291,8 @@ const CSV_COLUMNS: Array<keyof CrimeIncident> = [
   "penal_code_tags",
   "fir_or_gd",
   "source_platform",
+  "source_handle",
+  "verification_level",
   "source_confidence",
   "source_url",
   "narrative",

@@ -17,6 +17,8 @@ import {
   TRUST_DOT,
   TRUST_LABEL,
   trustTier,
+  VERIFICATION_CLASS,
+  VERIFICATION_LABEL,
 } from "@/lib/utils";
 
 interface IncidentCardProps {
@@ -71,6 +73,21 @@ const IncidentCard = forwardRef<HTMLElement, IncidentCardProps>(
               <span aria-hidden>{TRUST_DOT[tier]}</span>
               {TRUST_LABEL[tier]}
             </span>
+
+            {/* Corroboration is a different question from who published it,
+                so it gets its own chip rather than being folded into the
+                trust tier. */}
+            {incident.verification_level !== "single_source" && (
+              <span
+                className={cn(
+                  "chip",
+                  VERIFICATION_CLASS[incident.verification_level]
+                )}
+                title="How well corroborated this claim is"
+              >
+                {VERIFICATION_LABEL[incident.verification_level]}
+              </span>
+            )}
 
             <span
               className="ml-auto flex items-center gap-1 font-mono text-[10px] text-zinc-500"
@@ -149,8 +166,9 @@ const IncidentCard = forwardRef<HTMLElement, IncidentCardProps>(
               rel="noreferrer noopener"
               onClick={(event) => event.stopPropagation()}
               className="ml-auto inline-flex items-center gap-1 font-mono text-[10px] text-accent-soft hover:text-accent"
+              title={incident.source_handle ?? undefined}
             >
-              {hostnameOf(incident.source_url)}
+              {incident.source_handle || hostnameOf(incident.source_url)}
               <ExternalLink className="h-3 w-3" aria-hidden />
             </a>
           </div>
