@@ -104,6 +104,14 @@ export default function Footer() {
                 Methodology &amp; Limitations
               </Link>
             </li>
+            <li>
+              <Link
+                href="/corrections"
+                className="text-zinc-400 hover:text-zinc-200"
+              >
+                Corrections &amp; Removal
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -185,8 +193,13 @@ export default function Footer() {
             sources · Times shown in BST (UTC+6)
           </p>
           <p className="font-mono">
-            Corrections and takedown requests are handled through the
-            methodology page.
+            <Link
+              href="/corrections"
+              className="text-zinc-400 underline underline-offset-2 hover:text-zinc-200"
+            >
+              Corrections &amp; removal requests
+            </Link>{" "}
+            — no account needed.
           </p>
         </div>
       </div>

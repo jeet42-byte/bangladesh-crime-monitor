@@ -29,6 +29,7 @@ import {
   type TrendsResponse,
 } from "@/types/crime";
 import { cn, formatNumber, formatPercent } from "@/lib/utils";
+import RequireAuth from "@/components/auth/RequireAuth";
 
 const TRUST_BAR: Record<string, string> = {
   police_report: "bg-trust-official",
@@ -36,7 +37,7 @@ const TRUST_BAR: Record<string, string> = {
   facebook_public: "bg-trust-social",
 };
 
-export default function AnalyticsPage() {
+function AnalyticsPage() {
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [thanas, setThanas] = useState<Thana[]>([]);
   const [loading, setLoading] = useState(true);
@@ -275,5 +276,16 @@ export default function AnalyticsPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+
+// Gated: guests and signed-out visitors get the account prompt instead. The
+// Command Center stays open to everyone.
+export default function Page() {
+  return (
+    <RequireAuth>
+      <AnalyticsPage />
+    </RequireAuth>
   );
 }

@@ -8,26 +8,32 @@ import {
   BarChart3,
   Database,
   FileText,
+  Lock,
   Menu,
   Radar,
   X,
 } from "lucide-react";
 
 import AccountMenu from "@/components/auth/AccountMenu";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { fetchHealth } from "@/lib/api";
 import { cn, currentBSTClock } from "@/lib/utils";
 
 const NAV_ITEMS = [
-  { href: "/", label: "Command Center", icon: Radar },
-  { href: "/analytics", label: "Analytics", icon: BarChart3 },
-  { href: "/database", label: "Archive", icon: Database },
-  { href: "/methodology", label: "Methodology", icon: FileText },
+  { href: "/", label: "Command Center", icon: Radar, gated: false },
+  { href: "/analytics", label: "Analytics", icon: BarChart3, gated: true },
+  { href: "/database", label: "Archive", icon: Database, gated: true },
+  { href: "/methodology", label: "Methodology", icon: FileText, gated: true },
 ] as const;
 
 type StreamState = "checking" | "live" | "degraded";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { status } = useAuth();
+  // Signed-out visitors see which sections need an account before clicking,
+  // rather than discovering it on arrival.
+  const locked = status !== "authenticated" && status !== "loading";
   const [clock, setClock] = useState<string>("--:--:--");
   const [stream, setStream] = useState<StreamState>("checking");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -96,23 +102,30 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <nav className="ml-6 hidden items-center gap-1 lg:flex">
-          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          {NAV_ITEMS.map(({ href, label, icon: Icon, gated }) => {
             const active =
               href === "/" ? pathname === "/" : pathname.startsWith(href);
+            const needsAccount = gated && locked;
             return (
               <Link
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
+                title={needsAccount ? `${label} requires an account` : undefined}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
                   active
                     ? "bg-surface-overlay text-zinc-100"
-                    : "text-zinc-400 hover:bg-surface-overlay/60 hover:text-zinc-200"
+                    : needsAccount
+                      ? "text-zinc-500 hover:bg-surface-overlay/60 hover:text-zinc-300"
+                      : "text-zinc-400 hover:bg-surface-overlay/60 hover:text-zinc-200"
                 )}
               >
                 <Icon className="h-4 w-4" aria-hidden />
                 {label}
+                {needsAccount && (
+                  <Lock className="h-3 w-3 text-zinc-600" aria-label="Account required" />
+                )}
               </Link>
             );
           })}
@@ -171,9 +184,10 @@ export default function Navbar() {
       {/* Mobile nav */}
       {menuOpen && (
         <nav className="border-t border-surface-border/70 bg-surface px-4 py-2 lg:hidden">
-          {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+          {NAV_ITEMS.map(({ href, label, icon: Icon, gated }) => {
             const active =
               href === "/" ? pathname === "/" : pathname.startsWith(href);
+            const needsAccount = gated && locked;
             return (
               <Link
                 key={href}
@@ -187,6 +201,9 @@ export default function Navbar() {
               >
                 <Icon className="h-4 w-4" aria-hidden />
                 {label}
+                {needsAccount && (
+                  <Lock className="ml-auto h-3 w-3 text-zinc-600" aria-label="Account required" />
+                )}
               </Link>
             );
           })}

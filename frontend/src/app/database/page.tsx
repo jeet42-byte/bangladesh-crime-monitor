@@ -31,6 +31,7 @@ import {
   TRUST_LABEL,
   trustTier,
 } from "@/lib/utils";
+import RequireAuth from "@/components/auth/RequireAuth";
 
 const PAGE_SIZE = 100;
 /** Hard ceiling on a single CSV export, to keep the browser responsive. */
@@ -39,7 +40,7 @@ const EXPORT_MAX = 2000;
 type SortKey = "incident_date" | "crime_category" | "thana_name";
 type SortDirection = "asc" | "desc";
 
-export default function DatabasePage() {
+function DatabasePage() {
   const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
   const [thanas, setThanas] = useState<Thana[]>([]);
 
@@ -358,5 +359,16 @@ export default function DatabasePage() {
         </div>
       </section>
     </div>
+  );
+}
+
+
+// Gated: guests and signed-out visitors get the account prompt instead. The
+// Command Center stays open to everyone.
+export default function Page() {
+  return (
+    <RequireAuth>
+      <DatabasePage />
+    </RequireAuth>
   );
 }

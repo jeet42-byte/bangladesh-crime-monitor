@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { API_BASE_URL } from "@/lib/api";
+import RequireAuth from "@/components/auth/RequireAuth";
 
 export const metadata: Metadata = {
   title: "Methodology",
@@ -82,7 +83,7 @@ const LIMITATIONS = [
   "Deduplication is keyed on the headline, so a widely covered incident reported under different headlines — particularly across Bengali and English outlets — can appear as more than one record and inflate counts for that incident.",
 ] as const;
 
-export default function MethodologyPage() {
+function MethodologyPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <header className="mb-10">
@@ -343,5 +344,16 @@ export default function MethodologyPage() {
         </p>
       </section>
     </div>
+  );
+}
+
+
+// Gated: guests and signed-out visitors get the account prompt instead. The
+// Command Center stays open to everyone.
+export default function Page() {
+  return (
+    <RequireAuth>
+      <MethodologyPage />
+    </RequireAuth>
   );
 }
