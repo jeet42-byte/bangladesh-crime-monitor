@@ -22,6 +22,7 @@ import type {
   Thana,
   ThanaRankingResponse,
   TrendsResponse,
+  TTPResponse,
 } from "@/types/crime";
 import { daysAgoISO, sourceFilterToPlatform } from "@/lib/utils";
 import { clearGuestToken, readerHeader } from "@/lib/auth";
@@ -289,4 +290,24 @@ export async function fetchHealth(): Promise<{
   database: string;
 } | null> {
   return request<{ status: string; database: string }>("/health");
+}
+
+/**
+ * TTP profiles with prevalence measured against the archive.
+ *
+ * Defaults to 90 days rather than the dashboard's 30: these are structural
+ * patterns, and a month is too short a base for several of them to register
+ * at the archive's current volume.
+ */
+export async function fetchTTPProfiles(days = 90): Promise<TTPResponse> {
+  const data = await request<TTPResponse>("/api/v1/ttp/profiles", { days });
+  return (
+    data ?? {
+      profiles: [],
+      threat_classes: [],
+      window_days: days,
+      archive_total: 0,
+      generated_at: new Date().toISOString(),
+    }
+  );
 }

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import {
   Activity,
   BarChart3,
+  Crosshair,
   Database,
   FileText,
   Lock,
@@ -23,6 +24,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Command Center", icon: Radar, gated: false },
   { href: "/analytics", label: "Analytics", icon: BarChart3, gated: true },
   { href: "/database", label: "Archive", icon: Database, gated: true },
+  { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: true },
   { href: "/methodology", label: "Methodology", icon: FileText, gated: true },
 ] as const;
 

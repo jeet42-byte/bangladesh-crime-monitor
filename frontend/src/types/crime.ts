@@ -236,3 +236,57 @@ export interface ApiError {
   message: string;
   status: number | null;
 }
+
+// ---------------------------------------------------------------------------
+// TTP profiles + risk treatment
+// ---------------------------------------------------------------------------
+
+/** ISO 31000 treatment options. Four shapes, not one. */
+export const TREATMENT_KINDS = ["avoid", "reduce", "share", "accept"] as const;
+export type TreatmentKind = (typeof TREATMENT_KINDS)[number];
+
+export type TreatmentAudience = "citizen" | "law_enforcement";
+
+/** How well the archive can evidence a pattern - a claim about the dataset. */
+export type ArchiveSupport = "direct" | "partial" | "absent";
+
+export interface TTPStage {
+  name: string;
+  description: string;
+  indicators: string[];
+}
+
+export interface TTPTreatment {
+  kind: TreatmentKind;
+  audience: TreatmentAudience;
+  action: string;
+  /** Index into the profile's `stages`. */
+  stage_index: number;
+  note: string;
+}
+
+export interface TTPProfile {
+  id: string;
+  name: string;
+  threat_class: string;
+  categories: CrimeCategory[];
+  summary: string;
+  archive_support: ArchiveSupport;
+  support_note: string;
+  provenance: string;
+  stages: TTPStage[];
+  treatments: TTPTreatment[];
+  /** Records in the window matching this pattern. */
+  observed_count: number;
+  /** Records in the window in this pattern's categories - the denominator. */
+  category_total: number;
+  last_seen: string | null;
+}
+
+export interface TTPResponse {
+  profiles: TTPProfile[];
+  threat_classes: string[];
+  window_days: number;
+  archive_total: number;
+  generated_at: string;
+}

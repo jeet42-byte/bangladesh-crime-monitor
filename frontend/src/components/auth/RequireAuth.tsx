@@ -2,7 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, Database, FileText, Lock, LogIn, UserPlus } from "lucide-react";
+import {
+  BarChart3,
+  Crosshair,
+  Database,
+  FileText,
+  Lock,
+  LogIn,
+  UserPlus,
+} from "lucide-react";
 
 import { useAuth } from "@/components/auth/AuthProvider";
 
@@ -34,6 +42,12 @@ const SECTION_COPY: Record<
     icon: Database,
     blurb:
       "Every stored record, searchable and filterable, with CSV export and a link back to each original source.",
+  },
+  "/ttp": {
+    title: "TTP & Risk Treatment",
+    icon: Crosshair,
+    blurb:
+      "How fraud, trafficking and homicide actually unfold, stage by stage, with the controls available to a citizen and to an investigator at each one.",
   },
   "/methodology": {
     title: "Methodology",
