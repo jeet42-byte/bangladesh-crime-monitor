@@ -31,6 +31,7 @@ from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
 from app.scrapers.news_scraper import scrape_news  # noqa: E402
 from app.scrapers.telegram_scraper import scrape_telegram  # noqa: E402
+from app.scrapers.youtube_scraper import scrape_youtube  # noqa: E402
 
 logger = logging.getLogger("run_scrapers")
 
@@ -216,6 +217,13 @@ async def run(args: argparse.Namespace) -> int:
                 max_incidents=args.max_posts,
             )
         )
+    if not args.skip_youtube:
+        tasks.append(
+            scrape_youtube(
+                lookback_hours=args.lookback_hours,
+                max_videos=args.max_videos,
+            )
+        )
     if args.with_telegram:
         tasks.append(
             scrape_telegram(
@@ -340,6 +348,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--max-articles", type=int, default=60)
     parser.add_argument("--max-posts", type=int, default=40)
+    parser.add_argument("--max-videos", type=int, default=20)
     parser.add_argument(
         "--max-age-days",
         type=int,
@@ -354,6 +363,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--skip-news", action="store_true")
     parser.add_argument("--skip-facebook", action="store_true")
+    parser.add_argument("--skip-youtube", action="store_true")
     parser.add_argument(
         "--with-telegram",
         action="store_true",
