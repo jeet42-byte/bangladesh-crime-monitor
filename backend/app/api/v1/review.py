@@ -20,19 +20,29 @@ hearing on a years-old case.
 from __future__ import annotations
 
 from datetime import datetime, timezone
-from typing import List, Literal, Optional
+from typing import Annotated, List, Literal, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy import func, select
 
-from app.api.deps import DbSession, OwnerUser
+from app.api.deps import DbSession, require_owner
 from app.db.models import (
     COLLECTION_MODES,
     NON_CRIMINAL_CATEGORIES,
     REVIEW_STATUSES,
     CrimeIncident,
+    User,
 )
+
+# Spelled out rather than using the OwnerUser alias from deps. That alias is
+# Annotated["User", ...] with a string forward reference, and User is imported
+# there only under TYPE_CHECKING - so at runtime FastAPI cannot resolve it,
+# silently gives up on the dependency, and treats `owner` as a required query
+# parameter. The endpoint then returns 422 for a missing param instead of 403,
+# and require_owner never runs. Caught by probing the deployed route with a
+# guest token; the annotation looked correct in review.
+OwnerDep = Annotated[User, Depends(require_owner)]
 
 router = APIRouter(prefix="/review", tags=["review"])
 
@@ -132,7 +142,7 @@ def _serialise(row: CrimeIncident) -> ReviewItem:
 @router.get("/queue", response_model=QueueResponse)
 async def review_queue(
     session: DbSession,
-    owner: OwnerUser,
+    owner: OwnerDep,
     status: str = Query("unreviewed"),
     collection_mode: str = Query("backfill"),
     limit: int = Query(50, ge=1, le=200),
@@ -192,7 +202,7 @@ async def decide(
     incident_id: str,
     payload: DecisionIn,
     session: DbSession,
-    owner: OwnerUser,
+    owner: OwnerDep,
 ) -> DecisionOut:
     """Record a decision on one record."""
     row = await session.get(CrimeIncident, incident_id)
@@ -218,7 +228,7 @@ async def decide(
 async def decide_bulk(
     payload: BulkDecisionIn,
     session: DbSession,
-    owner: OwnerUser,
+    owner: OwnerDep,
 ) -> DecisionOut:
     """Record the same decision on many records.
 

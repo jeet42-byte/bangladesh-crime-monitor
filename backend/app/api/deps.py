@@ -4,17 +4,28 @@ from __future__ import annotations
 
 import hmac
 import uuid
-from typing import TYPE_CHECKING, Annotated
+from typing import Annotated
 
 from fastapi import Depends, Header, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-if TYPE_CHECKING:  # pragma: no cover - import cycle guard
-    from app.db.models import User
-
 from app.core.config import settings
 from app.db.database import get_db
+
+# Imported at runtime, not under TYPE_CHECKING.
+#
+# FastAPI resolves a dependency function's own signature in the module where
+# that function is defined. With User only available to the type checker,
+# `require_owner(user: Annotated["User", Depends(get_current_user)])` could
+# not be resolved here: FastAPI gave up on the dependency and treated `user`
+# as a required query parameter, so the route returned 422 for a missing
+# param and the owner check never ran. It looked correct at every call site,
+# and `/auth/me` worked because auth.py happens to have User in scope.
+#
+# There is no cycle to guard against - models imports only db.database, which
+# imports nothing from app.api.
+from app.db.models import User
 
 # Re-exported so routers depend on one import site.
 DbSession = Annotated[AsyncSession, Depends(get_db)]
