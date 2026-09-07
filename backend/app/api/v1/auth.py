@@ -168,17 +168,30 @@ class TokenOut(BaseModel):
     user: UserOut
 
 
-# Every registration outcome returns this exact string. A distinct "account
-# created" message would tell an attacker which addresses are already
-# registered, which is the leak the generic branch below exists to prevent.
+# With verification ON, every registration outcome returns this one string:
+# a distinct "account created" message would tell an attacker which addresses
+# are already registered.
 REGISTRATION_ACK = (
     "If that address can be registered, a 6-digit verification code is on "
     "its way. Enter it below to finish setting up your account."
 )
 
+# With verification OFF the same disguise is not achievable: a new signup is
+# handed a session token and an existing address cannot be, so the two are
+# distinguishable whatever the wording says. Given the leak exists either
+# way, saying so plainly is better than sending someone to a code screen
+# that can never resolve. Enumeration resistance returns with verification.
+ALREADY_REGISTERED = (
+    "That email address already has an account. Sign in instead, or use a "
+    "different address."
+)
+
 
 class MessageOut(BaseModel):
     message: str
+    # Lets the client decide whether a code screen makes any sense. Without
+    # it the UI cannot tell "check your email" from "nothing was sent".
+    verification_required: bool = True
     # Only ever true when ALLOW_CONSOLE_EMAIL is on, so the UI can say plainly
     # that the code went to the server log rather than an inbox.
     delivered_to_console: bool = False
@@ -283,9 +296,14 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
 
     if existing is not None:
         if existing.is_verified:
+            if not settings.REQUIRE_EMAIL_VERIFICATION:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail=ALREADY_REGISTERED,
+                )
             # Do not confirm that this address is registered. Someone probing
             # for accounts gets exactly the message a new signup gets.
-            return MessageOut(message=REGISTRATION_ACK)
+            return MessageOut(message=REGISTRATION_ACK, verification_required=True)
         if not settings.REQUIRE_EMAIL_VERIFICATION:
             # Left over from when verification was on. Nothing can send a
             # code now, so activate it rather than stranding the address.
@@ -299,6 +317,7 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
                 access_token=token.access_token,
                 expires_in=token.expires_in,
                 user=token.user,
+                verification_required=False,
             )
 
         # Unverified re-registration: reissue rather than error, since the
@@ -315,7 +334,11 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
                     "try again later."
                 ),
             ) from exc
-        return MessageOut(message=REGISTRATION_ACK, delivered_to_console=console)
+        return MessageOut(
+            message=REGISTRATION_ACK,
+            delivered_to_console=console,
+            verification_required=True,
+        )
 
     username_taken = (
         await session.execute(
@@ -354,6 +377,7 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
             access_token=token.access_token,
             expires_in=token.expires_in,
             user=token.user,
+            verification_required=False,
         )
 
     try:
@@ -376,7 +400,11 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
         ) from exc
 
     await _prune(session)
-    return MessageOut(message=REGISTRATION_ACK, delivered_to_console=console)
+    return MessageOut(
+            message=REGISTRATION_ACK,
+            delivered_to_console=console,
+            verification_required=True,
+        )
 
 
 @router.post(

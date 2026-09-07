@@ -22,6 +22,11 @@ export interface TokenResponse {
 
 export interface MessageResponse {
   message: string;
+  /**
+   * False when the deployment does not do email verification at all, so the
+   * client must not show a "enter your code" screen — nothing was sent.
+   */
+  verification_required?: boolean;
   /** True only when the server logged the code instead of emailing it. */
   delivered_to_console: boolean;
   /**

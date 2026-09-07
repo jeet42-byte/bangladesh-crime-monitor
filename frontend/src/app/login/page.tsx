@@ -118,7 +118,15 @@ export default function LoginPage() {
       );
 
       if (failure) {
-        setError(failure.message);
+        // 409 means the address already has an account. Send them to sign in
+        // rather than leaving them on a form that will keep failing.
+        if (failure.status === 409) {
+          switchMode("signin");
+          setIdentifier(email.trim());
+          setNotice(failure.message);
+        } else {
+          setError(failure.message);
+        }
         setBusy(false);
         return;
       }
@@ -129,6 +137,17 @@ export default function LoginPage() {
         signIn(data.access_token, data.user);
         setBusy(false);
         router.replace("/");
+        return;
+      }
+
+      // No token and no verification step means nothing was sent. Showing a
+      // code screen here would be a dead end, so stay put and say so.
+      if (data?.verification_required === false) {
+        setError(
+          data.message ||
+            "The account could not be created. Please try again shortly."
+        );
+        setBusy(false);
         return;
       }
 
