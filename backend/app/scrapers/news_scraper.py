@@ -56,6 +56,7 @@ class NewsFeed:
         *,
         language: str = "en",
         body_selectors: Sequence[str] = (),
+        source_platform: str = "news_portal",
     ) -> None:
         self.outlet = outlet
         self.url = url
@@ -63,6 +64,10 @@ class NewsFeed:
         # Tried in order; the first selector that yields text wins. Falls back
         # to a generic <article>/<p> sweep when none match.
         self.body_selectors = tuple(body_selectors)
+        # Drives source_confidence downstream: an official police release is
+        # scored 95, a newsroom 80. Set per feed rather than per article,
+        # because it is a property of who published it.
+        self.source_platform = source_platform
 
     def __repr__(self) -> str:  # pragma: no cover
         return f"<NewsFeed {self.outlet}>"
@@ -164,6 +169,29 @@ NEWS_FEEDS: List[NewsFeed] = [
 #       summary (~80-100 chars) and the links no longer HTTP-redirect to the
 #       publisher, so the article body is unreachable anyway.
 
+
+
+# ---------------------------------------------------------------------------
+# Official sources - scored source_confidence 95 rather than 80.
+#
+# Probed the obvious candidates: Bangladesh Police, RAB and BSS all return
+# feeds with zero entries, and DMP's WordPress feed carries only tender and
+# auction notices. CID is the one national force publishing an actual
+# machine-readable stream of case press releases.
+# ---------------------------------------------------------------------------
+POLICE_FEEDS: List[NewsFeed] = [
+    NewsFeed(
+        "CID Bangladesh (press releases)",
+        "https://news.cid.gov.bd/feed",
+        language="bn",
+        body_selectors=("div.entry-content", "article"),
+        source_platform="police_report",
+    ),
+]
+# news.cid.gov.bd/category/press-release/feed returns the same ten entries as
+# the site feed, so it is not listed separately.
+
+NEWS_FEEDS.extend(POLICE_FEEDS)
 
 # ---------------------------------------------------------------------------
 # Crime lexicon - the pre-LLM gate
@@ -383,7 +411,30 @@ async def scrape_news(
             ),
             reverse=True,
         )
-        candidates = candidates[:max_articles]
+
+        # Official sources publish a handful of press releases a week while
+        # the newsrooms publish hundreds of articles a day. Sorting purely by
+        # recency therefore pushes every police release below the cap and the
+        # archive ends up 100% newswire. Reserve their slots first.
+        official = [
+            item
+            for item in candidates
+            if item["feed"].source_platform != "news_portal"  # type: ignore[union-attr]
+        ]
+        newswire = [
+            item
+            for item in candidates
+            if item["feed"].source_platform == "news_portal"  # type: ignore[union-attr]
+        ]
+        reserved = min(len(official), max(1, max_articles // 4))
+        candidates = official[:reserved] + newswire[: max_articles - reserved]
+
+        if official:
+            logger.info(
+                "%d official-source candidates reserved of %d total slots",
+                reserved,
+                max_articles,
+            )
 
         logger.info("%d crime-candidate articles after filtering", len(candidates))
         if not candidates:
@@ -421,7 +472,7 @@ async def scrape_news(
         try:
             incident = await extract_crime_entities_async(
                 composed,
-                "news_portal",
+                entry["feed"].source_platform,  # type: ignore[union-attr]
                 source_url=str(entry["link"]),
                 published_at=published if isinstance(published, datetime) else None,
             )

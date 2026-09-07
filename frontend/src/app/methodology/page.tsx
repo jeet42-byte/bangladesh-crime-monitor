@@ -22,7 +22,7 @@ const PIPELINE_STAGES = [
   {
     icon: Rss,
     title: "1 · Collection",
-    body: "A scheduled job runs every six hours and reads the public RSS feeds of major Bangladeshi dailies, plus posts published openly by official police channels. A keyword gate discards anything with no crime signal before it costs a model call.",
+    body: "A scheduled job runs every six hours and reads the public RSS feeds of major Bangladeshi dailies in English and Bengali, plus the Criminal Investigation Department's official press-release feed. A keyword gate discards anything with no crime signal before it costs a model call. Official sources publish far less often than newsrooms, so they are given reserved slots — otherwise every police release would be pushed below the per-run cap and the archive would be entirely newswire.",
   },
   {
     icon: Bot,
@@ -66,7 +66,7 @@ const CONFIDENCE_TIERS = [
     label: "Public Social",
     score: 55,
     source: "Publicly visible social-media posts",
-    note: "Fastest signal, weakest verification. Treat as a lead to check, not as an established fact.",
+    note: "Fastest signal, weakest verification — treat as a lead to check, not an established fact. Currently unpopulated: the collector needs a Meta Page access token, and the public RSS mirrors it falls back to now refuse automated requests.",
   },
 ] as const;
 
@@ -77,6 +77,7 @@ const LIMITATIONS = [
   "An incident whose location cannot be resolved to a known thana or district is discarded rather than placed. Records are therefore missing, not misplaced — but reporting that names no recoverable location will not appear here at all.",
   "Categories are assigned by a language model. It is accurate on clear-cut reporting and less so on ambiguous or partial reports; a small share of records will be miscategorised.",
   "Dates default to the publication date when the source does not state when the incident occurred, and to midnight BST when it gives a date but no time.",
+  "Reports about old cases are dated to the announcement, not the offence. A police release about arrests in an eight-year-old murder enters the archive on the date of the release, because the pipeline cannot reliably tell a genuine historical date from a year the model invented. Read such records as news of an arrest, not of a fresh incident.",
   "The archive begins when this system started collecting. It is not a historical series and cannot support year-over-year comparison across that boundary.",
   "Deduplication is keyed on the headline, so a widely covered incident reported under different headlines — particularly across Bengali and English outlets — can appear as more than one record and inflate counts for that incident.",
 ] as const;
