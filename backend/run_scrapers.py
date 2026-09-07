@@ -28,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import httpx  # noqa: E402
 
 from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
+from app.scrapers.cirt_scraper import scrape_cirt  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
 from app.scrapers.news_scraper import scrape_news  # noqa: E402
 from app.scrapers.telegram_scraper import scrape_telegram  # noqa: E402
@@ -224,6 +225,13 @@ async def run(args: argparse.Namespace) -> int:
                 max_videos=args.max_videos,
             )
         )
+    if not args.skip_cirt:
+        tasks.append(
+            scrape_cirt(
+                lookback_hours=args.cirt_lookback_hours,
+                max_advisories=args.max_advisories,
+            )
+        )
     if args.with_telegram:
         tasks.append(
             scrape_telegram(
@@ -233,7 +241,7 @@ async def run(args: argparse.Namespace) -> int:
         )
 
     if not tasks:
-        logger.error("Both collectors are disabled; nothing to do.")
+        logger.error("Every collector is disabled; nothing to do.")
         return 1
 
     results = await asyncio.gather(*tasks, return_exceptions=True)
@@ -349,6 +357,17 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--max-articles", type=int, default=60)
     parser.add_argument("--max-posts", type=int, default=40)
     parser.add_argument("--max-videos", type=int, default=20)
+    parser.add_argument("--max-advisories", type=int, default=10)
+    parser.add_argument(
+        "--cirt-lookback-hours",
+        type=int,
+        default=720,
+        help=(
+            "Separate window for CIRT. The national CERT publishes a handful "
+            "of advisories a year, so the pipeline's usual 6-8 hour window "
+            "would return nothing on almost every run."
+        ),
+    )
     parser.add_argument(
         "--max-age-days",
         type=int,
@@ -364,6 +383,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--skip-news", action="store_true")
     parser.add_argument("--skip-facebook", action="store_true")
     parser.add_argument("--skip-youtube", action="store_true")
+    parser.add_argument("--skip-cirt", action="store_true")
     parser.add_argument(
         "--with-telegram",
         action="store_true",

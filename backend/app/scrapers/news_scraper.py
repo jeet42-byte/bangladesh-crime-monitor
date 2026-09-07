@@ -149,6 +149,15 @@ NEWS_FEEDS: List[NewsFeed] = [
     ),
 ]
 
+# Deliberately NOT added: business/economy desks.
+#
+# The Business Standard's economy feed and The Daily Star's business feed were
+# both probed against the fraud lexicon and returned zero consumer-fraud
+# entries out of 30. Those desks cover markets and macro; an online seller who
+# takes advance payment and disappears is reported by the Bengali general
+# desks, which this registry already carries. Adding them would have spent
+# request budget on nothing.
+
 # Deliberately NOT in the registry:
 #
 #   bdnews24 (both editions), Jugantor, Kaler Kantho
@@ -236,6 +245,83 @@ def looks_like_crime(text: str) -> bool:
     if _EXCLUDE_RE.search(text):
         return False
     return bool(_KEYWORD_RE.search(text))
+
+
+# ---------------------------------------------------------------------------
+# Consumer / e-commerce fraud lexicon
+#
+# Two-part test, not one. A business-desk feed is full of stories that match
+# "fraud" while being about bank capital adequacy or a listed company's
+# accounts; and full of stories that mention "e-commerce" while being about
+# market size. Requiring one term from each list is what separates "online
+# shop took the money and vanished" from both.
+# ---------------------------------------------------------------------------
+COMMERCE_TERMS: tuple[str, ...] = (
+    # Deliberately narrow. An earlier revision included the generic trade
+    # vocabulary - "product", "customer", "seller", "পণ্য", "ব্যবসা" - and
+    # measured a 4-in-13 false positive rate against live feeds, admitting an
+    # essay on Bengali advertising and an iPad column. Every term below names
+    # an *online* transaction channel, which is the thing being defrauded.
+    # English
+    "e-commerce", "ecommerce", "online shop", "online store", "online seller",
+    "online purchase", "online order", "online payment", "online transaction",
+    "online business", "online fraud", "online betting", "online gambling",
+    "marketplace", "f-commerce", "digital commerce", "cash on delivery",
+    "advance payment", "mobile financial", "mfs", "payment gateway",
+    "bkash", "nagad", "rocket", "digital wallet", "app-based",
+    # Bengali
+    "ই-কমার্স", "ইকমার্স", "অনলাইন", "ই-ক্যাব", "অর্ডার", "ডেলিভারি",
+    "অগ্রিম", "বিকাশ", "নগদ", "রকেট", "পেমেন্ট", "মোবাইল ব্যাংকিং",
+    "ফেসবুক পেজ", "ওয়েবসাইট", "অ্যাপ",
+)
+
+FRAUD_TERMS: tuple[str, ...] = (
+    # English
+    "fraud", "scam", "cheat", "cheating", "swindl", "defraud", "dupe",
+    "duped", "embezzle", "misappropriat", "siphon", "ponzi", "pyramid",
+    "fake", "counterfeit", "forgery", "phishing", "hacked", "extort",
+    "complaint", "fined", "penalt", "refund not", "did not deliver",
+    "failed to deliver", "money laundering", "unauthorised transaction",
+    "unauthorized transaction", "cyber", "vanished", "absconded",
+    # Bengali
+    "প্রতারণা", "প্রতারক", "জালিয়াতি", "আত্মসাৎ", "ঠকা", "ফাঁদ",
+    "ভুয়া", "নকল", "নকলপণ্য", "জরিমানা", "অভিযোগ", "লোপাট",
+    "হাতিয়ে", "গায়েব", "উধাও", "মানি লন্ডারিং", "সাইবার",
+)
+
+_COMMERCE_RE = re.compile(
+    "|".join(re.escape(term) for term in COMMERCE_TERMS), re.IGNORECASE
+)
+_FRAUD_RE = re.compile(
+    "|".join(re.escape(term) for term in FRAUD_TERMS), re.IGNORECASE
+)
+
+# Business-desk noise that trips both lists without describing a victim:
+# regulatory capital stories, index moves, macro coverage.
+_FRAUD_EXCLUDE_RE = re.compile(
+    r"\b(index|turnover|ipo|dividend|share price|bourse|"
+    r"gdp|inflation|remittance inflow|budget|tariff|"
+    r"quarterly (results|earnings)|balance sheet)\b",
+    re.IGNORECASE,
+)
+
+
+def looks_like_ecommerce_fraud(text: str) -> bool:
+    """True when the text describes fraud against an *online* transaction.
+
+    Two-part test: a commerce term and a fraud term must both appear. Either
+    alone is far too common on a news feed to mean anything.
+    """
+    if not text:
+        return False
+    if _FRAUD_EXCLUDE_RE.search(text):
+        return False
+    return bool(_COMMERCE_RE.search(text) and _FRAUD_RE.search(text))
+
+
+def is_reportable(text: str) -> bool:
+    """Admission gate: either lexicon is enough to earn an entry a look."""
+    return looks_like_crime(text) or looks_like_ecommerce_fraud(text)
 
 
 # ---------------------------------------------------------------------------
@@ -398,8 +484,9 @@ async def scrape_news(
                     continue
 
                 headline_blob = f"{entry['title']} {entry['summary']}"
-                if not looks_like_crime(headline_blob):
+                if not is_reportable(headline_blob):
                     continue
+                entry["is_fraud"] = looks_like_ecommerce_fraud(headline_blob)
 
                 seen_links.add(link)
                 candidates.append(entry)
@@ -421,18 +508,38 @@ async def scrape_news(
             for item in candidates
             if item["feed"].source_platform != "news_portal"  # type: ignore[union-attr]
         ]
+        # Same argument as the official reservation, one rung down: consumer
+        # fraud is low-volume and low-urgency, so it always loses a straight
+        # recency race against the crime desks. Measured on live feeds: 3 of
+        # 460 entries were e-commerce fraud, all of them already admitted by
+        # the crime gate and all of them below the cap. Without a floor they
+        # contribute nothing on a busy news day, which is every day.
+        fraud = [
+            item
+            for item in candidates
+            if item["feed"].source_platform == "news_portal"  # type: ignore[union-attr]
+            and item["is_fraud"]
+        ]
         newswire = [
             item
             for item in candidates
             if item["feed"].source_platform == "news_portal"  # type: ignore[union-attr]
+            and not item["is_fraud"]
         ]
-        reserved = min(len(official), max(1, max_articles // 4))
-        candidates = official[:reserved] + newswire[: max_articles - reserved]
 
-        if official:
+        reserved = min(len(official), max(1, max_articles // 4))
+        fraud_reserved = min(len(fraud), max(1, max_articles // 5))
+        remaining = max_articles - reserved - fraud_reserved
+
+        candidates = (
+            official[:reserved] + fraud[:fraud_reserved] + newswire[:remaining]
+        )
+
+        if official or fraud:
             logger.info(
-                "%d official-source candidates reserved of %d total slots",
+                "reserved %d official + %d e-commerce-fraud of %d total slots",
                 reserved,
+                fraud_reserved,
                 max_articles,
             )
 
@@ -481,6 +588,11 @@ async def scrape_news(
             continue
 
         if incident is not None:
+            # The masthead, not the hostname. Until this was set, every news
+            # record rendered as "tbsnews.net" while a Telegram record showed
+            # a real publisher name - the newswire looked like the less
+            # attributable source, which is backwards.
+            incident.source_handle = entry["feed"].outlet  # type: ignore[union-attr]
             incidents.append(incident)
 
     logger.info("news_scraper produced %d incidents", len(incidents))
