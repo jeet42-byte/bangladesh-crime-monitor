@@ -1,0 +1,37 @@
+{
+  "name": "bangladesh-crime-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Public OSINT crime intelligence dashboard for Bangladesh.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "leaflet": "1.9.4",
+    "lucide-react": "0.462.0",
+    "next": "14.2.35",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-leaflet": "4.2.1",
+    "recharts": "2.13.3"
+  },
+  "devDependencies": {
+    "@types/leaflet": "1.9.14",
+    "@types/node": "20.17.9",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "autoprefixer": "10.4.20",
+    "eslint": "8.57.1",
+    "eslint-config-next": "14.2.35",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.16",
+    "typescript": "5.7.2"
+  },
+  "engines": {
+    "node": ">=18.17"
+  }
+}

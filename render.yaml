@@ -1,0 +1,29 @@
+# Render Blueprint. Point Render at this repo and it provisions the API with
+# the settings below; you still paste the four secret values by hand.
+#
+# The free instance type sleeps after ~15 minutes of inactivity. The cron
+# workflow pings /health before ingesting, so a cold start costs the scraper
+# time rather than dropping data.
+services:
+  - type: web
+    name: bd-crime-monitor-api
+    runtime: python
+    plan: free
+    region: singapore
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: DATABASE_URL
+        sync: false # paste the Neon POOLED connection string
+      - key: INGEST_API_KEY
+        sync: false # must match the GitHub Actions secret exactly
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false # e.g. https://your-app.vercel.app,http://localhost:3000
+      - key: LOG_LEVEL
+        value: INFO

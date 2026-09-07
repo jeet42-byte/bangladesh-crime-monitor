@@ -1,0 +1,114 @@
+name: OSINT Ingest (every 6 hours)
+
+on:
+  schedule:
+    # 00:00, 06:00, 12:00, 18:00 UTC == 06:00, 12:00, 18:00, 00:00 BST.
+    # GitHub queues scheduled runs on shared capacity, so expect drift of a
+    # few minutes. The scraper's lookback window is wider than the interval
+    # to absorb that.
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      lookback_hours:
+        description: "How far back to collect (hours)"
+        required: false
+        default: "8"
+      dry_run:
+        description: "Print the payload instead of posting it"
+        type: boolean
+        required: false
+        default: false
+
+# A long ingest run must never overlap the next scheduled one.
+concurrency:
+  group: osint-ingest
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  ingest:
+    name: Collect and ingest incidents
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    env:
+      BACKEND_URL: ${{ secrets.BACKEND_URL }}
+      INGEST_API_KEY: ${{ secrets.INGEST_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+      # run_scrapers.py imports app.core.config, which requires these two.
+      # The scraper never opens a database connection - it posts over HTTP -
+      # so a placeholder DSN is correct here, not a missing secret.
+      DATABASE_URL: "postgresql+asyncpg://unused:unused@localhost:5432/unused"
+      PYTHONUNBUFFERED: "1"
+      PYTHONIOENCODING: "utf-8"
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt
+
+      - name: Verify required secrets are present
+        run: |
+          missing=0
+          for name in BACKEND_URL INGEST_API_KEY; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Required secret $name is not set."
+              missing=1
+            fi
+          done
+          if [ -z "$GEMINI_API_KEY" ]; then
+            echo "::warning::GEMINI_API_KEY is unset - the pipeline will fall back to the heuristic extractor and produce lower-confidence rows."
+          fi
+          if [ -z "$FB_PAGE_ACCESS_TOKEN" ]; then
+            echo "::notice::FB_PAGE_ACCESS_TOKEN is unset - the Facebook collector will use public RSS mirrors."
+          fi
+          exit $missing
+
+      - name: Wake the backend
+        # Render's free tier sleeps after 15 minutes of inactivity. Waking it
+        # here means the first real POST is not the one paying the cold start.
+        continue-on-error: true
+        run: |
+          echo "Pinging $BACKEND_URL/health"
+          for attempt in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 60 "$BACKEND_URL/health" || echo "000")
+            echo "attempt $attempt -> HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "Backend awake."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::warning::Backend did not report healthy; the ingest step will retry on its own."
+
+      - name: Run scrapers and ingest
+        run: |
+          python backend/run_scrapers.py \
+            --lookback-hours "${{ github.event.inputs.lookback_hours || '8' }}" \
+            ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+
+      - name: Report failure
+        if: failure()
+        run: |
+          echo "### Ingest run failed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Check the *Run scrapers and ingest* step log above. Common causes:" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`BACKEND_URL\` points at a service that is down or redeploying" >> "$GITHUB_STEP_SUMMARY"
+          echo "- \`INGEST_API_KEY\` does not match the value set on Render" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Gemini free-tier quota exhausted for the day" >> "$GITHUB_STEP_SUMMARY"
+          exit 1

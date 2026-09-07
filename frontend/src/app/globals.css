@@ -1,0 +1,179 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-surface text-zinc-200 antialiased;
+    /* Faint radial wash so the flat zinc ground does not read as dead space.
+       Deliberately not `background-attachment: fixed` - that forces a full
+       repaint of the wash on every scroll frame, which janks on mobile
+       Safari and breaks compositing in headless screenshot capture. */
+    background-image: radial-gradient(
+      ellipse 80% 60% at 50% -10%,
+      rgba(225, 29, 72, 0.07),
+      transparent 60%
+    );
+    background-repeat: no-repeat;
+  }
+
+  ::selection {
+    @apply bg-accent/30 text-white;
+  }
+
+  /* Scrollbars: visible enough to grab, quiet enough to ignore. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #3f3f46 transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-surface-border;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    @apply bg-zinc-600;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent/70 ring-offset-2 ring-offset-surface;
+  }
+}
+
+/* ==========================================================================
+   Components
+   ========================================================================== */
+@layer components {
+  .panel {
+    @apply rounded-xl border border-surface-border/70 bg-surface-raised/80 backdrop-blur-sm;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-surface-border/70 px-4 py-3;
+  }
+
+  .label-mono {
+    @apply font-mono text-[10px] uppercase tracking-[0.18em] text-zinc-500;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider;
+  }
+
+  .field {
+    @apply w-full rounded-lg border border-surface-border bg-surface-overlay/70 px-3 py-2 text-sm text-zinc-200
+           placeholder:text-zinc-500 focus:border-accent/60 focus:outline-none focus:ring-1 focus:ring-accent/40;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-surface-border bg-surface-overlay
+           px-3 py-2 text-sm font-medium text-zinc-200 transition-colors hover:bg-zinc-700
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-accent {
+    @apply border-accent/50 bg-accent/15 text-accent-soft hover:bg-accent/25;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-md bg-surface-overlay/70;
+  }
+}
+
+/* ==========================================================================
+   Leaflet overrides
+   Leaflet ships a light theme; these repaint its chrome for the dark shell.
+   ========================================================================== */
+.leaflet-container {
+  background: #09090b;
+  font-family: inherit;
+  outline: none;
+}
+
+.leaflet-tile-pane {
+  /* Esri's dark canvas sits slightly brighter than the app ground. */
+  filter: brightness(0.92) contrast(1.05);
+}
+
+.leaflet-control-zoom a {
+  background-color: #18181b !important;
+  border-color: #3f3f46 !important;
+  color: #d4d4d8 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #27272a !important;
+}
+
+.leaflet-control-attribution {
+  background: rgba(9, 9, 11, 0.85) !important;
+  color: #71717a !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: #a1a1aa !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #18181b !important;
+  color: #e4e4e7 !important;
+  border: 1px solid #3f3f46 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6) !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: 280px !important;
+}
+
+.leaflet-popup-tip {
+  background: #18181b !important;
+  border: 1px solid #3f3f46 !important;
+}
+
+.leaflet-popup-close-button {
+  color: #a1a1aa !important;
+  padding: 8px 8px 0 0 !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #fafafa !important;
+}
+
+/* ==========================================================================
+   Recharts overrides
+   ========================================================================== */
+.recharts-cartesian-grid line {
+  stroke: #27272a;
+}
+
+.recharts-text {
+  fill: #71717a;
+  font-size: 11px;
+}
+
+.recharts-surface:focus {
+  outline: none;
+}

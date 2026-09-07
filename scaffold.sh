@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# ==========================================================================
+# Bangladesh Crime Monitor — monorepo scaffolding script
+# Creates the full directory tree and empty file placeholders.
+# Run once:  bash scaffold.sh
+# ==========================================================================
+set -euo pipefail
+
+# Target directory; defaults to a new ./bangladesh-crime-monitor. Pass "." to
+# scaffold in place.
+ROOT="${1:-bangladesh-crime-monitor}"
+
+echo "==> Creating directory tree under ./${ROOT}"
+
+mkdir -p "${ROOT}/.github/workflows"
+
+mkdir -p "${ROOT}/backend/app/api/v1"
+mkdir -p "${ROOT}/backend/app/core"
+mkdir -p "${ROOT}/backend/app/db"
+mkdir -p "${ROOT}/backend/app/parsers"
+mkdir -p "${ROOT}/backend/app/scrapers"
+mkdir -p "${ROOT}/backend/app/utils"
+mkdir -p "${ROOT}/backend/db_migrations"
+
+mkdir -p "${ROOT}/frontend/src/app/analytics"
+mkdir -p "${ROOT}/frontend/src/app/database"
+mkdir -p "${ROOT}/frontend/src/app/methodology"
+mkdir -p "${ROOT}/frontend/src/components/navigation"
+mkdir -p "${ROOT}/frontend/src/components/dashboard"
+mkdir -p "${ROOT}/frontend/src/components/map"
+mkdir -p "${ROOT}/frontend/src/components/analytics"
+mkdir -p "${ROOT}/frontend/src/lib"
+mkdir -p "${ROOT}/frontend/src/types"
+mkdir -p "${ROOT}/frontend/public"
+
+echo "==> Creating backend files"
+touch "${ROOT}/.github/workflows/ingest_cron.yml"
+touch "${ROOT}/backend/app/__init__.py"
+touch "${ROOT}/backend/app/main.py"
+touch "${ROOT}/backend/app/api/__init__.py"
+touch "${ROOT}/backend/app/api/deps.py"
+touch "${ROOT}/backend/app/api/v1/__init__.py"
+touch "${ROOT}/backend/app/api/v1/crimes.py"
+touch "${ROOT}/backend/app/api/v1/ingest.py"
+touch "${ROOT}/backend/app/api/v1/analytics.py"
+touch "${ROOT}/backend/app/core/__init__.py"
+touch "${ROOT}/backend/app/core/config.py"
+touch "${ROOT}/backend/app/db/__init__.py"
+touch "${ROOT}/backend/app/db/database.py"
+touch "${ROOT}/backend/app/db/models.py"
+touch "${ROOT}/backend/app/parsers/__init__.py"
+touch "${ROOT}/backend/app/parsers/llm_extractor.py"
+touch "${ROOT}/backend/app/scrapers/__init__.py"
+touch "${ROOT}/backend/app/scrapers/news_scraper.py"
+touch "${ROOT}/backend/app/scrapers/fb_scraper.py"
+touch "${ROOT}/backend/app/utils/__init__.py"
+touch "${ROOT}/backend/app/utils/thana_coordinates.py"
+touch "${ROOT}/backend/db_migrations/init_schema.sql"
+touch "${ROOT}/backend/requirements.txt"
+touch "${ROOT}/backend/.env.example"
+touch "${ROOT}/backend/run_scrapers.py"
+
+echo "==> Creating frontend files"
+touch "${ROOT}/frontend/src/app/layout.tsx"
+touch "${ROOT}/frontend/src/app/page.tsx"
+touch "${ROOT}/frontend/src/app/globals.css"
+touch "${ROOT}/frontend/src/app/analytics/page.tsx"
+touch "${ROOT}/frontend/src/app/database/page.tsx"
+touch "${ROOT}/frontend/src/app/methodology/page.tsx"
+touch "${ROOT}/frontend/src/components/navigation/Navbar.tsx"
+touch "${ROOT}/frontend/src/components/navigation/Footer.tsx"
+touch "${ROOT}/frontend/src/components/dashboard/MetricCards.tsx"
+touch "${ROOT}/frontend/src/components/dashboard/FilterBar.tsx"
+touch "${ROOT}/frontend/src/components/dashboard/IncidentFeed.tsx"
+touch "${ROOT}/frontend/src/components/dashboard/IncidentCard.tsx"
+touch "${ROOT}/frontend/src/components/map/CrimeMap.tsx"
+touch "${ROOT}/frontend/src/components/map/MapMarker.tsx"
+touch "${ROOT}/frontend/src/components/analytics/TrendChart.tsx"
+touch "${ROOT}/frontend/src/components/analytics/CategoryChart.tsx"
+touch "${ROOT}/frontend/src/lib/api.ts"
+touch "${ROOT}/frontend/src/lib/utils.ts"
+touch "${ROOT}/frontend/src/types/crime.ts"
+touch "${ROOT}/frontend/package.json"
+touch "${ROOT}/frontend/tsconfig.json"
+touch "${ROOT}/frontend/tailwind.config.ts"
+touch "${ROOT}/frontend/postcss.config.mjs"
+touch "${ROOT}/frontend/next.config.mjs"
+touch "${ROOT}/frontend/.env.example"
+
+echo ""
+echo "==> Structure created. Next steps:"
+echo "    cd ${ROOT}/backend  && python -m venv .venv && . .venv/Scripts/activate && pip install -r requirements.txt"
+echo "    cd ${ROOT}/frontend && npm install"
+echo ""
+find "${ROOT}" -type f | sort
