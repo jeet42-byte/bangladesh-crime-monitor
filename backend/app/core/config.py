@@ -51,7 +51,7 @@ class Settings(BaseSettings):
     # extractor falls back to keyword classification, and the confidence gate
     # then silently rejects every row. The dashboard just stops updating. The
     # alias trades reproducibility for not dying quietly.
-    GEMINI_MODEL: str = "gemini-flash-latest"
+    GEMINI_MODEL: str = "gemini-flash-lite-latest"
 
     # --- Scraper ----------------------------------------------------------
     FB_PAGE_ACCESS_TOKEN: str = ""
