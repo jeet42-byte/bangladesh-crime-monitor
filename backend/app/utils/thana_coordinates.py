@@ -471,6 +471,49 @@ def resolve_thana(
     return DHAKA_CENTROID if fallback else None
 
 
+
+def find_place_in_text(text: str, *, max_chars: int = 400) -> Optional[ThanaLocation]:
+    """Scan free text for a recognisable thana or district name.
+
+    Used when the model reports a place the gazetteer does not know - an
+    upazila such as "Kachua", or a bare "Sadar" - while the district is
+    stated plainly in the headline ("Three arrested over triple murder in
+    Bagerhat"). Without this those records are discarded despite being
+    perfectly placeable.
+
+    Only the opening ``max_chars`` are scanned: a headline and lede name the
+    location, whereas deep body text often mentions other places (where a
+    suspect was later transferred, where a court sits) that would mislocate
+    the incident.
+    """
+    if not text:
+        return None
+
+    haystack = _normalise(text[:max_chars])
+    if not haystack:
+        return None
+
+    padded = f" {haystack} "
+
+    # Longest name first so "Cox's Bazar" is not shadowed by a shorter token,
+    # and thana names win over district names when both appear.
+    for lookup, table in ((_LOOKUP, THANA_COORDINATES), (_DISTRICT_LOOKUP, None)):
+        for key in sorted(lookup, key=len, reverse=True):
+            if len(key) < 5:
+                continue
+            if f" {key} " in padded:
+                canonical = lookup[key]
+                if table is not None:
+                    return table[canonical]
+                lat, lon = DISTRICT_COORDINATES[canonical]
+                return {
+                    "thana_name": canonical,
+                    "lat": lat,
+                    "lon": lon,
+                    "district": canonical,
+                }
+    return None
+
 def resolve_many(names: Iterable[str]) -> Dict[str, Optional[ThanaLocation]]:
     """Batch helper for scraper diagnostics."""
     return {name: resolve_thana(name, fallback=False) for name in names}
@@ -480,6 +523,7 @@ __all__ = [
     "THANA_COORDINATES",
     "DISTRICT_COORDINATES",
     "resolve_district",
+    "find_place_in_text",
     "DHAKA_CENTROID",
     "ThanaLocation",
     "get_coordinates",

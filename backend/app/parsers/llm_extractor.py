@@ -32,7 +32,7 @@ from pydantic import BaseModel, Field, field_validator
 
 from app.core.config import settings
 from app.db.models import CRIME_CATEGORIES, SOURCE_CONFIDENCE
-from app.utils.thana_coordinates import resolve_thana
+from app.utils.thana_coordinates import find_place_in_text, resolve_thana
 
 logger = logging.getLogger(__name__)
 
@@ -726,6 +726,19 @@ def extract_crime_entities(
     # as the default into a fake hotspot.
     reported_place = (data.get("thana_name") or "").strip()
     location = resolve_thana(reported_place)
+
+    if location is None:
+        # The model often reports an upazila the gazetteer does not carry
+        # ("Kachua"), or a bare "Sadar", while the district is stated plainly
+        # in the headline. Recover from the text before giving up.
+        location = find_place_in_text(f"{title}. {summary}")
+        if location is not None:
+            logger.info(
+                "Location %r unknown; recovered %s from the text.",
+                reported_place,
+                location["thana_name"],
+            )
+
     if location is None:
         logger.info(
             "Dropping incident with unresolvable location %r: %s",
