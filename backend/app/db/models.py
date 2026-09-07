@@ -42,7 +42,21 @@ CRIME_CATEGORIES: tuple[str, ...] = (
     "Fraud",
     "Extortion",
     "Theft",
+    # Non-criminal security incidents. Added for asset protection: business
+    # interruption does not care whether a fire was arson or a boiler, and a
+    # site closed by unrest is closed either way. Kept clearly distinct from
+    # the offence categories rather than folded into them - see
+    # db_migrations/004_asset_protection.sql.
+    "Industrial Accident",
+    "Labour Unrest",
     "Other",
+)
+
+#: Categories that are not criminal offences. Consumers that need to separate
+#: "someone did something illegal" from "something bad happened to an asset"
+#: should use this rather than hard-coding the strings.
+NON_CRIMINAL_CATEGORIES: frozenset[str] = frozenset(
+    {"Industrial Accident", "Labour Unrest"}
 )
 
 SOURCE_PLATFORMS: tuple[str, ...] = (

@@ -3,7 +3,7 @@
 import { forwardRef, useState } from "react";
 import { ChevronDown, Clock, ExternalLink, MapPin, Scale } from "lucide-react";
 
-import type { CrimeIncident } from "@/types/crime";
+import { isCriminalOffence, type CrimeIncident } from "@/types/crime";
 import {
   categoryColor,
   cn,
@@ -68,6 +68,19 @@ const IncidentCard = forwardRef<HTMLElement, IncidentCardProps>(
             >
               {incident.crime_category}
             </span>
+
+            {/* An industrial accident is not an offence, and a reader
+                scanning categories must not have to infer that. The archive
+                would rather carry an extra chip than let a boiler explosion
+                read as something someone did. */}
+            {!isCriminalOffence(incident.crime_category) && (
+              <span
+                className="chip border-zinc-500/40 bg-zinc-500/10 text-zinc-400"
+                title="Not a criminal offence — recorded because it damaged or halted a commercial asset"
+              >
+                Not a crime
+              </span>
+            )}
 
             <span className={cn("chip", TRUST_CLASS[tier])}>
               <span aria-hidden>{TRUST_DOT[tier]}</span>

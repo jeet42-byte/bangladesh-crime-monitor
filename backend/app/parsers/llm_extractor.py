@@ -137,10 +137,14 @@ RESPONSE_SCHEMA: Dict[str, Any] = {
         "is_crime_report": {
             "type": "boolean",
             "description": (
-                "True only if the text reports a specific criminal incident "
-                "that occurred in Bangladesh. False for opinion pieces, "
-                "policy coverage, court verdicts on old cases, sports, or "
-                "crime reported outside Bangladesh."
+                "True if the text reports a specific security incident that "
+                "occurred in Bangladesh: a criminal offence, an industrial "
+                "accident such as a fire or explosion at a commercial site, "
+                "or labour unrest that disrupted operations. False for "
+                "opinion pieces, policy coverage, economic analysis, "
+                "institutional announcements, official statements, court "
+                "verdicts on old cases, sports, or incidents outside "
+                "Bangladesh."
             ),
         },
         "title": {
@@ -237,8 +241,22 @@ Rules:
    for ransom is Extortion; mugging and snatching are Robbery; pickpocketing
    and burglary are Theft; online fraud is Cybercrime; offline financial
    deception is Fraud.
-7. If the text is not a specific criminal incident in Bangladesh, set
-   `is_crime_report` to false and leave the other fields minimal.
+7. Two categories are NOT criminal offences and exist because they damage or
+   halt commercial assets:
+     - `Industrial Accident`: fire, explosion, boiler burst, structural
+       collapse or chemical release at a factory, market, shipyard, warehouse
+       or other commercial premises. Use this when no offence is alleged. If
+       arson is alleged, the category is the offence, not this.
+     - `Labour Unrest`: a strike, walkout, factory shutdown, road blockade or
+       worker protest that stopped or disrupted operations. Use this for the
+       disruption itself; if the reporting centres on violence or vandalism,
+       pick the offence category instead.
+   For both, do not imply anyone committed a crime.
+8. A specific incident means something that happened on a date, in a place.
+   Set `is_crime_report` to false for analysis, policy, budget coverage,
+   market commentary, official warnings, institutional announcements
+   ("X forms a task force"), and anything reporting a risk rather than an
+   event. Set it to false for incidents outside Bangladesh.
 
 Return JSON conforming to the provided schema. Return nothing else."""
 
@@ -573,6 +591,9 @@ def _heuristic_extract(raw_text: str) -> Dict[str, Any]:
     )
 
     return {
+        # The heuristic path has no judgement about whether something is an
+        # incident, only which keywords fired, so it stays conservative and
+        # never claims one of the non-criminal categories.
         "is_crime_report": category != "Other",
         "title": title,
         "summary": summary,

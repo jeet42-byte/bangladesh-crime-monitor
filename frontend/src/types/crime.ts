@@ -13,10 +13,27 @@ export const CRIME_CATEGORIES = [
   "Fraud",
   "Extortion",
   "Theft",
+  // Not criminal offences. Present because they damage or halt commercial
+  // assets, which is the question the archive is increasingly asked - a site
+  // closed by a boiler explosion is closed just as thoroughly as one closed
+  // by arson. Rendered with an explicit "not a crime" marker so the two are
+  // never conflated.
+  "Industrial Accident",
+  "Labour Unrest",
   "Other",
 ] as const;
 
 export type CrimeCategory = (typeof CRIME_CATEGORIES)[number];
+
+/** Categories that describe an event, not an offence. */
+export const NON_CRIMINAL_CATEGORIES: readonly CrimeCategory[] = [
+  "Industrial Accident",
+  "Labour Unrest",
+] as const;
+
+export function isCriminalOffence(category: CrimeCategory): boolean {
+  return !NON_CRIMINAL_CATEGORIES.includes(category);
+}
 
 export const SOURCE_PLATFORMS = [
   "news_portal",
