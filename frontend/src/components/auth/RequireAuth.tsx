@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   BarChart3,
+  Building2,
   Crosshair,
   Database,
   FileText,
@@ -48,6 +49,12 @@ const SECTION_COPY: Record<
     icon: Crosshair,
     blurb:
       "How fraud, trafficking and homicide actually unfold, stage by stage, with the controls available to a citizen and to an investigator at each one.",
+  },
+  "/exposure": {
+    title: "Site Exposure",
+    icon: Building2,
+    blurb:
+      "Reported activity near a named commercial site, the threat patterns that apply to that class of asset, and how much collection stands behind the answer.",
   },
   "/methodology": {
     title: "Methodology",

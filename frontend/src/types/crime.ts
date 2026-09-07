@@ -290,3 +290,87 @@ export interface TTPResponse {
   archive_total: number;
   generated_at: string;
 }
+
+// ---------------------------------------------------------------------------
+// Asset exposure (ESRM view)
+// ---------------------------------------------------------------------------
+
+export interface CommercialSite {
+  id: string;
+  name: string;
+  site_type: string;
+  site_type_label: string;
+  district: string;
+  division: string;
+  latitude: number;
+  longitude: number;
+  extent_km: number;
+  note: string;
+}
+
+export interface SitesResponse {
+  sites: CommercialSite[];
+  site_types: string[];
+  site_type_labels: Record<string, string>;
+  precision_note: string;
+}
+
+export interface NearbyIncident {
+  id: string;
+  title: string;
+  crime_category: CrimeCategory;
+  incident_date: string;
+  thana_name: string;
+  district: string;
+  distance_km: number;
+  /** Coordinates are a district centroid; true location unknown. */
+  district_level_only: boolean;
+  source_platform: SourcePlatform;
+  source_handle: string | null;
+  verification_level: VerificationLevel;
+  source_url: string;
+}
+
+/**
+ * How much collection stands behind a result. A statement about the dataset,
+ * never about the site — a nil return under "no_signal" means nothing was
+ * collected, not that nothing happened.
+ */
+export type CoverageSignal = "no_signal" | "thin" | "adequate";
+
+export interface Coverage {
+  district_records: number;
+  national_records: number;
+  signal: CoverageSignal;
+  interpretation: string;
+}
+
+export interface AnnexAControl {
+  control: string;
+  title: string;
+}
+
+export interface ApplicableThreat {
+  id: string;
+  name: string;
+  threat_class: string;
+  summary: string;
+  archive_support: ArchiveSupport;
+  iso27001_controls: AnnexAControl[];
+}
+
+export interface ExposureResponse {
+  site: CommercialSite;
+  radius_km: number;
+  window_days: number;
+  incident_count: number;
+  by_category: Record<string, number>;
+  incidents: NearbyIncident[];
+  applicable_threats: ApplicableThreat[];
+  coverage: Coverage;
+  radius_warning: string | null;
+  geocoding_note: string;
+  resolution_warning: string | null;
+  district_level_incidents: number;
+  generated_at: string;
+}

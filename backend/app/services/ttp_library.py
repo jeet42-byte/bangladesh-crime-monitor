@@ -96,6 +96,15 @@ class Treatment:
     #: Which stage this bites at, by index into ``TTPProfile.stages``.
     stage_index: int
     note: str = ""
+    #: ISO/IEC 27001:2022 Annex A controls this treatment maps onto, so the
+    #: output drops straight into a Statement of Applicability discussion
+    #: rather than needing translation.
+    #:
+    #: Deliberately sparse. Most physical-crime treatments have no honest
+    #: ISMS analogue, and inventing one would be exactly the sort of
+    #: control-washing that makes security paperwork worthless. An empty
+    #: tuple means "no ISMS control bites here", which is a real finding.
+    iso27001: Sequence[str] = ()
 
 
 @dataclass(frozen=True)
@@ -117,6 +126,11 @@ class TTPProfile:
     match_terms: Sequence[str] = ()
     #: Where the pattern description comes from, when not the archive itself.
     provenance: str = ""
+    #: Site types from ``commercial_sites.SiteType`` where this threat is
+    #: materially relevant to an enterprise asset owner. Empty means the
+    #: pattern is a public-safety concern rather than an enterprise risk -
+    #: which is a distinction worth preserving, not papering over.
+    asset_classes: Sequence[str] = ()
 
 
 # ---------------------------------------------------------------------------
@@ -203,6 +217,7 @@ PROFILES: List[TTPProfile] = [
                 "engaging.",
                 stage_index=0,
                 note="Costs a minute and defeats the majority of these pages.",
+                iso27001=("A.5.19", "A.6.3",),
             ),
             Treatment(
                 "avoid", "citizen",
@@ -210,6 +225,7 @@ PROFILES: List[TTPProfile] = [
                 "is no legitimate reason a domestic seller cannot offer it.",
                 stage_index=2,
                 note="The single highest-value rule in this profile.",
+                iso27001=("A.5.19",),
             ),
             Treatment(
                 "reduce", "citizen",
@@ -219,6 +235,7 @@ PROFILES: List[TTPProfile] = [
                 stage_index=2,
                 note="Merchant accounts are identity-verified; personal ones "
                      "are far weaker evidence and far easier to abandon.",
+                iso27001=("A.5.20",),
             ),
             Treatment(
                 "share", "citizen",
@@ -259,6 +276,11 @@ PROFILES: List[TTPProfile] = [
             "online", "e-commerce", "ecommerce", "bkash", "nagad",
             "advance payment", "facebook page", "অনলাইন", "ই-কমার্স",
             "বিকাশ", "নগদ", "অগ্রিম", "ফেসবুক",
+        ),
+        # Relevant to enterprises as procurement / supplier-payment fraud,
+        # which is the same technique pointed at an accounts payable clerk.
+        asset_classes=(
+            "commercial_area", "financial_district", "rmg_cluster", "epz",
         ),
     ),
     TTPProfile(
@@ -314,12 +336,14 @@ PROFILES: List[TTPProfile] = [
                 "Treat any such request as proof of fraud and end the call.",
                 stage_index=2,
                 note="This one rule defeats the entire pattern.",
+                iso27001=("A.6.3", "A.8.5",),
             ),
             Treatment(
                 "reduce", "citizen",
                 "Hang up and dial the number printed on the card or the "
                 "official app - never a number the caller gives you.",
                 stage_index=1,
+                iso27001=("A.6.3",),
             ),
             Treatment(
                 "share", "citizen",
@@ -328,6 +352,7 @@ PROFILES: List[TTPProfile] = [
                 "online abuse or extortion can contact Police Cyber Support "
                 "for Women at cybersupport.women@police.gov.bd.",
                 stage_index=3,
+                iso27001=("A.5.24", "A.5.26",),
             ),
             Treatment(
                 "reduce", "law_enforcement",
@@ -336,6 +361,7 @@ PROFILES: List[TTPProfile] = [
                 "hours changes recovery rates more than any investigation "
                 "conducted afterwards.",
                 stage_index=3,
+                iso27001=("A.8.16",),
             ),
             Treatment(
                 "reduce", "law_enforcement",
@@ -348,6 +374,10 @@ PROFILES: List[TTPProfile] = [
         match_terms=(
             "otp", "one-time", "phishing", "hacked", "account takeover",
             "ওটিপি", "হ্যাক", "প্রতারণা", "সাইবার",
+        ),
+        asset_classes=(
+            "financial_district", "commercial_area", "hitech_park", "epz",
+            "rmg_cluster",
         ),
     ),
     TTPProfile(
@@ -415,6 +445,7 @@ PROFILES: List[TTPProfile] = [
                 "another person's money through your account is itself an "
                 "offence, and the account holder is the one who is traceable.",
                 stage_index=0,
+                iso27001=("A.6.3",),
             ),
             Treatment(
                 "reduce", "law_enforcement",
@@ -435,6 +466,7 @@ PROFILES: List[TTPProfile] = [
             "betting", "gambling", "investment", "ponzi", "money laundering",
             "জুয়া", "বেটিং", "বিনিয়োগ", "মানি লন্ডারিং", "অর্থপাচার",
         ),
+        asset_classes=("financial_district",),
     ),
     # =====================================================================
     # TRAFFICKING
@@ -520,6 +552,7 @@ PROFILES: List[TTPProfile] = [
                 "and insist on a written contract you keep a copy of.",
                 stage_index=1,
                 note="Verification is free; the fee is usually not recoverable.",
+                iso27001=("A.5.19", "A.5.21",),
             ),
             Treatment(
                 "reduce", "citizen",
@@ -529,6 +562,7 @@ PROFILES: List[TTPProfile] = [
                 stage_index=2,
                 note="Makes both the identification and the missed check-in "
                      "actionable rather than a family's suspicion.",
+                iso27001=("A.5.24",),
             ),
             Treatment(
                 "avoid", "citizen",
@@ -566,6 +600,7 @@ PROFILES: List[TTPProfile] = [
                 "trafficking indicators rather than processing them as "
                 "immigration matters, which is where most cases are lost.",
                 stage_index=4,
+                iso27001=("A.5.19",),
             ),
             Treatment(
                 "accept", "law_enforcement",
@@ -579,6 +614,9 @@ PROFILES: List[TTPProfile] = [
         match_terms=(
             "trafficking", "trafficked", "মানব পাচার", "নারী পাচার",
             "শিশু পাচার", "মানবপাচার",
+        ),
+        asset_classes=(
+            "rmg_cluster", "epz", "economic_zone", "port", "land_port",
         ),
     ),
     # =====================================================================
@@ -682,6 +720,10 @@ PROFILES: List[TTPProfile] = [
             "domestic", "wife", "husband", "dowry", "স্ত্রী", "স্বামী",
             "যৌতুক", "পারিবারিক", "গৃহবধূ",
         ),
+        # Deliberately no asset_classes. This is a public-safety pattern, not
+        # an enterprise one, and dressing it as a corporate risk to pad an
+        # assessment would be dishonest. It stays in the catalogue because the
+        # portal serves the public as well as clients.
     ),
     TTPProfile(
         id="homicide-land-dispute",
@@ -759,6 +801,10 @@ PROFILES: List[TTPProfile] = [
             "land dispute", "land", "property dispute", "জমি", "জমিজমা",
             "সীমানা", "দখল", "পূর্বশত্রুতা",
         ),
+        # Land acquisition for zones and factory expansion is a live source
+        # of exactly this dispute, so it is an enterprise risk here even
+        # though the offence itself is not a corporate one.
+        asset_classes=("economic_zone", "epz", "rmg_cluster"),
     ),
     TTPProfile(
         id="robbery-transit-mugging",
@@ -812,12 +858,14 @@ PROFILES: List[TTPProfile] = [
                 "off the seat beside you. Snatch requires reach, so removing "
                 "reach removes the offence.",
                 stage_index=0,
+                iso27001=("A.7.9", "A.8.1",),
             ),
             Treatment(
                 "reduce", "citizen",
                 "Share your live trip location, and refuse a ride whose route "
                 "or passenger count changes after you board.",
                 stage_index=1,
+                iso27001=("A.7.9",),
             ),
             Treatment(
                 "accept", "citizen",
@@ -833,6 +881,7 @@ PROFILES: List[TTPProfile] = [
                 "Report with the IMEI and call 999. The IMEI is what makes a "
                 "handset recoverable and links otherwise separate cases.",
                 stage_index=3,
+                iso27001=("A.5.24", "A.5.26",),
             ),
             Treatment(
                 "reduce", "law_enforcement",
@@ -851,6 +900,10 @@ PROFILES: List[TTPProfile] = [
         match_terms=(
             "snatch", "mugging", "robbed", "robbery", "ছিনতাই", "ডাকাতি",
             "মোবাইল ছিনতাই",
+        ),
+        asset_classes=(
+            "rmg_cluster", "epz", "commercial_area", "financial_district",
+            "diplomatic_zone", "hitech_park", "airport",
         ),
     ),
     TTPProfile(
@@ -902,6 +955,7 @@ PROFILES: List[TTPProfile] = [
                 "message - before deciding anything. It is the only asset "
                 "that appreciates.",
                 stage_index=1,
+                iso27001=("A.5.24",),
             ),
             Treatment(
                 "avoid", "citizen",
@@ -916,6 +970,7 @@ PROFILES: List[TTPProfile] = [
                 "where possible. Collective reporting removes the individual "
                 "identifiability that makes reprisal credible.",
                 stage_index=1,
+                iso27001=("A.5.5",),
             ),
             Treatment(
                 "reduce", "law_enforcement",
@@ -935,6 +990,10 @@ PROFILES: List[TTPProfile] = [
         match_terms=(
             "extortion", "chanda", "toll", "চাঁদা", "চাঁদাবাজি", "চাঁদাবাজ",
         ),
+        asset_classes=(
+            "rmg_cluster", "epz", "economic_zone", "commercial_area", "port",
+            "land_port",
+        ),
     ),
 ]
 
@@ -953,3 +1012,29 @@ def threat_classes() -> List[str]:
         if profile.threat_class not in seen:
             seen.append(profile.threat_class)
     return seen
+
+
+# ---------------------------------------------------------------------------
+# ISO/IEC 27001:2022 Annex A control titles
+#
+# Only the controls actually referenced above. Kept here rather than in the
+# API layer so the mapping and its labels cannot drift apart.
+# ---------------------------------------------------------------------------
+ISO27001_CONTROL_TITLE: dict[str, str] = {
+    "A.5.5": "Contact with authorities",
+    "A.5.19": "Information security in supplier relationships",
+    "A.5.20": "Addressing information security within supplier agreements",
+    "A.5.21": "Managing information security in the ICT supply chain",
+    "A.5.24": "Information security incident management planning and preparation",
+    "A.5.26": "Response to information security incidents",
+    "A.6.3": "Information security awareness, education and training",
+    "A.7.9": "Security of assets off-premises",
+    "A.8.1": "User endpoint devices",
+    "A.8.5": "Secure authentication",
+    "A.8.16": "Monitoring activities",
+}
+
+
+def profiles_for_asset_class(asset_class: str) -> List[TTPProfile]:
+    """Profiles materially relevant to one site type."""
+    return [p for p in PROFILES if asset_class in p.asset_classes]

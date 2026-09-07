@@ -23,6 +23,8 @@ import type {
   ThanaRankingResponse,
   TrendsResponse,
   TTPResponse,
+  SitesResponse,
+  ExposureResponse,
 } from "@/types/crime";
 import { daysAgoISO, sourceFilterToPlatform } from "@/lib/utils";
 import { clearGuestToken, readerHeader } from "@/lib/auth";
@@ -310,4 +312,36 @@ export async function fetchTTPProfiles(days = 90): Promise<TTPResponse> {
       generated_at: new Date().toISOString(),
     }
   );
+}
+
+/** The commercial gazetteer. Static reference geography. */
+export async function fetchSites(): Promise<SitesResponse> {
+  const data = await request<SitesResponse>("/api/v1/assets/sites");
+  return (
+    data ?? {
+      sites: [],
+      site_types: [],
+      site_type_labels: {},
+      precision_note: "",
+    }
+  );
+}
+
+/**
+ * Reported activity near one asset.
+ *
+ * Returns null rather than a synthesised empty shape: a fabricated zero here
+ * would read as "nothing near your site", which is the one thing this feature
+ * must never say without real coverage data behind it.
+ */
+export async function fetchExposure(
+  siteId: string,
+  radiusKm = 5,
+  days = 90
+): Promise<ExposureResponse | null> {
+  return request<ExposureResponse>("/api/v1/assets/exposure", {
+    site_id: siteId,
+    radius_km: radiusKm,
+    days,
+  });
 }
