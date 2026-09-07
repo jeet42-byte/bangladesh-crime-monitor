@@ -313,6 +313,25 @@ model in the loop there is nothing to strip them.
 
 ## Operating notes
 
+### Source reachability
+
+Several Bangladeshi outlets return 403 to automated clients from GitHub's
+datacentre ranges, so what works on a laptop does not predict what the cron
+job can reach. `.github/workflows/feed_probe.yml` runs the candidate list
+from a real runner and writes a pass/fail table to the job summary — run it
+before adding or replacing a source.
+
+Last probe: **10 of 28 candidates reachable**. The registry in
+`news_scraper.py` documents, inline, why each rejected candidate was left
+out — Cloudflare interstitials, client-rendered article pages, or
+headline-only aggregate feeds.
+
+Note that bdnews24, Jugantor and Kaler Kantho refuse automated access from
+every network tested, including through a text-extraction proxy. That is the
+outlet declining to be read by a bot, not a routing problem, and this project
+does not work around it. Their coverage is substantially duplicated by the
+Bengali outlets that do publish open feeds.
+
 - **Cron cadence vs. lookback.** The workflow runs every 6 hours with an
   8-hour lookback. The overlap is deliberate — a late feed update is picked up
   on the next pass, and the content hash absorbs the repeats.

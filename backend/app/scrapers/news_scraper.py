@@ -102,43 +102,67 @@ NEWS_FEEDS: List[NewsFeed] = [
         body_selectors=("div.story-element-text", "div.story-content"),
     ),
     NewsFeed(
-        "Dhaka Tribune",
-        "https://www.dhakatribune.com/feed/",
-        body_selectors=("div.jw-detail-content", "div.content-detail"),
-    ),
-    NewsFeed(
         "The Business Standard",
         "https://www.tbsnews.net/bangladesh/rss.xml",
         body_selectors=("div.section-content", "div.node__content"),
     ),
-    # The four below sit behind a WAF that refuses some datacentre IP ranges
-    # with a 403. They work from many networks - including, often, GitHub's
-    # runners - so they stay in the registry and simply drop out where they
-    # are blocked.
+    # Bengali-language outlets, added after a reachability probe from a GitHub
+    # runner (see .github/workflows/feed_probe.yml). These carry much of the
+    # same incident reporting as the blocked outlets below, at higher volume:
+    # 50-100 entries per feed against the English dailies' 8-20.
     NewsFeed(
-        "bdnews24 (Bangla)",
-        "https://bangla.bdnews24.com/feed",
+        "Jagonews24",
+        "https://www.jagonews24.com/rss/rss.xml",
         language="bn",
-        body_selectors=("div.article-body", "article .content"),
+        body_selectors=("div.content-details", "article"),
     ),
     NewsFeed(
-        "bdnews24 English",
-        "https://bdnews24.com/feed",
-        body_selectors=("div.article-body", "article .content"),
+        "Dhaka Post",
+        "https://www.dhakapost.com/rss/rss.xml",
+        language="bn",
+        body_selectors=("div.news-details", "article"),
     ),
     NewsFeed(
-        "Jugantor",
-        "https://www.jugantor.com/feed/rss.xml",
+        "Risingbd",
+        "https://www.risingbd.com/rss/rss.xml",
         language="bn",
-        body_selectors=("div.news-element-text", "div.dtl_content"),
+        body_selectors=("article", "div.news-details"),
     ),
     NewsFeed(
-        "Kaler Kantho",
-        "https://www.kalerkantho.com/rss.xml",
+        # No selector matches this one; the generic <p> sweep in _extract_body
+        # recovers ~3.5k characters, which is plenty.
+        "Ajker Patrika",
+        "https://www.ajkerpatrika.com/feed",
         language="bn",
-        body_selectors=("div.some-content", "div.newsDtl"),
+    ),
+    # Reachable from most networks but 403 from GitHub's datacentre ranges, so
+    # it contributes on local runs and drops out on the cron.
+    NewsFeed(
+        "Dhaka Tribune",
+        "https://www.dhakatribune.com/feed/",
+        body_selectors=("div.jw-detail-content", "div.content-detail"),
     ),
 ]
+
+# Deliberately NOT in the registry:
+#
+#   bdnews24 (both editions), Jugantor, Kaler Kantho
+#       Return 403 to automated clients from every network tested, and sit
+#       behind a Cloudflare interstitial ("Just a moment...") even through a
+#       text-extraction proxy. That is the outlet declining automated access,
+#       not a transport problem to route around. Their reporting is largely
+#       duplicated by the Bengali outlets above, which publish openly.
+#
+#   Barta24
+#       Reachable and high volume, but article pages are client-rendered so
+#       no body text can be extracted, and its RSS summaries run ~165
+#       characters. 120 thin entries per run would consume the free Gemini
+#       quota for very little signal.
+#
+#   Google News aggregate feeds
+#       Surface the blocked outlets, but entries carry only a headline-length
+#       summary (~80-100 chars) and the links no longer HTTP-redirect to the
+#       publisher, so the article body is unreachable anyway.
 
 
 # ---------------------------------------------------------------------------
