@@ -313,6 +313,42 @@ model in the loop there is nothing to strip them.
 
 ## Operating notes
 
+### Source tiers
+
+Records carry one of three confidence scores, fixed by publisher:
+
+| Tier | Score | Source | Status |
+|---|---|---|---|
+| Official | 95 | CID Bangladesh press releases | working locally, unreachable from GitHub runners |
+| Verified News | 80 | 10 Bangladeshi dailies, English and Bengali | working |
+| Public Social | 55 | public Facebook pages | not populated |
+
+**Official.** Bangladesh Police, RAB and BSS publish feeds with zero entries;
+DMP's feed carries only tender and auction notices. CID is the one national
+force publishing a real machine-readable press-release stream, and it is
+worth having — its releases quote actual case numbers and statutes.
+
+The catch: `cid.gov.bd` and `police.gov.bd` are unreachable from GitHub's
+runners entirely (ConnectError, not 403), so the cron job never sees them.
+Only `dmp.gov.bd` responds. Official records therefore have to be ingested
+from a machine that can reach `.gov.bd`:
+
+```bash
+python backend/run_scrapers.py --backend-url "$BACKEND_URL"   --ingest-key "$INGEST_API_KEY" --lookback-hours 400
+```
+
+Because official sources publish a few releases a week against the
+newsrooms' hundreds of articles a day, a quarter of each run's article cap
+is reserved for them. Without that reservation, recency sorting pushes every
+police release below the cut — measured: CID contributed 3 incidents when
+run alone and 0 in a combined run.
+
+**Public Social** stays empty. `fb_scraper.py` is wired for the Meta Graph
+API and falls back to public RSS mirrors, but the Graph path needs
+`FB_PAGE_ACCESS_TOKEN` and RSSHub's public instance now returns 403 to
+everything including its own homepage. Set the token, or self-host RSSHub,
+to populate this tier.
+
 ### Source reachability
 
 Several Bangladeshi outlets return 403 to automated clients from GitHub's
