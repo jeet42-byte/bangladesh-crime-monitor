@@ -218,39 +218,6 @@ def create_app() -> FastAPI:
             )
 
 
-    @app.get("/debug/smtp", tags=["meta"], include_in_schema=False)
-    async def smtp_probe() -> JSONResponse:
-        """TEMPORARY: can this host open an SMTP connection outbound?
-
-        Render's free tier is documented as blocking port 25; whether 587 and
-        465 are also blocked is what this answers. Remove once the mail
-        backend is settled - it is a one-off environment question, not a
-        feature.
-        """
-        import asyncio as _asyncio
-
-        async def _try(host: str, port: int) -> str:
-            try:
-                fut = _asyncio.open_connection(host, port)
-                reader, writer = await _asyncio.wait_for(fut, timeout=8)
-                banner = await _asyncio.wait_for(reader.readline(), timeout=8)
-                writer.close()
-                return f"open: {banner.decode('utf-8', 'replace').strip()[:70]}"
-            except _asyncio.TimeoutError:
-                return "timeout (likely blocked)"
-            except Exception as exc:  # noqa: BLE001
-                return f"{type(exc).__name__}: {exc}"[:90]
-
-        targets = [
-            ("smtp.gmail.com", 587),
-            ("smtp.gmail.com", 465),
-            ("smtp.gmail.com", 25),
-        ]
-        results = await _asyncio.gather(*(_try(h, p) for h, p in targets))
-        return JSONResponse(
-            {f"{h}:{p}": r for (h, p), r in zip(targets, results)}
-        )
-
     return app
 
 
