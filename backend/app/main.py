@@ -95,11 +95,18 @@ async def _seed_owner() -> None:
         existing.is_verified = True
         existing.display_name = auth.OWNER_DISPLAY_NAME
         existing.credentials = credentials_blob
-        if settings.OWNER_PASSWORD and not verify_password(
-            settings.OWNER_PASSWORD, existing.password_hash
-        ):
-            existing.password_hash = hash_password(settings.OWNER_PASSWORD)
-            logger.info("Owner password rotated from configuration.")
+        # Only ever set the password when the account has none that works and
+        # OWNER_PASSWORD_FORCE is explicitly requested. Otherwise a stale
+        # value left in the environment would silently overwrite a password
+        # the owner changed through the app, on every single restart.
+        if settings.OWNER_PASSWORD and settings.OWNER_PASSWORD_FORCE:
+            if not verify_password(settings.OWNER_PASSWORD, existing.password_hash):
+                existing.password_hash = hash_password(settings.OWNER_PASSWORD)
+                logger.warning(
+                    "Owner password reset from OWNER_PASSWORD because "
+                    "OWNER_PASSWORD_FORCE is set. Unset it once you have "
+                    "signed in and changed the password."
+                )
         await session.commit()
         logger.info("Owner account refreshed for %s", email)
 

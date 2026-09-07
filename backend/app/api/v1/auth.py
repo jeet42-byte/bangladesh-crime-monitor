@@ -503,6 +503,59 @@ async def logout(user: OptionalUser) -> MessageOut:
     return MessageOut(message="Signed out. Discard the access token.")
 
 
+class ChangePasswordIn(BaseModel):
+    current_password: str = Field(..., max_length=128)
+    new_password: str = Field(..., max_length=128)
+
+
+@router.post(
+    "/change-password",
+    response_model=MessageOut,
+    summary="Change your own password",
+)
+async def change_password(
+    payload: ChangePasswordIn,
+    request: Request,
+    user: CurrentUser,
+    session: DbSession,
+) -> MessageOut:
+    """Requires the current password, so a stolen session token alone cannot
+    lock the real owner out of their account."""
+    await _enforce_rate_limit(session, "login", _client_ip(request))
+
+    if not verify_password(payload.current_password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Current password is incorrect.",
+        )
+
+    problem = validate_password_strength(
+        payload.new_password, email=user.email, username=user.username
+    )
+    if problem:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY, detail=problem
+        )
+
+    if verify_password(payload.new_password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="The new password must be different from the current one.",
+        )
+
+    user.password_hash = hash_password(payload.new_password)
+    user.failed_login_count = 0
+    user.locked_until = None
+    await session.commit()
+
+    logger.info("Password changed for %s", user.username)
+    # The existing token stays valid: sessions are stateless JWTs, so there is
+    # nothing to revoke. Kept short-lived for exactly this reason.
+    return MessageOut(
+        message="Password updated. Your current session stays signed in."
+    )
+
+
 class OwnerOut(BaseModel):
     display_name: str
     credentials: list[str]

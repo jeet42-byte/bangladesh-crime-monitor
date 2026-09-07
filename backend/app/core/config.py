@@ -71,6 +71,10 @@ class Settings(BaseSettings):
     OWNER_EMAIL: str = ""
     OWNER_USERNAME: str = "ahnaf"
     OWNER_PASSWORD: str = ""
+    # Guard on re-applying OWNER_PASSWORD to an existing account. Without it a
+    # value left in the environment would overwrite a password the owner set
+    # through the app every time the service restarted.
+    OWNER_PASSWORD_FORCE: bool = False
 
     # --- Email ------------------------------------------------------------
     EMAIL_FROM: str = "Bangladesh Crime Monitor <onboarding@resend.dev>"

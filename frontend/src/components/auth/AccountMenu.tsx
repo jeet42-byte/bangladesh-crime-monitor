@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { LogIn, LogOut, ShieldCheck, User as UserIcon } from "lucide-react";
+import { KeyRound, LogIn, LogOut, ShieldCheck, User as UserIcon } from "lucide-react";
 
 import { useAuth } from "@/components/auth/AuthProvider";
 import { cn } from "@/lib/utils";
@@ -109,6 +109,16 @@ export default function AccountMenu() {
               {isOwner ? "Owner" : "Member"}
             </span>
           </div>
+
+          <Link
+            href="/account"
+            role="menuitem"
+            onClick={() => setOpen(false)}
+            className="flex w-full items-center gap-2 border-b border-surface-border/70 px-3.5 py-3 text-left text-sm text-zinc-300 transition-colors hover:bg-surface-overlay/60"
+          >
+            <KeyRound className="h-4 w-4" aria-hidden />
+            Account &amp; password
+          </Link>
 
           <button
             type="button"

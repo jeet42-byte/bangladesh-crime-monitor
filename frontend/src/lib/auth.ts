@@ -156,6 +156,13 @@ export function resendCode(email: string) {
   return post<MessageResponse>("/api/v1/auth/resend", { email });
 }
 
+export function changePassword(currentPassword: string, newPassword: string) {
+  return post<MessageResponse>("/api/v1/auth/change-password", {
+    current_password: currentPassword,
+    new_password: newPassword,
+  });
+}
+
 export function login(identifier: string, password: string) {
   return post<TokenResponse>("/api/v1/auth/login", { identifier, password });
 }
