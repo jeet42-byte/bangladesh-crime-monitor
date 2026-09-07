@@ -1,18 +1,20 @@
-name: OSINT Ingest (every 6 hours)
+name: OSINT Ingest (every 30 minutes)
 
 on:
   schedule:
-    # 00:00, 06:00, 12:00, 18:00 UTC == 06:00, 12:00, 18:00, 00:00 BST.
-    # GitHub queues scheduled runs on shared capacity, so expect drift of a
-    # few minutes. The scraper's lookback window is wider than the interval
-    # to absorb that.
-    - cron: "0 */6 * * *"
+    # Every 30 minutes. This repository is public, so Actions minutes are
+    # free and the cadence is limited by the Gemini free tier rather than by
+    # billing - and most runs find nothing new, so they cost almost no model
+    # calls. GitHub queues scheduled runs on shared capacity, so expect drift
+    # of several minutes; the lookback window is far wider than the interval
+    # to absorb it.
+    - cron: "*/30 * * * *"
   workflow_dispatch:
     inputs:
       lookback_hours:
         description: "How far back to collect (hours)"
         required: false
-        default: "8"
+        default: "3"
       dry_run:
         description: "Print the payload instead of posting it"
         type: boolean
@@ -98,7 +100,7 @@ jobs:
       - name: Run scrapers and ingest
         run: |
           python backend/run_scrapers.py \
-            --lookback-hours "${{ github.event.inputs.lookback_hours || '8' }}" \
+            --lookback-hours "${{ github.event.inputs.lookback_hours || '3' }}" \
             ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
 
       - name: Report failure

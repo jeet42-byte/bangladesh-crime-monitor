@@ -30,6 +30,7 @@ import httpx  # noqa: E402
 from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
 from app.scrapers.news_scraper import scrape_news  # noqa: E402
+from app.scrapers.telegram_scraper import scrape_telegram  # noqa: E402
 
 logger = logging.getLogger("run_scrapers")
 
@@ -70,6 +71,59 @@ def _dedupe(incidents: Sequence[ExtractedIncident]) -> List[ExtractedIncident]:
             best[incident.raw_content_hash] = incident
 
     return list(best.values())
+
+
+# Platforms that count as an editorial or official record rather than a live
+# flash. A live signal is promoted when one of these reports the same event.
+_CORROBORATING_PLATFORMS = frozenset({"news_portal", "police_report"})
+
+# How close two reports must be, in hours, to be treated as the same event.
+_CORROBORATION_WINDOW_HOURS = 36
+
+
+def _assign_verification(incidents: Sequence[ExtractedIncident]) -> None:
+    """Mark each live signal as corroborated when an editorial source agrees.
+
+    Matching is deliberately loose - same thana, same category, within a day
+    and a half - because two outlets describing one shooting will not produce
+    identical headlines, which is exactly why the content hash does not
+    already merge them.
+
+    Anything not corroborated stays 'unverified' and must be presented as a
+    lead, never as an established incident.
+    """
+    editorial = [
+        item
+        for item in incidents
+        if item.source_platform in _CORROBORATING_PLATFORMS
+    ]
+
+    for signal in incidents:
+        if signal.source_platform in _CORROBORATING_PLATFORMS:
+            signal.verification_level = "single_source"
+            continue
+
+        match = next(
+            (
+                other
+                for other in editorial
+                if other.thana_name == signal.thana_name
+                and other.crime_category == signal.crime_category
+                and abs(other.incident_date - signal.incident_date)
+                <= timedelta(hours=_CORROBORATION_WINDOW_HOURS)
+            ),
+            None,
+        )
+
+        if match is not None:
+            signal.verification_level = "corroborated"
+            logger.info(
+                "Live signal corroborated by %s: %s",
+                match.source_url.split("/")[2] if "/" in match.source_url else "source",
+                signal.title[:60],
+            )
+        else:
+            signal.verification_level = "unverified"
 
 
 def _filter_quality(
@@ -162,6 +216,13 @@ async def run(args: argparse.Namespace) -> int:
                 max_incidents=args.max_posts,
             )
         )
+    if args.with_telegram:
+        tasks.append(
+            scrape_telegram(
+                lookback_hours=args.lookback_hours,
+                max_posts=args.max_posts,
+            )
+        )
 
     if not tasks:
         logger.error("Both collectors are disabled; nothing to do.")
@@ -181,6 +242,13 @@ async def run(args: argparse.Namespace) -> int:
 
     incidents = _dedupe(collected)
     logger.info("%d after cross-source deduplication", len(incidents))
+
+    _assign_verification(incidents)
+    levels = {}
+    for item in incidents:
+        levels[item.verification_level] = levels.get(item.verification_level, 0) + 1
+    if levels:
+        logger.info("verification levels: %s", levels)
 
     incidents = _filter_quality(incidents, args.min_confidence)
     logger.info("%d after confidence filtering (>= %.2f)", len(incidents), args.min_confidence)
@@ -286,6 +354,16 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--skip-news", action="store_true")
     parser.add_argument("--skip-facebook", action="store_true")
+    parser.add_argument(
+        "--with-telegram",
+        action="store_true",
+        help=(
+            "Also read public Telegram channels. Off by default: of every "
+            "Bangladeshi channel probed, only The Daily Star's is still "
+            "active, and it posts the same headlines already collected from "
+            "their RSS feed - so it costs model calls and adds no coverage."
+        ),
+    )
     parser.add_argument(
         "--dry-run",
         action="store_true",

@@ -14,6 +14,7 @@ from app.api.deps import DbSession, IngestAuth
 from app.db.models import (
     CRIME_CATEGORIES,
     SOURCE_PLATFORMS,
+    VERIFICATION_LEVELS,
     CrimeIncident,
 )
 
@@ -42,6 +43,8 @@ class IncidentIn(BaseModel):
     source_url: str = Field(..., min_length=4)
     source_confidence: int = Field(..., ge=0, le=100)
     raw_content_hash: str = Field(..., min_length=64, max_length=64)
+    source_handle: Optional[str] = Field(default=None, max_length=120)
+    verification_level: str = Field(default="single_source")
 
     @field_validator("crime_category")
     @classmethod
@@ -60,6 +63,16 @@ class IncidentIn(BaseModel):
         if normalised not in SOURCE_PLATFORMS:
             raise ValueError(
                 f"source_platform must be one of {', '.join(SOURCE_PLATFORMS)}"
+            )
+        return normalised
+
+    @field_validator("verification_level")
+    @classmethod
+    def _valid_verification(cls, value: str) -> str:
+        normalised = value.strip().lower()
+        if normalised not in VERIFICATION_LEVELS:
+            raise ValueError(
+                f"verification_level must be one of {', '.join(VERIFICATION_LEVELS)}"
             )
         return normalised
 
@@ -137,6 +150,8 @@ async def ingest_batch(
                 "source_url": incident.source_url,
                 "source_confidence": incident.source_confidence,
                 "raw_content_hash": incident.raw_content_hash,
+                "source_handle": incident.source_handle,
+                "verification_level": incident.verification_level,
             }
         )
 

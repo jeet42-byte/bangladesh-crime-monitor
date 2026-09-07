@@ -65,6 +65,10 @@ class ExtractedIncident(BaseModel):
     source_confidence: int
     raw_content_hash: str
 
+    # Provenance and corroboration, set by the collector and by run_scrapers.
+    source_handle: Optional[str] = None
+    verification_level: str = "single_source"
+
     # Not persisted; used by run_scrapers.py to drop low-quality rows.
     extraction_confidence: float = Field(default=0.0, ge=0.0, le=1.0)
     is_crime_report: bool = True
@@ -93,6 +97,8 @@ class ExtractedIncident(BaseModel):
             "source_url": self.source_url,
             "source_confidence": self.source_confidence,
             "raw_content_hash": self.raw_content_hash,
+            "source_handle": self.source_handle,
+            "verification_level": self.verification_level,
         }
 
 

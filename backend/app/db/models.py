@@ -49,12 +49,23 @@ SOURCE_PLATFORMS: tuple[str, ...] = (
     "news_portal",
     "facebook_public",
     "police_report",
+    "telegram_channel",
+)
+
+# How well corroborated a claim is, as distinct from who published it.
+VERIFICATION_LEVELS: tuple[str, ...] = (
+    "unverified",
+    "single_source",
+    "corroborated",
 )
 
 # Confidence floor per platform, per the published methodology.
 SOURCE_CONFIDENCE: dict[str, int] = {
     "police_report": 95,
     "news_portal": 80,
+    # A channel post is a headline flash, not an edited article; the same
+    # outlet's RSS entry is the better record of the same event.
+    "telegram_channel": 65,
     "facebook_public": 55,
 }
 
@@ -116,6 +127,11 @@ class CrimeIncident(Base):
         String(64), nullable=False, unique=True
     )
 
+    source_handle: Mapped[Optional[str]] = mapped_column(String(120), nullable=True)
+    verification_level: Mapped[str] = mapped_column(
+        String(20), nullable=False, server_default="single_source"
+    )
+
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
@@ -135,8 +151,13 @@ class CrimeIncident(Base):
             name="ck_crime_category",
         ),
         CheckConstraint(
-            "source_platform IN ('news_portal','facebook_public','police_report')",
+            "source_platform IN ('news_portal','facebook_public',"
+            "'police_report','telegram_channel')",
             name="ck_source_platform",
+        ),
+        CheckConstraint(
+            "verification_level IN ('unverified','single_source','corroborated')",
+            name="ck_verification_level",
         ),
         CheckConstraint(
             "source_confidence BETWEEN 0 AND 100", name="ck_source_confidence"
