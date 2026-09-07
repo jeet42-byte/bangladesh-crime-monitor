@@ -67,6 +67,12 @@ export default function CorrectionsPage() {
             You do not need to explain yourself, prove your identity, or create
             an account. Quote the record and it will be taken down.
           </p>
+          <p className="text-xs text-zinc-500">
+            Note on accounts: email addresses given at signup are not currently
+            verified, so an address on this site is not evidence of who someone
+            is. Removal requests are handled through the repository above, not
+            through account contact details.
+          </p>
         </div>
       </section>
 

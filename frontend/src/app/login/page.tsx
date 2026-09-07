@@ -123,13 +123,22 @@ export default function LoginPage() {
         return;
       }
 
+      // Deployments without a verified sending domain skip verification and
+      // return a session directly; there is no code to ask for.
+      if (data?.access_token && data.user) {
+        signIn(data.access_token, data.user);
+        setBusy(false);
+        router.replace("/");
+        return;
+      }
+
       setConsoleDelivery(Boolean(data?.delivered_to_console));
       switchMode("verify");
       setNotice(data?.message ?? null);
       setCooldown(30);
       setBusy(false);
     },
-    [email, username, password]
+    [email, username, password, signIn, router]
   );
 
   const handleVerify = useCallback(
@@ -343,7 +352,7 @@ export default function LoginPage() {
                 placeholder="you@example.com"
               />
               <p className="mt-1.5 text-[11px] text-zinc-600">
-                We send a 6-digit code here to confirm the address is yours.
+                Used to reach you about corrections to records.
               </p>
             </div>
 

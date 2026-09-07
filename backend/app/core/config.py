@@ -64,6 +64,20 @@ class Settings(BaseSettings):
     )
     # Registration can be closed without redeploying the frontend.
     ALLOW_REGISTRATION: bool = True
+    # Require a one-time code sent by email before an account becomes usable.
+    #
+    # Turning this off is a deliberate, reversible trade. Sending mail needs a
+    # verified sending domain, which needs a domain; without one the site can
+    # only ever email its own operator, so signup is impossible for everyone
+    # else and the whole portal is unreachable. An unverified email address is
+    # a smaller problem than a site nobody can enter.
+    #
+    # What is lost: no proof the address is real, so the operator cannot rely
+    # on reaching a user, and throwaway addresses are accepted. Rate limiting,
+    # password strength rules and the account lock all still apply.
+    #
+    # Set back to true the moment a sending domain is verified.
+    REQUIRE_EMAIL_VERIFICATION: bool = True
 
     # Owner account, seeded on startup when all three are present. The
     # password is read from the environment and immediately hashed; it is

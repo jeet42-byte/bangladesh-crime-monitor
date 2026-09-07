@@ -182,6 +182,11 @@ class MessageOut(BaseModel):
     # Only ever true when ALLOW_CONSOLE_EMAIL is on, so the UI can say plainly
     # that the code went to the server log rather than an inbox.
     delivered_to_console: bool = False
+    # Populated only when REQUIRE_EMAIL_VERIFICATION is off: the account is
+    # usable immediately, so the client signs in rather than asking for a code.
+    access_token: Optional[str] = None
+    expires_in: Optional[int] = None
+    user: Optional["UserOut"] = None
 
 
 def _to_user_out(user: User) -> UserOut:
@@ -281,6 +286,21 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
             # Do not confirm that this address is registered. Someone probing
             # for accounts gets exactly the message a new signup gets.
             return MessageOut(message=REGISTRATION_ACK)
+        if not settings.REQUIRE_EMAIL_VERIFICATION:
+            # Left over from when verification was on. Nothing can send a
+            # code now, so activate it rather than stranding the address.
+            existing.is_verified = True
+            existing.verified_at = datetime.now(timezone.utc)
+            await session.commit()
+            await session.refresh(existing)
+            token = _issue_token(existing)
+            return MessageOut(
+                message="Account activated. You are signed in.",
+                access_token=token.access_token,
+                expires_in=token.expires_in,
+                user=token.user,
+            )
+
         # Unverified re-registration: reissue rather than error, since the
         # most likely cause is a code that never arrived.
         try:
@@ -309,16 +329,32 @@ async def register(payload: RegisterIn, request: Request, session: DbSession) ->
             detail="That username is already taken.",
         )
 
+    verification_required = settings.REQUIRE_EMAIL_VERIFICATION
+
     user = User(
         email=email,
         username=username,
         password_hash=hash_password(payload.password),
         role="member",
-        is_verified=False,
+        is_verified=not verification_required,
+        verified_at=None if verification_required else datetime.now(timezone.utc),
     )
     session.add(user)
     await session.commit()
     await session.refresh(user)
+
+    if not verification_required:
+        # No mail to send, so the account is live immediately and the client
+        # is handed a session rather than a "check your inbox" screen.
+        await _prune(session)
+        token = _issue_token(user)
+        logger.info("Account created without email verification: %s", user.username)
+        return MessageOut(
+            message="Account created. You are signed in.",
+            access_token=token.access_token,
+            expires_in=token.expires_in,
+            user=token.user,
+        )
 
     try:
         console = await _send_code(session, user)
@@ -522,6 +558,9 @@ async def logout(user: OptionalUser) -> MessageOut:
     # The client discards the token; this endpoint exists so the frontend has
     # one place to call and so the intent is explicit in the API surface.
     return MessageOut(message="Signed out. Discard the access token.")
+
+
+MessageOut.model_rebuild()
 
 
 class GuestTokenOut(BaseModel):

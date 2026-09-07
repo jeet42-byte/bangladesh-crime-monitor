@@ -24,6 +24,14 @@ export interface MessageResponse {
   message: string;
   /** True only when the server logged the code instead of emailing it. */
   delivered_to_console: boolean;
+  /**
+   * Present only when the deployment has email verification switched off:
+   * the account is live immediately, so the client signs in instead of
+   * asking for a code.
+   */
+  access_token?: string | null;
+  expires_in?: number | null;
+  user?: AuthUser | null;
 }
 
 export interface OwnerAttribution {
