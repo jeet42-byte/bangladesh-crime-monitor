@@ -261,6 +261,28 @@ failures separately from extraction failures and from stale-mirror failures:
 they say different things about an agent, and a question that trips the hop
 is not testing what a question that trips the table is testing.
 
+## Testing hygiene
+
+Two ways a test result can look like a solve without being one.
+
+**Context contamination.** Question #9 scaled question #7 from one district to
+a whole division and was run in the same chat thread, which already contained
+the answer "Rampal, 33.96/13.54, 20.42" from two earlier turns. ChatGPT
+returned exactly that. The scaled question was never independently attempted.
+**Always test a scaled or varied question in a fresh conversation**; an answer
+already in context is the cheapest thing a model can reach for.
+
+**Narrated rigour.** Agents describe the method they ought to follow and then
+do not follow it. ChatGPT stated "I'm checking every Khulna-division district
+so the comparison is genuinely across all upazilas" while making roughly five
+site visits in 1m50s — not ten district reports and 59 rows. Perplexity did the
+same with "census-era data" before returning a 2001 figure. Read the tool-call
+trace and the elapsed time, never the narration.
+
+The counting test settles it: ask the agent to produce the per-unit breakdown
+its answer implies — one row per district, one figure per upazila. An agent
+that cannot produce the intermediate rows never computed over them.
+
 ## Source material
 
 Primary documents where un-scraped columns are plentiful:
@@ -370,5 +392,6 @@ and the agent attached it to the wrong entity.
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
 | 7 | Bagerhat upazila with the largest male-female internet use gap, 5 years and above (source hidden) | BBS 2022 district report, Table 3.1.26 | internet use by sex | Google: no overview. Perplexity: wrong district (Chattogram), answered Rangunia 43.93/25.49. ChatGPT: **correct**, Rampal 33.96/13.54/20.42 in 27s, citing Table 3.1.26 from an Oracle Cloud mirror | **Rampal, 20.42 points** (33.96 male, 13.54 female) | **solved at top rung; discriminates 1 of 3 agents** — key independently confirmed by ChatGPT |
 | 8 | Layered: Bagerhat's largest internet-gender-gap upazila, then its 2018 constituency and rejected ballot count | BBS Table 3.1.26 + EC 2018 result sheet | internet use by sex + rejected ballots | ChatGPT: **solved**, Rampal to Bagerhat-3 (Rampal-Mongla) to 1,110 rejected ballots, 42s over 23 sites, cited a result sheet on file-khulna.portal.gov.bd | first half **verified** (Rampal); ballot count **unverified** | cross-publisher join beaten; 1,110 needs checking against the source |
+| 9 | Same gap question scaled to ALL upazilas of Khulna Division (10 districts, ~59 upazilas) | BBS 2022 district reports x10 | internet use by sex | ChatGPT answered Rampal/Bagerhat again — **but in the same chat thread that already held that answer**, over ~5 site visits in 1m50s | unverified | **contaminated test** — rerun in a fresh chat; work performed does not match 10 PDFs |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
 | 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | **Mongla, 93.85%** (Table 3.2.13) | **VERIFIED — question live, agent wrong.** Perplexity answered Sharankhola 23.5%; truth is Mongla 93.85%, Sharankhola 97.34%. Wrong entity and wrong value, off by 73.84 points |
