@@ -20,3 +20,7 @@ Two rules from that document are load-bearing and easy to violate by accident:
 Before proposing any question, run it against the five-point checklist in that
 document, and state honestly which points are unverified when there is no way
 to check them from the current environment.
+
+**Do not derive answer keys unprompted.** Write the question, test it, log the
+outcome, and leave the key pending until asked. A key is still required before
+claiming an agent's answer was wrong.

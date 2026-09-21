@@ -92,9 +92,19 @@ Every question must satisfy all five:
    questions are hard because facts are scattered, never because phrasing is
    cryptic. A riddle blocks a competent human researcher for no useful reason
    and tests nothing about browsing.
-5. **Answer key derived from the document**, by hand, once. A refusal from
-   Google proves the question is hard; it does not prove it is answerable. If
-   the table is not broken out as assumed, discard the question.
+5. **Answer key — derived on request, not by default.** Keys are no longer a
+   precondition for logging or testing a question. Write the question, run it
+   up the agent ladder, and record the outcome; the key is derived later, when
+   the user asks for it.
+
+   Two things still hold. A key is required before an item is used to **score
+   correctness** — without one, "the agent was wrong" is unsupported. And a
+   question whose underlying column turns out not to exist at the level asked
+   is still discarded, whenever that surfaces.
+
+   Capability-limit items (see below) are the reason for the change: when an
+   agent works hard and returns a partial answer, the defeat is the finding,
+   and it stands whether or not the full key exists yet.
 
 ## Worked example
 
@@ -360,11 +370,13 @@ Two structural advantages worth exploiting:
 ## Authoring loop
 
 1. Pick a primary-source PDF. Never a news article, never Wikipedia.
-2. Compute something across rows that nobody has published.
+2. Identify something to compute across rows that nobody has published. The
+   computation itself can wait; the question does not depend on it.
 3. Paste the question into Google. Solved → discard and rebuild. Refused,
    hedged, or wrong → live question.
-4. The computation from step 2 is the answer key, and it is trusted because
-   it was derived rather than recalled.
+4. Derive the key when the user asks for it. It is trusted because it was
+   derived rather than recalled. Until then the log carries the outcome and
+   marks the key pending.
 
 Step 3 distinguishes two outcomes that look alike: a model producing a
 confident answer is not the same as a model producing a correct one. The
