@@ -34,10 +34,16 @@ The failure modes, in the order they were discovered:
    repeated many times. Model recall *is* a popularity filter, so it returns
    precisely the set of facts search engines index well. Questions must come
    from primary documents, not from recall.
-5. **Bot-imported statistics.** Population figures from the BBS census have been
-   scraped into Wikidata for every upazila. Asking for a population delta was
-   answered instantly (and probably wrongly). Check Wikidata before relying on
-   any statistic being "locked in a PDF".
+5. **Bot-imported statistics.** Census figures have been scraped out of the BBS
+   PDFs into two places, and both must be checked. Wikidata holds population
+   for every upazila. Separately, Bangladeshi upazila **Wikipedia articles** run
+   a standard demographics template carrying population, households, **literacy
+   rate split by sex**, religion breakdown, area and administration. A question
+   asking for the largest male-female literacy gap in Pabna was answered from
+   the Bera Upazila article — the column was never in the PDF only.
+
+   The check is: open the entity's Wikipedia article and read the infobox and
+   demographics section. Checking Wikidata alone is not sufficient.
 
 ## What works
 
@@ -56,9 +62,12 @@ Population was scraped; electricity access was not.
 
 Every question must satisfy all five:
 
-1. **Un-scraped column.** Not population. Literacy by sex, household size,
-   sanitation, electricity access, disability prevalence, bed counts, rejected
-   ballots, branch counts. Check Wikidata if unsure.
+1. **Un-scraped column.** Not population, and not literacy by sex — both are
+   already mirrored (see failure mode 5). Safe so far: electricity access,
+   sanitation, household size, disability prevalence, floating population, bed
+   counts, rejected ballots, branch counts. **Verify by opening the entity's
+   Wikipedia article and reading the demographics section**, not by checking
+   Wikidata alone.
 2. **Source hidden**, reached through a factual hop rather than named outright
    — unless deliberately benchmarking extraction rather than browsing.
 3. **Every clue resolves to exactly one entity.** Write out the candidate list
@@ -92,7 +101,7 @@ Primary documents where un-scraped columns are plentiful:
 
 | Source | Un-scraped columns worth mining |
 |---|---|
-| BBS Population & Housing Census community reports | electricity, sanitation, literacy by sex, household size, disability |
+| BBS Population & Housing Census community reports | electricity, sanitation, household size, disability, floating population (**not** population or literacy-by-sex — both mirrored on Wikipedia) |
 | Bangladesh Election Commission constituency results | rejected/invalid ballots, polling centre counts, runner-up margins |
 | DGHS *Health Bulletin* | sanctioned bed counts, facility counts by upazila |
 | Bangladesh Police annual crime statistics | offence counts by unit and division |
@@ -129,3 +138,5 @@ above actual accuracy. Always check the claimed answer against the document.
 |---|---|---|---|---|---|---|
 | 1 | Jhalokati upazila, lowest household grid electricity share | BBS 2022 community report | electricity access | refused, asked for the table | pending | live, key needed |
 | 2 | Bagerhat upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft |
+| 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
+| 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft, repairs #3 |
