@@ -212,6 +212,39 @@ not less. That is the calibration failure the paper measured, and a question
 that reliably provokes it is a better benchmark item than one that merely
 provokes a refusal.
 
+## Discrimination beats universal failure
+
+A question every agent fails cannot rank anything. The paper's value came from
+spread: Deep Research scored 51.5% where browsing GPT-4o scored 1.9%. The gap
+is the measurement, not the refusals.
+
+Question #7 produced three distinct outcomes on one prompt: Google returned no
+overview, Perplexity failed at the geography hop and answered for the wrong
+district entirely, and ChatGPT returned the verified answer to the decimal in
+27 seconds. That is a scoring question. Keep items that separate agents;
+discard items that merely stump all of them equally.
+
+### The current difficulty ceiling
+
+ChatGPT solved one hop plus one table extraction, locating the BBS PDF on an
+Oracle Cloud object store mirroring government files. Treat that shape as
+**within reach of a frontier search agent**, and reserve it for the lower end
+of a benchmark.
+
+To sit above the ceiling, a question needs entanglement rather than depth of
+burial: two or more tables, two or more publishers, and a join between them
+that no document performs. This is the divergence from the paper recorded in
+the alignment audit — the paper's questions are wide, not deep.
+
+### Hop failures are a distinct failure mode
+
+Perplexity did not misread a table; it decided Chattogram was the second-largest
+seaport when Chattogram is the largest and Mongla is second. Everything
+downstream was correct reasoning applied to the wrong district. Log hop
+failures separately from extraction failures and from stale-mirror failures:
+they say different things about an agent, and a question that trips the hop
+is not testing what a question that trips the table is testing.
+
 ## Source material
 
 Primary documents where un-scraped columns are plentiful:
@@ -319,6 +352,6 @@ and the agent attached it to the wrong entity.
 | 2 | Bagerhat upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft |
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
-| 7 | Bagerhat upazila with the largest male-female internet use gap, 5 years and above (source hidden) | BBS 2022 district report, Table 3.1.26 | internet use by sex | untested | **Rampal, 20.42 points** (33.96 male, 13.54 female) | **key verified**, ready to test |
+| 7 | Bagerhat upazila with the largest male-female internet use gap, 5 years and above (source hidden) | BBS 2022 district report, Table 3.1.26 | internet use by sex | Google: no overview. Perplexity: wrong district (Chattogram), answered Rangunia 43.93/25.49. ChatGPT: **correct**, Rampal 33.96/13.54/20.42 in 27s, citing Table 3.1.26 from an Oracle Cloud mirror | **Rampal, 20.42 points** (33.96 male, 13.54 female) | **solved at top rung; discriminates 1 of 3 agents** — key independently confirmed by ChatGPT |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
 | 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | **Mongla, 93.85%** (Table 3.2.13) | **VERIFIED — question live, agent wrong.** Perplexity answered Sharankhola 23.5%; truth is Mongla 93.85%, Sharankhola 97.34%. Wrong entity and wrong value, off by 73.84 points |
