@@ -249,6 +249,68 @@ confident answer is not the same as a model producing a correct one. The
 BrowseComp paper measured exactly this gap — verbalized confidence runs well
 above actual accuracy. Always check the claimed answer against the document.
 
+## Verified data: Bagerhat, Census 2022
+
+Extracted from the BBS *District Report: Bagerhat*, Tables 3.2.13 (printed p93)
+and 3.1.26 (printed p71). These are derived answer keys, not recalled values.
+
+### Main source of electricity, national grid (%), ascending
+
+| Upazila | National grid | Any electricity |
+|---|---|---|
+| Mongla | **93.85** | 98.46 |
+| Rampal | 96.60 | 98.27 |
+| Sharankhola | 97.34 | 99.10 |
+| Morelganj | 97.62 | 98.80 |
+| Kachua | 98.64 | 98.81 |
+| Fakirhat | 98.95 | 99.06 |
+| Bagerhat Sadar | 98.99 | 99.18 |
+| Chitalmari | 99.18 | 99.53 |
+| Mollahat | 99.55 | 99.72 |
+
+Spread 5.70 points, with Mongla a clean outlier rather than a rounding tie.
+Note the two columns disagree on the minimum: lowest **national grid** is
+Mongla, lowest **any electricity** is Rampal at 98.27%. A question must say
+which it means.
+
+The report's prose never states this ranking. It says only that coverage "in
+all upazilas of the district is almost the same" and that solar is "a bit high
+in Mongla upazila, 4.27%". The ordering exists only in the table.
+
+### Internet use, gap between male and female rates (5 years and above, points)
+
+| Upazila | Male | Female | Gap |
+|---|---|---|---|
+| Rampal | 33.96 | 13.54 | **20.42** |
+| Mongla | 36.65 | 18.10 | 18.55 |
+| Chitalmari | 34.04 | 17.58 | 16.46 |
+| Fakirhat | 32.83 | 16.90 | 15.93 |
+| Mollahat | 30.67 | 15.01 | 15.66 |
+| Bagerhat Sadar | 33.64 | 19.14 | 14.50 |
+| Kachua | 26.81 | 13.27 | 13.54 |
+| Morelganj | 26.72 | 14.38 | 12.34 |
+| Sharankhola | 29.61 | 18.68 | 10.93 |
+
+Spread 9.49 points, nearly double the electricity column. The gap is a
+subtraction across two printed columns that no source performs, and
+Banglapedia's profiles predate internet indicators entirely, so no stale
+mirror exists for it. Prefer this column.
+
+The report's prose does state the internet *rate* extremes (highest Mongla
+27.49%, lowest Kachua 19.86%), so a question must ask for the **gap**, not the
+rate.
+
+### Scoring question #6
+
+| | Perplexity | Verified |
+|---|---|---|
+| Upazila | Sharankhola | **Mongla** |
+| Value | 23.5% | **93.85%** |
+
+Wrong upazila and wrong figure, off by 73.84 points, with its named upazila
+placing third rather than first. The stale mirror supplied a 2001-era value
+and the agent attached it to the wrong entity.
+
 ## Question log
 
 | # | Question | Source | Column | Google result | Answer key | Status |
@@ -257,5 +319,6 @@ above actual accuracy. Always check the claimed answer against the document.
 | 2 | Bagerhat upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft |
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
+| 7 | Bagerhat upazila with the largest male-female internet use gap, 5 years and above (source hidden) | BBS 2022 district report, Table 3.1.26 | internet use by sex | untested | **Rampal, 20.42 points** (33.96 male, 13.54 female) | **key verified**, ready to test |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
-| 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | district-level: Bagerhat grid access 97.85% (2022) | **answer confirmed wrong** — 23.5% matches the district's 2001 figure of 22.95%; Banglapedia's 40.8% matches the 2011 figure of 40.82%. Upazila-level Table 3.2.13 (printed p93) still needed for the exact key, and the column is compressed, so the question likely moves to internet use (Table 3.1.26) |
+| 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | **Mongla, 93.85%** (Table 3.2.13) | **VERIFIED — question live, agent wrong.** Perplexity answered Sharankhola 23.5%; truth is Mongla 93.85%, Sharankhola 97.34%. Wrong entity and wrong value, off by 73.84 points |
