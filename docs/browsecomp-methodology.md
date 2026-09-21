@@ -141,20 +141,36 @@ another:
 - Better: an agent retrieves the stale figure and presents it as current,
   because nothing in the mirror says which census it came from.
 
-This is exactly what happened in question #6. Perplexity returned 23.5% for
-Sarankhola, which fits the old-census range and cannot be a 2022 value. A
-**time-shifted mirror reliably manufactures confident wrong answers**, which is
-the most valuable failure a benchmark question can provoke.
+This is exactly what happened in question #6, and the official report settles
+it numerically. The BBS *District Report: Bagerhat* (page xviii) gives main
+source of electricity for general households across four censuses:
+
+| Census | National Grid | No electricity |
+|---|---|---|
+| 2022 | **97.85%** | 1.03% |
+| 2011 | 40.82% | 59.18% |
+| 2001 | 22.95% | 77.05% |
+| 1991 | 7.92% | 92.08% |
+
+Perplexity reported **23.5%** for Sarankhola as the most recent census value.
+The district's **2001** figure is 22.95%. Banglapedia's 40.8% for Bagerhat
+Sadar matches the **2011** district figure of 40.82%. Both mirrors are exactly
+one or two censuses stale, and the agent presented a 2001-era number as
+current — wrong by roughly 74 percentage points.
+
+A **time-shifted mirror reliably manufactures confident wrong answers**, which
+is the most valuable failure a benchmark question can provoke.
 
 Check all three mirrors before trusting a column: Wikidata, the Wikipedia
 upazila demographics section, and Banglapedia.
 
 ### Watch for compressed columns
 
-A second consequence. If 2022 access is near-universal, every Bagerhat upazila
-will land somewhere in the high nineties, and "lowest" becomes a distinction of
-one or two points, sensitive to rounding and possibly tied. A column without
-spread cannot carry a question.
+A second consequence, now confirmed rather than predicted. Bagerhat's
+district-wide grid access is 97.85% in 2022, so every upazila sits in the
+mid-to-high nineties and "lowest" becomes a distinction of two or three points,
+sensitive to rounding and possibly tied. A column without spread cannot carry a
+question, however well it defeats a search engine.
 
 Prefer 2022 columns that still vary widely across upazilas: sanitation type,
 household size, disability prevalence, and the census's ICT indicators
@@ -242,4 +258,4 @@ above actual accuracy. Always check the claimed answer against the document.
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
-| 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | pending | **live and high value** — answer confirmed wrong in substance: national access was 99.40% in 2022, and Banglapedia carries old-census electricity figures (Bagerhat Sadar 40.8%), which is where 23.5% almost certainly came from. Correct value still unretrieved; bbs.gov.bd is blocked from this environment |
+| 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | district-level: Bagerhat grid access 97.85% (2022) | **answer confirmed wrong** — 23.5% matches the district's 2001 figure of 22.95%; Banglapedia's 40.8% matches the 2011 figure of 40.82%. Upazila-level Table 3.2.13 (printed p93) still needed for the exact key, and the column is compressed, so the question likely moves to internet use (Table 3.1.26) |
