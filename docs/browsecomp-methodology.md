@@ -58,6 +58,20 @@ Population was scraped; electricity access was not.
 > **The bots took the headline number off the top of each table and left the
 > rest of the columns behind. Those columns are the benchmark material.**
 
+This was then confirmed as a controlled comparison. Questions #3 and #4 in the
+log share a district, a hop, a census and a phrasing, and differ in one
+variable:
+
+| Column requested | Result |
+|---|---|
+| literacy rate by sex | confident AI Overview with figures, cited to Wikipedia |
+| household electricity access | no AI Overview at all |
+
+Note that #4 passed for the right reason. An earlier draft using a wordplay
+clue also produced no overview, but that was ambiguity rather than difficulty
+(see checklist point 4). Question #4 is well-formed, unambiguous and
+single-answer, and still returns nothing.
+
 ## Checklist
 
 Every question must satisfy all five:
@@ -139,4 +153,4 @@ above actual accuracy. Always check the claimed answer against the document.
 | 1 | Jhalokati upazila, lowest household grid electricity share | BBS 2022 community report | electricity access | refused, asked for the table | pending | live, key needed |
 | 2 | Bagerhat upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft |
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
-| 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft, repairs #3 |
+| 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
