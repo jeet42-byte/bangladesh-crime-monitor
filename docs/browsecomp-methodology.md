@@ -109,14 +109,25 @@ Every question must satisfy all five:
 
 No wordplay, one correct answer, final step inside an un-scraped column.
 
+## Scope of the rule
+
+The rule is about un-scraped columns, not about any single publisher. Question
+#5 moved to a different publisher, document format and domain — Election
+Commission constituency results, rejected ballot counts — and behaved the same
+way as the census questions: no AI Overview, organic results not merely weak
+but off-topic.
+
+Two source families now confirmed. Treat the recipe as portable to any official
+Bangladeshi publication with tabular data, subject to the same checklist.
+
 ## Source material
 
 Primary documents where un-scraped columns are plentiful:
 
 | Source | Un-scraped columns worth mining |
 |---|---|
-| BBS Population & Housing Census community reports | electricity, sanitation, household size, disability, floating population (**not** population or literacy-by-sex — both mirrored on Wikipedia) |
-| Bangladesh Election Commission constituency results | rejected/invalid ballots, polling centre counts, runner-up margins |
+| BBS Population & Housing Census community reports | electricity access (**proven**, questions #1 and #4), sanitation, household size, disability, floating population (**not** population or literacy-by-sex — both mirrored on Wikipedia) |
+| Bangladesh Election Commission constituency results | rejected/invalid ballots (**proven**, question #5), polling centre counts, runner-up margins |
 | DGHS *Health Bulletin* | sanctioned bed counts, facility counts by upazila |
 | Bangladesh Police annual crime statistics | offence counts by unit and division |
 | Bangladesh Bank branch statistics | rural/urban branch ratios by district |
@@ -154,3 +165,4 @@ above actual accuracy. Always check the claimed answer against the document.
 | 2 | Bagerhat upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | untested | pending | draft |
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
+| 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
