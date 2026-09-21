@@ -231,10 +231,26 @@ Oracle Cloud object store mirroring government files. Treat that shape as
 **within reach of a frontier search agent**, and reserve it for the lower end
 of a benchmark.
 
-To sit above the ceiling, a question needs entanglement rather than depth of
-burial: two or more tables, two or more publishers, and a join between them
-that no document performs. This is the divergence from the paper recorded in
-the alignment audit — the paper's questions are wide, not deep.
+Entanglement across publishers does **not** clear the ceiling either. Question
+#8 chained a computed result from a BBS census table into an Election
+Commission result sheet — two tables, two publishers, a join no document
+performs — and ChatGPT solved it in 42 seconds over 23 sites, correctly
+distinguishing the official rejected-ballot figure from one inferred off
+candidate totals.
+
+So both mechanisms this method was built on are beaten: depth of burial, and
+the cross-publisher join. What remains untested is the shape the paper actually
+used — **breadth**. A BrowseComp question stacks four or five broad constraints
+that each return thousands of candidates, where only the intersection is
+unique. The difficulty is reconciling threads, not retrieving a buried number.
+
+Two other reservoirs remain genuinely out of reach: **Bangla-only sources**,
+where the search index is far thinner, and **non-digitized records**, which no
+agent can reach at all.
+
+A useful side finding: ChatGPT located constituency-level rejected ballots on
+file-khulna.portal.gov.bd, confirming that the Election Commission data behind
+question #5 is published per constituency and that question is answerable.
 
 ### Hop failures are a distinct failure mode
 
@@ -353,5 +369,6 @@ and the agent attached it to the wrong entity.
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
 | 7 | Bagerhat upazila with the largest male-female internet use gap, 5 years and above (source hidden) | BBS 2022 district report, Table 3.1.26 | internet use by sex | Google: no overview. Perplexity: wrong district (Chattogram), answered Rangunia 43.93/25.49. ChatGPT: **correct**, Rampal 33.96/13.54/20.42 in 27s, citing Table 3.1.26 from an Oracle Cloud mirror | **Rampal, 20.42 points** (33.96 male, 13.54 female) | **solved at top rung; discriminates 1 of 3 agents** — key independently confirmed by ChatGPT |
+| 8 | Layered: Bagerhat's largest internet-gender-gap upazila, then its 2018 constituency and rejected ballot count | BBS Table 3.1.26 + EC 2018 result sheet | internet use by sex + rejected ballots | ChatGPT: **solved**, Rampal to Bagerhat-3 (Rampal-Mongla) to 1,110 rejected ballots, 42s over 23 sites, cited a result sheet on file-khulna.portal.gov.bd | first half **verified** (Rampal); ballot count **unverified** | cross-publisher join beaten; 1,110 needs checking against the source |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
 | 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | **Mongla, 93.85%** (Table 3.2.13) | **VERIFIED — question live, agent wrong.** Perplexity answered Sharankhola 23.5%; truth is Mongla 93.85%, Sharankhola 97.34%. Wrong entity and wrong value, off by 73.84 points |
