@@ -283,6 +283,57 @@ The counting test settles it: ask the agent to produce the per-unit breakdown
 its answer implies — one row per district, one figure per upazila. An agent
 that cannot produce the intermediate rows never computed over them.
 
+## Scale is the lever that works
+
+Depth of burial and cross-publisher joins are both within reach of a frontier
+agent. **Search-space size is not.**
+
+Question #7 asked for the maximum across one district's nine upazilas and
+ChatGPT solved it in 27 seconds. Question #9 asked the same thing across a
+division's ten districts and roughly 59 upazilas. ChatGPT worked 14 minutes 13
+seconds, searched the BBS index, cloned GitHub repositories looking for a
+machine-readable mirror, correctly distinguished the 5+ fields from the 15+
+aggregate, and explicitly declined to substitute district-level aggregates for
+the upazila rows the question required. It returned five districts of ten and
+left the rest blank:
+
+| District | Upazila | Male | Female | Gap |
+|---|---|---|---|---|
+| Bagerhat | Rampal | 33.96 | 13.54 | 20.42 |
+| Meherpur | Meherpur Sadar | 46.76 | 26.97 | 19.79 |
+| Khulna | Paikgachha | 30.52 | 10.89 | 19.63 |
+| Jashore | Sharsha | 36.19 | 16.63 | 19.56 |
+| Kushtia | Kumarkhali | 30.99 | 14.16 | 16.83 |
+| Chuadanga, Jhenaidah, Magura, Narail, Satkhira | not reported | | | |
+
+Only the Bagerhat row is verified here against the actual table; the other four
+are agent-derived and unchecked. The question remains unresolved: any of the
+five missing districts could exceed 20.42.
+
+### Two kinds of defeat, both worth collecting
+
+- **Calibration failure** (question #6): the agent answers confidently and
+  wrongly. Catches an agent that does not know what it does not know.
+- **Capability limit** (question #9): the agent works hard, reports partial
+  results, and declines to invent the rest. Catches the edge of what an
+  interactive agent can afford.
+
+ChatGPT's behaviour here was good — no fabrication, no narrated rigour over an
+empty trace. A question can defeat an agent without the agent behaving badly,
+and that is the cleaner kind of benchmark item.
+
+### Why scale is durable
+
+The asymmetry is in effort, not knowledge. Extraction across sixty documents is
+scriptable offline; an interactive agent must do it inside a session budget,
+holding hundreds of rows it has no memory for. That asymmetry does not close
+with a better model in the way a single buried table does.
+
+Escalation ladder for any solved question: one district, then one division,
+then the country. Add negation ("which upazila recorded **no** households
+using solar as their main source") where exhaustive checking is the only path
+to an answer.
+
 ## Source material
 
 Primary documents where un-scraped columns are plentiful:
@@ -392,6 +443,6 @@ and the agent attached it to the wrong entity.
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
 | 7 | Bagerhat upazila with the largest male-female internet use gap, 5 years and above (source hidden) | BBS 2022 district report, Table 3.1.26 | internet use by sex | Google: no overview. Perplexity: wrong district (Chattogram), answered Rangunia 43.93/25.49. ChatGPT: **correct**, Rampal 33.96/13.54/20.42 in 27s, citing Table 3.1.26 from an Oracle Cloud mirror | **Rampal, 20.42 points** (33.96 male, 13.54 female) | **solved at top rung; discriminates 1 of 3 agents** — key independently confirmed by ChatGPT |
 | 8 | Layered: Bagerhat's largest internet-gender-gap upazila, then its 2018 constituency and rejected ballot count | BBS Table 3.1.26 + EC 2018 result sheet | internet use by sex + rejected ballots | ChatGPT: **solved**, Rampal to Bagerhat-3 (Rampal-Mongla) to 1,110 rejected ballots, 42s over 23 sites, cited a result sheet on file-khulna.portal.gov.bd | first half **verified** (Rampal); ballot count **unverified** | cross-publisher join beaten; 1,110 needs checking against the source |
-| 9 | Same gap question scaled to ALL upazilas of Khulna Division (10 districts, ~59 upazilas) | BBS 2022 district reports x10 | internet use by sex | ChatGPT answered Rampal/Bagerhat again — **but in the same chat thread that already held that answer**, over ~5 site visits in 1m50s | unverified | **contaminated test** — rerun in a fresh chat; work performed does not match 10 PDFs |
+| 9 | Same gap question scaled to ALL upazilas of Khulna Division (10 districts, ~59 upazilas) | BBS 2022 district reports x10 | internet use by sex | Counting test: ChatGPT worked **14m13s**, cloned repositories, hunted machine-readable mirrors, and returned **5 of 10 districts**, leaving five blank rather than inventing them | partial; Bagerhat verified by us, four rows agent-derived, five districts unknown | **NOT SOLVED — first question to defeat ChatGPT.** Scale is the working lever |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
 | 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | **Mongla, 93.85%** (Table 3.2.13) | **VERIFIED — question live, agent wrong.** Perplexity answered Sharankhola 23.5%; truth is Mongla 93.85%, Sharankhola 97.34%. Wrong entity and wrong value, off by 73.84 points |
