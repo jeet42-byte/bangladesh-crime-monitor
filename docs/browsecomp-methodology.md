@@ -120,6 +120,41 @@ but off-topic.
 Two source families now confirmed. Treat the recipe as portable to any official
 Bangladeshi publication with tabular data, subject to the same checklist.
 
+## Testing against agents, not search boxes
+
+Google's AI Overview is a retrieve-and-summarize layer, not a browsing agent.
+Surviving it proves the answer is not in an indexed page or a scraped infobox.
+It does not prove an agent that downloads and parses a PDF would fail. The
+paper's own filter was against browsing agents (GPT-4o with browsing, o1, an
+early Deep Research), which is a materially stronger bar.
+
+Run candidates up a ladder, killing them as cheaply as possible:
+
+1. Google AI Overview — free, instant, removes most candidates
+2. Google AI Mode — multi-step search, one click from the results page
+3. Perplexity, or Gemini Deep Research — iterative browsing, opens documents
+4. ChatGPT Deep Research or agent mode — closest to the paper's filter
+
+A confident answer at any rung is not automatically a solve. Question #6 was
+answered by Perplexity in 18 seconds from 58 sources, with a precise figure and
+a correct geographic chain — and the figure was near-certainly the 2011 value,
+because Bangladesh reached effectively universal household electricity access
+before the 2022 census. Check the *plausibility of the number* against what is
+known about the domain, not just whether a number appeared.
+
+Three tells that an answer was generated rather than retrieved:
+
+- **Hedged sourcing** — "census-era data", "available figures", "approximately"
+  where the table would give an exact value
+- **Citation to a mirror rather than the source document** — Wikipedia where
+  the BBS community report was required
+- **A self-flagged difficulty warning followed by a confident answer**
+
+An agent that answers confidently and wrongly makes a question *more* valuable,
+not less. That is the calibration failure the paper measured, and a question
+that reliably provokes it is a better benchmark item than one that merely
+provokes a refusal.
+
 ## Source material
 
 Primary documents where un-scraped columns are plentiful:
@@ -166,3 +201,4 @@ above actual accuracy. Always check the claimed answer against the document.
 | 3 | Pabna upazila, largest male-female literacy gap (source hidden) | BBS 2022 community report | literacy by sex | answered: Bera, 68.83/64.94, gap 3.89pp, cited to the Bera Upazila Wikipedia article | not derived | column mirrored on Wikipedia; ranking unverified, falsification tests pending |
 | 4 | Pabna upazila, lowest household grid electricity share (source hidden) | BBS 2022 community report | electricity access | no AI Overview; organic results were Rooppur background (ResearchGate, IAEA, Facebook) | pending | **live**, key needed |
 | 5 | Khulna Division constituency with the most rejected ballots, 2018 (source hidden) | Election Commission 2018 results | rejected/invalid ballots | no AI Overview; organic results off-topic entirely (India GCC report, a PDF on Russian politics, an unrelated election video) | pending | **live**, key needed |
+| 6 | Layered: Bagerhat's lowest-electricity upazila, then its 2018 constituency and rejected ballot count | BBS 2022 community report + EC 2018 results | electricity access + rejected ballots | Perplexity (free, 18s, 58 sources) answered: Sarankhola, 23.5%, Bagerhat-4, 1,415 rejected. Hedged as "census-era data", cited Wikipedia not BBS, and the UI itself warned the question looked difficult | pending | **live and high value** — 23.5% is a 2011-era figure; national access was ~99% by the 2022 census, so the answer is almost certainly wrong |
