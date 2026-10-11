@@ -304,8 +304,20 @@ def _get_model() -> Any:
 _MIN_SECONDS_BETWEEN_CALLS = 1.5
 _TRANSIENT_MARKERS = ("429", "503", "quota", "rate limit", "overloaded",
                       "high demand", "unavailable", "resource_exhausted")
+# A rejected or malformed credential is not transient: retrying it only burns
+# the whole scrape window. gRPC reports a whitespace-wrapped API key as
+# "Illegal header value"/"Illegal metadata" and tags it 503, so these markers
+# must be checked before the transient ones or the key error retries forever.
+_CREDENTIAL_MARKERS = ("illegal header value", "illegal metadata",
+                       "invalid metadata", "api key not valid", "api_key_invalid",
+                       "invalid api key", "unauthenticated", "permission_denied",
+                       "permission denied")
 _MAX_ATTEMPTS = 4
 _BACKOFF_SECONDS = (4, 12, 30)
+# Cap a single extraction so a stuck call cannot block on gRPC's 600s default
+# deadline. One scrape window fires dozens of calls inside a 25-minute CI job;
+# an unbounded call per article is what let a bad key run the job to timeout.
+_REQUEST_TIMEOUT_SECONDS = 45
 
 _last_call_at = 0.0
 
@@ -313,6 +325,11 @@ _last_call_at = 0.0
 def _is_transient(message: str) -> bool:
     lowered = message.lower()
     return any(marker in lowered for marker in _TRANSIENT_MARKERS)
+
+
+def _is_credential_error(message: str) -> bool:
+    lowered = message.lower()
+    return any(marker in lowered for marker in _CREDENTIAL_MARKERS)
 
 
 def _parse_json_response(text: str) -> Optional[Dict[str, Any]]:
@@ -357,7 +374,10 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
 
         try:
             _last_call_at = time.monotonic()
-            response = model.generate_content(raw_text[:24000])
+            response = model.generate_content(
+                raw_text[:24000],
+                request_options={"timeout": _REQUEST_TIMEOUT_SECONDS},
+            )
             text = (response.text or "").strip()
 
             if not text:
@@ -379,6 +399,24 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
 
         except Exception as exc:  # noqa: BLE001 - quota, network, safety blocks
             message = str(exc)
+
+            # A bad credential fails identically on every call. Checked before
+            # the transient branch because gRPC tags an illegal metadata value
+            # as 503: without this the key error would match _is_transient and
+            # retry four times per article, blocking the run until CI kills it.
+            # Trip the init-failed flag so the rest of the window skips Gemini
+            # entirely and drops straight to the heuristic path.
+            if _is_credential_error(message):
+                global _MODEL, _MODEL_INIT_FAILED
+                _MODEL = None
+                _MODEL_INIT_FAILED = True
+                logger.error(
+                    "Gemini rejected the credentials (%s). Check GEMINI_API_KEY "
+                    "for an invalid or whitespace-wrapped value. Falling back to "
+                    "heuristic extraction for the rest of this run.",
+                    message[:200],
+                )
+                return None
 
             # A retired or misspelled model 404s on every single call, so the
             # whole run silently degrades to keyword extraction and the

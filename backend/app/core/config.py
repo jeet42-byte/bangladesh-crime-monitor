@@ -44,6 +44,13 @@ class Settings(BaseSettings):
     )
 
     # --- LLM --------------------------------------------------------------
+    # Pasted secrets routinely carry a trailing newline or stray spaces. The
+    # key and model name are sent to Gemini as gRPC request metadata, and gRPC
+    # rejects any header value containing control characters with "Illegal
+    # header value" - which the client surfaces as a 503, so the extractor's
+    # retry loop treats it as transient and blocks on the 600s gRPC deadline
+    # for every article until the cron job is killed at its timeout. Strip the
+    # values on load so a whitespace-wrapped secret cannot do that.
     GEMINI_API_KEY: str = ""
     # A floating alias, not a pinned version, and deliberately so: this
     # pipeline runs unattended on a cron. When a pinned model is retired -
@@ -123,6 +130,12 @@ class Settings(BaseSettings):
     # validator ran. Render's dashboard only accepts flat strings, so the
     # comma form is what actually gets used in production.
     CORS_ORIGINS: Annotated[List[str], NoDecode] = ["http://localhost:3000"]
+
+    @field_validator("GEMINI_API_KEY", "GEMINI_MODEL", mode="before")
+    @classmethod
+    def _strip_secret(cls, value: object) -> object:
+        """Trim whitespace from credentials sent as gRPC request metadata."""
+        return value.strip() if isinstance(value, str) else value
 
     @field_validator("CORS_ORIGINS", mode="before")
     @classmethod
