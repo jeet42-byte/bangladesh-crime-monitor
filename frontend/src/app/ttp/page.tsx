@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Crosshair, Info, Landmark, Phone, User, Users } from "lucide-react";
 
-import RequireAuth from "@/components/auth/RequireAuth";
 import TTPCard from "@/components/ttp/TTPCard";
 import { fetchTTPProfiles } from "@/lib/api";
 import { cn, formatNumber } from "@/lib/utils";
@@ -324,9 +323,5 @@ function TTPPage() {
 }
 
 export default function Page() {
-  return (
-    <RequireAuth>
-      <TTPPage />
-    </RequireAuth>
-  );
+  return <TTPPage />;
 }

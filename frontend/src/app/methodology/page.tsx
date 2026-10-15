@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 
 import { API_BASE_URL } from "@/lib/api";
-import RequireAuth from "@/components/auth/RequireAuth";
 
 export const metadata: Metadata = {
   title: "Methodology",
@@ -330,12 +329,6 @@ function MethodologyPage() {
 }
 
 
-// Gated: guests and signed-out visitors get the account prompt instead. The
-// Command Center stays open to everyone.
 export default function Page() {
-  return (
-    <RequireAuth>
-      <MethodologyPage />
-    </RequireAuth>
-  );
+  return <MethodologyPage />;
 }

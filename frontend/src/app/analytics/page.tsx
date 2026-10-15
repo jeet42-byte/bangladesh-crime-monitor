@@ -29,7 +29,6 @@ import {
   type TrendsResponse,
 } from "@/types/crime";
 import { cn, formatNumber, formatPercent } from "@/lib/utils";
-import RequireAuth from "@/components/auth/RequireAuth";
 
 const TRUST_BAR: Record<string, string> = {
   police_report: "bg-trust-official",
@@ -280,12 +279,6 @@ function AnalyticsPage() {
 }
 
 
-// Gated: guests and signed-out visitors get the account prompt instead. The
-// Command Center stays open to everyone.
 export default function Page() {
-  return (
-    <RequireAuth>
-      <AnalyticsPage />
-    </RequireAuth>
-  );
+  return <AnalyticsPage />;
 }
