@@ -26,8 +26,9 @@ from bs4 import BeautifulSoup
 from app.parsers.llm_extractor import (
     BST,
     ExtractedIncident,
-    extract_crime_entities_async,
+    extract_with_verdict_async,
 )
+from app.scrapers.seen_cache import SeenCache
 
 logger = logging.getLogger(__name__)
 
@@ -442,6 +443,7 @@ async def scrape_news(
     lookback_hours: int = 12,
     max_articles: int = 60,
     feeds: Optional[Iterable[NewsFeed]] = None,
+    seen: Optional[SeenCache] = None,
 ) -> List[ExtractedIncident]:
     """Run the full news pipeline and return normalised incidents.
 
@@ -469,6 +471,7 @@ async def scrape_news(
 
         candidates: List[Dict[str, object]] = []
         seen_links: set[str] = set()
+        skipped_seen = 0
 
         for result in feed_results:
             if isinstance(result, BaseException):
@@ -477,6 +480,11 @@ async def scrape_news(
             for entry in result:
                 link = str(entry["link"])
                 if link in seen_links:
+                    continue
+                # Already read by the model on an earlier run. Skipping here,
+                # before the cap, lets genuinely new articles take the slots.
+                if seen is not None and link in seen:
+                    skipped_seen += 1
                     continue
 
                 published = entry["published"]
@@ -543,6 +551,8 @@ async def scrape_news(
                 max_articles,
             )
 
+        if skipped_seen:
+            logger.info("skipped %d articles already processed on earlier runs", skipped_seen)
         logger.info("%d crime-candidate articles after filtering", len(candidates))
         if not candidates:
             return []
@@ -577,7 +587,7 @@ async def scrape_news(
         composed = f"{entry['title']}\n\n{article_text}"
 
         try:
-            incident = await extract_crime_entities_async(
+            incident, final = await extract_with_verdict_async(
                 composed,
                 entry["feed"].source_platform,  # type: ignore[union-attr]
                 source_url=str(entry["link"]),
@@ -586,6 +596,9 @@ async def scrape_news(
         except Exception as exc:  # noqa: BLE001 - one bad article must not stop the run
             logger.warning("extraction failed for %s: %s", entry["link"], exc)
             continue
+
+        if final and seen is not None:
+            seen.add(str(entry["link"]))
 
         if incident is not None:
             # The masthead, not the hostname. Until this was set, every news

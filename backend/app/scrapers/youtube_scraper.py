@@ -40,10 +40,11 @@ import httpx
 from app.parsers.llm_extractor import (
     BST,
     ExtractedIncident,
-    extract_crime_entities_async,
+    extract_with_verdict_async,
 )
 from app.scrapers.news_scraper import USER_AGENT, looks_like_crime
 
+from app.scrapers.seen_cache import SeenCache
 logger = logging.getLogger(__name__)
 
 REQUEST_TIMEOUT = httpx.Timeout(25.0, connect=10.0)
@@ -211,6 +212,7 @@ async def scrape_youtube(
     lookback_hours: int = 12,
     max_videos: int = 20,
     channels: Optional[Iterable[YouTubeChannel]] = None,
+    processed: Optional[SeenCache] = None,
 ) -> List[ExtractedIncident]:
     """Collect crime-shaped television reports from the registered channels."""
     registry = list(channels) if channels is not None else YOUTUBE_CHANNELS
@@ -246,6 +248,8 @@ async def scrape_youtube(
             fingerprint = title[:120].lower()
             if fingerprint in seen:
                 continue
+            if processed is not None and str(entry["link"]) in processed:
+                continue
             seen.add(fingerprint)
             candidates.append(entry)
 
@@ -267,7 +271,7 @@ async def scrape_youtube(
         composed = f"{entry['title']}\n\n{entry['description']}".strip()
 
         try:
-            incident = await extract_crime_entities_async(
+            incident, final = await extract_with_verdict_async(
                 composed,
                 "news_portal",
                 source_url=str(entry["link"]),
@@ -276,6 +280,9 @@ async def scrape_youtube(
         except Exception as exc:  # noqa: BLE001 - one bad video must not stop the run
             logger.warning("youtube extraction failed for %s: %s", entry["link"], exc)
             continue
+
+        if final and processed is not None:
+            processed.add(str(entry["link"]))
 
         if incident is None:
             continue

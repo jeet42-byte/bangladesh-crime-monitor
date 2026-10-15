@@ -31,6 +31,7 @@ from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
 from app.scrapers.cirt_scraper import scrape_cirt  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
 from app.scrapers.news_scraper import scrape_news  # noqa: E402
+from app.scrapers.seen_cache import SeenCache  # noqa: E402
 from app.scrapers.telegram_scraper import scrape_telegram  # noqa: E402
 from app.scrapers.youtube_scraper import scrape_youtube  # noqa: E402
 
@@ -203,12 +204,19 @@ async def run(args: argparse.Namespace) -> int:
         args.lookback_hours,
     )
 
+    # Dry runs read the cache but never write it, so a test run does not hide
+    # articles from the next real one.
+    seen = SeenCache(Path(args.seen_cache) if args.seen_cache else None)
+    if seen.loaded:
+        logger.info("seen-cache: %d articles already processed on earlier runs", seen.loaded)
+
     tasks = []
     if not args.skip_news:
         tasks.append(
             scrape_news(
                 lookback_hours=args.lookback_hours,
                 max_articles=args.max_articles,
+                seen=seen,
             )
         )
     if not args.skip_facebook:
@@ -223,6 +231,7 @@ async def run(args: argparse.Namespace) -> int:
             scrape_youtube(
                 lookback_hours=args.lookback_hours,
                 max_videos=args.max_videos,
+                processed=seen,
             )
         )
     if not args.skip_cirt:
@@ -292,6 +301,7 @@ async def run(args: argparse.Namespace) -> int:
 
     if not incidents:
         logger.info("nothing new in this window; exiting cleanly")
+        seen.save()
         return 0
 
     backend_url = args.backend_url.rstrip("/")
@@ -309,6 +319,10 @@ async def run(args: argparse.Namespace) -> int:
             result = await _post_chunk(client, endpoint, api_key, chunk)
             for key in totals:
                 totals[key] += int(result.get(key, 0))
+
+    # Only after every chunk posted: _post_chunk raises on failure, so if the
+    # backend was down these articles stay unrecorded and are retried.
+    seen.save()
 
     elapsed = (datetime.now(timezone.utc) - started).total_seconds()
     logger.info(
@@ -398,6 +412,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--dry-run",
         action="store_true",
         help="Print the payload as JSON instead of posting it.",
+    )
+    parser.add_argument(
+        "--seen-cache",
+        default=None,
+        help=(
+            "JSON file of article URLs already sent to the model. Read and "
+            "updated each run so the same story is not re-extracted on every "
+            "cron tick; the workflow persists it through the Actions cache."
+        ),
     )
     parser.add_argument("--verbose", "-v", action="store_true")
     return parser

@@ -97,12 +97,30 @@ jobs:
           done
           echo "::warning::Backend did not report healthy; the ingest step will retry on its own."
 
+      # Article URLs the model already read on earlier runs. The key changes
+      # every run, so each run saves a fresh copy; restore-keys picks up the
+      # most recent one.
+      - name: Restore processed-article cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .ingest-cache/seen.json
+          key: seen-urls-${{ github.run_id }}
+          restore-keys: seen-urls-
+
       - name: Run scrapers and ingest
         run: |
           python backend/run_scrapers.py \
+            --seen-cache .ingest-cache/seen.json \
             --with-telegram \
             --lookback-hours "${{ github.event.inputs.lookback_hours || '3' }}" \
             ${{ github.event.inputs.dry_run == 'true' && '--dry-run' || '' }}
+
+      - name: Save processed-article cache
+        if: always() && hashFiles('.ingest-cache/seen.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .ingest-cache/seen.json
+          key: seen-urls-${{ github.run_id }}
 
       - name: Report failure
         if: failure()
