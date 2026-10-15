@@ -47,6 +47,11 @@ jobs:
             echo "present=false" >> "$GITHUB_OUTPUT"
           else
             echo "present=true" >> "$GITHUB_OUTPUT"
+            # A secret pasted with a trailing newline makes Vercel answer
+            # "User not found" - the same failure the Gemini key had.
+            token="$(printf '%s' "$VERCEL_TOKEN" | tr -d '[:space:]')"
+            echo "::add-mask::$token"
+            echo "VERCEL_TOKEN_CLEAN=$token" >> "$GITHUB_ENV"
           fi
 
       - name: Set up Node
@@ -57,8 +62,8 @@ jobs:
 
       - name: Link to the Vercel project
         if: steps.token.outputs.present == 'true'
-        run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --token "$VERCEL_TOKEN"
+        run: npx --yes vercel@latest link --yes --project "$VERCEL_PROJECT" --token "$VERCEL_TOKEN_CLEAN"
 
       - name: Deploy
         if: steps.token.outputs.present == 'true'
-        run: npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN"
+        run: npx --yes vercel@latest deploy --prod --yes --token "$VERCEL_TOKEN_CLEAN"
