@@ -36,7 +36,8 @@ from app.parsers.asset_lexicon import _compile, slug_to_text
 # ---------------------------------------------------------------------------
 STRONG_TERMS: Tuple[str, ...] = (
     "cybercrim", "cyber crim", "cyber-crim", "cyberattack", "cyber attack",
-    "cyber-attack", "cyber fraud", "cyber security act", "digital security act",
+    "cyber-attack", "cyber fraud", "cyber security act", "cyber security ordinance",
+    "digital security act",
     "cyber tribunal", "cyber police", "cyber unit", "cyber harass",
     "cyberbully", "cyber bully",
     "hack", "phishing", "ransomware", "malware", "spyware", "trojan",
@@ -50,7 +51,7 @@ STRONG_TERMS: Tuple[str, ...] = (
     # Bengali
     "সাইবার", "হ্যাক", "ফিশিং", "র‍্যানসমওয়্যার", "ম্যালওয়্যার",
     "ডিজিটাল নিরাপত্তা আইন", "ডিজিটাল নিরাপত্তা আইনে",
-    "সাইবার নিরাপত্তা আইন", "সাইবার ট্রাইব্যুনাল",
+    "সাইবার নিরাপত্তা আইন", "সাইবার সুরক্ষা অধ্যাদেশ", "সাইবার ট্রাইব্যুনাল",
     "অনলাইন প্রতারণা", "অনলাইনে প্রতারণা", "অনলাইন জুয়া", "অনলাইনে জুয়া",
     "ডিপফেক", "আপত্তিকর ছবি", "আপত্তিকর ভিডিও", "অশ্লীল ভিডিও",
     "অশ্লীল ছবি", "ভুয়া আইডি", "ফেক আইডি", "ভুয়া পেজ", "তথ্য ফাঁস",

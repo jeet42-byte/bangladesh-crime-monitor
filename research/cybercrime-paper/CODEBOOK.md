@@ -94,6 +94,7 @@ Which law does the article say the case was filed under?
 
 | Value | Use when |
 |---|---|
+| `cyber_security_ordinance_2025` | Cyber Security Ordinance 2025 (in force 21 May 2025; repealed the CSA 2023). |
 | `cyber_security_act_2023` | Cyber Security Act 2023. |
 | `digital_security_act_2018` | Digital Security Act 2018. |
 | `ict_act_2006` | Information and Communication Technology Act 2006. |

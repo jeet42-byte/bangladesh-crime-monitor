@@ -410,7 +410,8 @@ def analyse(
                   "As reported; 'unknown' where the article does not say."),
         _markdown("Table 6. Law cited, by year", tables["year_law"],
                   "The Cyber Security Act 2023 replaced the Digital Security Act 2018 "
-                  "in September 2023. Descriptive only."),
+                  "in September 2023 and was repealed by the Cyber Security "
+                  "Ordinance 2025 in May 2025. Descriptive only."),
         _markdown("Table 7. Arrests reported, by type", tables["arrests"]),
         _markdown("Table 8. Money lost or demanded, by type", tables["amounts"],
                   "Only incidents whose article states an amount."),
