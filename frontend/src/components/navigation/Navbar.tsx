@@ -24,11 +24,11 @@ import { cn, currentBSTClock } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/", label: "Command Center", icon: Radar, gated: false },
-  { href: "/analytics", label: "Analytics", icon: BarChart3, gated: true },
-  { href: "/database", label: "Archive", icon: Database, gated: true },
-  { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: true },
-  { href: "/exposure", label: "Site Exposure", icon: Building2, gated: true },
-  { href: "/methodology", label: "Methodology", icon: FileText, gated: true },
+  { href: "/analytics", label: "Analytics", icon: BarChart3, gated: false },
+  { href: "/database", label: "Archive", icon: Database, gated: false },
+  { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: false },
+  { href: "/exposure", label: "Site Exposure", icon: Building2, gated: false },
+  { href: "/methodology", label: "Methodology", icon: FileText, gated: false },
 ] as const;
 
 // Shown only to the owner: it is a maintenance surface, not a section of the

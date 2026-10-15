@@ -33,7 +33,6 @@ import {
   VERIFICATION_CLASS,
   VERIFICATION_LABEL,
 } from "@/lib/utils";
-import RequireAuth from "@/components/auth/RequireAuth";
 
 const PAGE_SIZE = 100;
 /** Hard ceiling on a single CSV export, to keep the browser responsive. */
@@ -380,12 +379,6 @@ function DatabasePage() {
 }
 
 
-// Gated: guests and signed-out visitors get the account prompt instead. The
-// Command Center stays open to everyone.
 export default function Page() {
-  return (
-    <RequireAuth>
-      <DatabasePage />
-    </RequireAuth>
-  );
+  return <DatabasePage />;
 }

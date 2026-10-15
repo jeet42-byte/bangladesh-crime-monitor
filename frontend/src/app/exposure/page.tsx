@@ -12,7 +12,6 @@ import {
   TriangleAlert,
 } from "lucide-react";
 
-import RequireAuth from "@/components/auth/RequireAuth";
 import CoverageBanner from "@/components/assets/CoverageBanner";
 import { fetchExposure, fetchSites } from "@/lib/api";
 import {
@@ -440,9 +439,5 @@ function ExposurePage() {
 }
 
 export default function Page() {
-  return (
-    <RequireAuth>
-      <ExposurePage />
-    </RequireAuth>
-  );
+  return <ExposurePage />;
 }
