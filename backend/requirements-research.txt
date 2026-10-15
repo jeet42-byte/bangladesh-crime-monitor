@@ -1,0 +1,4 @@
+# Extra packages for the research tooling (backfill.py --topic cyber).
+# Not needed by the deployed API, so kept out of requirements.txt.
+-r requirements.txt
+matplotlib>=3.8

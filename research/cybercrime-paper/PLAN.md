@@ -93,16 +93,37 @@ python backfill.py --topic cyber score --coder-a a.csv --coder-b b.csv
 
 ## Analysis (RQ1–3)
 
-- Descriptive counts and trends by year and category; change around the
-  Cyber Security Act 2023 (replacing the Digital Security Act 2018) —
-  descriptive only, not a causal claim.
-- Victim/offender/platform cross-tabs.
-- Division/district map (district centroids; note the precision limit
-  documented in `HANDOFF.md` §6).
-- CIRT vs. news: category overlap, time lag between advisory and first press
-  report, harms present in only one stream.
+Built (`backend/app/research/cyber_analysis.py`):
+
+```
+cd backend
+pip install -r requirements-research.txt   # adds matplotlib
+python backfill.py --topic cyber cirt       # full CIRT advisory archive, coded
+python backfill.py --topic cyber analyse    # -> .backfill-cyber/analysis/
+```
+
+`analysis/results.md` holds Tables 1–10 ready for the draft, each also as
+CSV; figures are `fig1`–`fig4` PNGs.
+
+| Output | Content |
+|---|---|
+| Table 1 | Corpus: articles coded and cybercrime articles by outlet/language |
+| Table 2 / Fig 1 | Incidents by year × type (RQ1) |
+| Table 3 / Fig 2 | Type × platform (RQ2) |
+| Tables 4–5 | Type × victim type, victim gender (RQ2) |
+| Table 6 | Law cited by year — DSA 2018 → CSA 2023, descriptive only |
+| Table 7 | Arrest reported, by type |
+| Table 8 | Money lost/demanded by type (median, total) |
+| Table 9 / Fig 3 | Districts (centroid bubble map, no basemap — precision limit) |
+| Table 10 / Fig 4 | News incidents vs. CIRT fraud/abuse advisories (RQ3) |
+
+- **Articles vs. incidents:** one incident reported by several outlets is
+  merged (same type + district, dates within ±3 days, no conflicting
+  amount). Both counts are reported; describe this heuristic in Methods.
 - Theory framing: routine activity theory / cyber-lifestyle–routine
   activities (Reyns et al.), and the "dark figure" of cybercrime.
+- CIRT archive paging (`?page=N`) is unverified — check the advisory count
+  from `status` looks plausible after the first `cirt` run.
 
 ## Paper structure (~7,000–8,000 words)
 

@@ -23,6 +23,11 @@ producing dashboard incidents, and three more stages support the validation:
     python backend/backfill.py --topic cyber score --coder-a a.csv --coder-b b.csv
     python backend/backfill.py --topic cyber codebook
 
+and two for the results:
+
+    python backend/backfill.py --topic cyber cirt       # CERT advisories, RQ3
+    python backend/backfill.py --topic cyber analyse    # tables + figures
+
 Why three separate stages with checkpoints
 ------------------------------------------
 This job cannot run to completion in one sitting and pretending otherwise
@@ -147,6 +152,7 @@ ARTICLES_PATH = STATE_DIR / "articles.jsonl"
 INCIDENTS_PATH = STATE_DIR / "incidents.jsonl"
 POSTED_PATH = STATE_DIR / "posted.txt"
 CODED_PATH = STATE_DIR / "coded.jsonl"
+CIRT_PATH = STATE_DIR / "cirt.jsonl"
 TOPIC = TOPICS["asset"]
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -156,7 +162,7 @@ CODEBOOK_PATH = REPO_ROOT / "research" / "cybercrime-paper" / "CODEBOOK.md"
 def _use_topic(name: str) -> None:
     """Point every stage at one topic's gates and checkpoint files."""
     global STATE_DIR, CANDIDATES_PATH, ARTICLES_PATH, INCIDENTS_PATH
-    global POSTED_PATH, CODED_PATH, TOPIC
+    global POSTED_PATH, CODED_PATH, CIRT_PATH, TOPIC
     TOPIC = TOPICS[name]
     STATE_DIR = Path(__file__).resolve().parent / TOPIC.state_dir_name
     CANDIDATES_PATH = STATE_DIR / "candidates.jsonl"
@@ -164,6 +170,7 @@ def _use_topic(name: str) -> None:
     INCIDENTS_PATH = STATE_DIR / "incidents.jsonl"
     POSTED_PATH = STATE_DIR / "posted.txt"
     CODED_PATH = STATE_DIR / "coded.jsonl"
+    CIRT_PATH = STATE_DIR / "cirt.jsonl"
 
 
 def _year_windows(from_date: str, to_date: str) -> List[Tuple[str, str]]:
@@ -604,6 +611,78 @@ def stage_score(args: argparse.Namespace) -> int:
     return 0
 
 
+async def stage_cirt(args: argparse.Namespace) -> int:
+    """Collect and code the full BGD e-GOV CIRT advisory archive."""
+    from app.research.cyber_extractor import ModelUnavailable, code_advisory_async
+    from app.scrapers.cirt_scraper import USER_AGENT as CIRT_AGENT
+    from app.scrapers.cirt_scraper import REQUEST_TIMEOUT, _fetch_detail, discover_history
+
+    done = _seen_urls(CIRT_PATH)
+    async with httpx.AsyncClient(
+        headers={"User-Agent": CIRT_AGENT, "Accept-Language": "en,bn;q=0.9"},
+        timeout=REQUEST_TIMEOUT,
+        follow_redirects=True,
+    ) as client:
+        urls = [u for u in await discover_history(client) if u not in done]
+        urls = urls[: args.max_calls]
+        semaphore = asyncio.Semaphore(4)
+        details = await asyncio.gather(
+            *(_fetch_detail(client, url, semaphore) for url in urls),
+            return_exceptions=True,
+        )
+
+    logger.info("%d advisories already coded, %d to code", len(done), len(urls))
+    coded = consecutive = 0
+    for detail in details:
+        if isinstance(detail, BaseException) or detail is None:
+            continue
+        try:
+            record = await code_advisory_async(str(detail["title"]), str(detail["body"]))
+        except ModelUnavailable as exc:
+            if exc.reached_model:
+                continue
+            consecutive += 1
+            if consecutive >= MAX_CONSECUTIVE_CALL_FAILURES:
+                logger.warning("model calls failing (%s); stopping, rerun later", exc)
+                break
+            continue
+        consecutive = 0
+        published = detail.get("published")
+        _append_jsonl(
+            CIRT_PATH,
+            [
+                {
+                    "url": detail["url"],
+                    "title": detail["title"],
+                    "published": published.isoformat()
+                    if isinstance(published, datetime)
+                    else "",
+                    **record,
+                }
+            ],
+        )
+        coded += 1
+
+    logger.info("CIRT: %d advisories coded this run", coded)
+    return 0
+
+
+def stage_analyse(args: argparse.Namespace) -> int:
+    from app.research.cyber_analysis import analyse
+
+    coded = _read_jsonl(CODED_PATH)
+    if not coded:
+        logger.error("No coded articles. Run 'extract' first.")
+        return 1
+    advisories = _read_jsonl(CIRT_PATH)
+    if not advisories:
+        logger.warning("No CIRT advisories yet; the RQ3 table is skipped. Run 'cirt'.")
+    out = STATE_DIR / "analysis"
+    analyse(coded, advisories, out)
+    logger.info("results written to %s", out / "results.md")
+    return 0
+
+
 def stage_codebook() -> int:
     from app.research.cyber_codebook import codebook_markdown
 
@@ -701,7 +780,7 @@ def build_parser() -> argparse.ArgumentParser:
         "stage",
         choices=[
             "discover", "fetch", "extract", "post", "status",
-            "export", "score", "codebook",
+            "export", "score", "codebook", "cirt", "analyse",
         ],
     )
     parser.add_argument("--outlets", help="Comma-separated outlet or host filter.")
@@ -753,6 +832,7 @@ def stage_status() -> int:
         "incidents extracted": len(_read_jsonl(INCIDENTS_PATH)),
         "extract failed": len(_read_jsonl(STATE_DIR / "extract_failed.jsonl")),
         "coded (cyber)": len(_read_jsonl(CODED_PATH)),
+        "CIRT advisories (cyber)": len(_read_jsonl(CIRT_PATH)),
         "posted": len(
             POSTED_PATH.read_text(encoding="utf-8").splitlines()
             if POSTED_PATH.exists()
@@ -778,12 +858,16 @@ def main() -> int:
 
     if args.stage == "status":
         return stage_status()
-    if args.stage in ("export", "score", "codebook"):
+    if args.stage in ("export", "score", "codebook", "cirt", "analyse"):
         if TOPIC.name != "cyber":
             logger.error("'%s' is for the cyber topic: add --topic cyber.", args.stage)
             return 1
         if args.stage == "codebook":
             return stage_codebook()
+        if args.stage == "cirt":
+            return asyncio.run(stage_cirt(args))
+        if args.stage == "analyse":
+            return stage_analyse(args)
         return stage_export(args) if args.stage == "export" else stage_score(args)
 
     runner = {

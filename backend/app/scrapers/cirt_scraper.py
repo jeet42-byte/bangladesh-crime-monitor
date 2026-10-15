@@ -167,6 +167,55 @@ async def _discover(client: httpx.AsyncClient) -> List[str]:
     return found
 
 
+async def discover_history(
+    client: httpx.AsyncClient, *, max_pages: int = 60
+) -> List[str]:
+    """Every advisory URL the listings will page back to.
+
+    ``_discover`` reads only the first page of each listing, which is all the
+    live collector needs. The research corpus needs the archive, so this
+    follows ``?page=N``. The site's paging scheme was not verified from a
+    machine that can reach ``.gov.bd``, so rather than assume 0- or 1-based
+    pages it stops only after two consecutive pages add nothing new; a site
+    that ignores the parameter therefore costs two extra requests per listing.
+    """
+    found: List[str] = []
+    seen: set[str] = set()
+
+    for path in LISTING_PATHS:
+        empty_pages = 0
+        for page in range(max_pages):
+            url = urljoin(BASE_URL, path) + (f"?page={page}" if page else "")
+            try:
+                response = await client.get(url)
+                response.raise_for_status()
+            except httpx.HTTPError as exc:
+                logger.warning("[CIRT] listing %s failed: %s", url, exc)
+                break
+
+            soup = BeautifulSoup(response.text, "html.parser")
+            new = 0
+            for anchor in soup.find_all("a", href=True):
+                href = anchor["href"].split("?")[0].rstrip("/")
+                if href.startswith(BASE_URL):
+                    href = href[len(BASE_URL):]
+                if not _DETAIL_RE.match(href):
+                    continue
+                absolute = urljoin(BASE_URL, href)
+                if absolute in seen:
+                    continue
+                seen.add(absolute)
+                found.append(absolute)
+                new += 1
+
+            empty_pages = 0 if new else empty_pages + 1
+            if empty_pages >= 2:
+                break
+
+    logger.info("[CIRT] discovered %d advisory pages across all listing pages", len(found))
+    return found
+
+
 async def _fetch_detail(
     client: httpx.AsyncClient, url: str, semaphore: asyncio.Semaphore
 ) -> Optional[Dict[str, object]]:
