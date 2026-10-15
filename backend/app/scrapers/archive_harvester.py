@@ -35,7 +35,7 @@ import json
 import logging
 import re
 from datetime import datetime, timezone
-from typing import Dict, Iterable, List, Optional, Sequence
+from typing import Callable, Dict, Iterable, List, Optional, Sequence
 
 import httpx
 from bs4 import BeautifulSoup
@@ -266,8 +266,14 @@ async def discover(
     to_date: str,
     page_size: int = 1500,
     max_pages: int = 6,
+    slug_filter: Callable[..., bool] = slug_is_candidate,
+    extra_prefixes: Sequence[str] = (),
 ) -> List[Dict[str, str]]:
     """Candidate URLs for one outlet, filtered by slug before any fetch.
+
+    ``slug_filter`` is the topic gate - the asset lexicon by default, the
+    cyber lexicon for the cybercrime backfill. ``extra_prefixes`` adds
+    sections only that topic needs (technology desks, for cyber).
 
     Returns dicts of ``{timestamp, url}``. The timestamp is the capture
     time and is only used to address the snapshot - never as a publication
@@ -277,7 +283,8 @@ async def discover(
     candidates: List[Dict[str, str]] = []
     scanned = 0
 
-    for prefix in source.path_prefixes:
+    prefixes = list(dict.fromkeys((*source.path_prefixes, *extra_prefixes)))
+    for prefix in prefixes:
         for page in range(max_pages):
             rows = await _cdx_page(
                 client,
@@ -304,7 +311,7 @@ async def discover(
 
                 if not _is_plausible_article(url):
                     continue
-                if not slug_is_candidate(url, strict=source.slug_filterable):
+                if not slug_filter(url, strict=source.slug_filterable):
                     continue
 
                 candidates.append({"timestamp": timestamp, "url": url})
@@ -315,7 +322,7 @@ async def discover(
                 break
 
     logger.info(
-        "[%s] scanned %d captures -> %d asset-relevant candidates",
+        "[%s] scanned %d captures -> %d candidates",
         source.outlet,
         scanned,
         len(candidates),

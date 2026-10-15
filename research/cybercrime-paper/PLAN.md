@@ -51,12 +51,19 @@ outlets already in `NEWS_FEEDS` plus the full CIRT advisory archive.
 
 ### Collection steps
 
-1. Add a **cybercrime lexicon** (English + Bangla: সাইবার, হ্যাকিং, প্রতারণা,
-   বিকাশ, ফিশিং, ব্ল্যাকমেইল, ডিজিটাল নিরাপত্তা আইন, সাইবার নিরাপত্তা আইন,
-   …) alongside `asset_lexicon.py`, and a `--topic cyber` mode for
-   `backfill.py` that uses it instead of the asset gate.
-2. Run `discover` → `fetch` for 2018–2026 (the stages resume, so this can
-   run across several days).
+1. ~~Add a cybercrime lexicon and a `--topic cyber` backfill mode.~~ Done:
+   `backend/app/parsers/cyber_lexicon.py`; state goes to
+   `backend/.backfill-cyber/` (git-ignored — it contains names).
+2. Run discovery and fetching for 2018–2026 from a home machine (Wayback is
+   not reachable from the cloud session). Stages resume, so this can run
+   across several days:
+   ```
+   cd backend
+   python backfill.py --topic cyber discover
+   python backfill.py --topic cyber fetch --limit 1000   # repeat until done
+   python backfill.py --topic cyber extract --max-calls 200   # daily quota
+   python backfill.py --topic cyber status
+   ```
 3. Pull the full CIRT `/alerts` history.
 4. `extract` with a hard model-call ceiling per day; store raw JSONL as the
    frozen research dataset (separate from the live dashboard database).

@@ -6,6 +6,15 @@
     python backend/backfill.py extract --max-calls 200
     python backend/backfill.py post
 
+``--topic cyber`` runs the same four stages through the cybercrime gate
+instead, from 2018, into its own state directory (``.backfill-cyber``) so the
+research corpus for ``research/cybercrime-paper/PLAN.md`` never mixes with the
+asset backfill:
+
+    python backend/backfill.py --topic cyber discover
+    python backend/backfill.py --topic cyber fetch --limit 1000
+    python backend/backfill.py --topic cyber extract --max-calls 200
+
 Why three separate stages with checkpoints
 ------------------------------------------
 This job cannot run to completion in one sitting and pretending otherwise
@@ -41,14 +50,22 @@ import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Set
+from dataclasses import dataclass, field
+from typing import Callable, Dict, Iterable, List, Optional, Set, Tuple
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import httpx  # noqa: E402
 from bs4 import BeautifulSoup  # noqa: E402
 
-from app.parsers.asset_lexicon import is_asset_relevant  # noqa: E402
+from app.parsers.asset_lexicon import (  # noqa: E402
+    is_asset_relevant,
+    slug_is_candidate,
+)
+from app.parsers.cyber_lexicon import (  # noqa: E402
+    is_cyber_relevant,
+    slug_is_cyber_candidate,
+)
 from app.parsers.llm_extractor import (  # noqa: E402
     BST,
     ExtractedIncident,
@@ -66,11 +83,85 @@ from app.scrapers.archive_harvester import (  # noqa: E402
 
 logger = logging.getLogger("backfill")
 
+
+@dataclass(frozen=True)
+class Topic:
+    """What one backfill collects: its gates, window and checkpoint files."""
+
+    name: str
+    state_dir_name: str
+    #: Applied to headline + lede after fetching.
+    gate: Callable[[str], bool]
+    #: Applied to the URL slug before fetching.
+    slug_filter: Callable[..., bool]
+    default_from: str
+    #: Split discovery into one CDX window per calendar year. CDX pages are
+    #: capped per prefix, so an eight-year window would only ever see its
+    #: oldest captures.
+    split_years: bool = False
+    #: Sections this topic needs beyond each outlet's defaults, by outlet.
+    extra_prefixes: Dict[str, Tuple[str, ...]] = field(default_factory=dict)
+
+
+TOPICS: Dict[str, Topic] = {
+    "asset": Topic(
+        name="asset",
+        state_dir_name=".backfill",
+        gate=is_asset_relevant,
+        slug_filter=slug_is_candidate,
+        default_from="20230101",
+    ),
+    "cyber": Topic(
+        name="cyber",
+        state_dir_name=".backfill-cyber",
+        gate=is_cyber_relevant,
+        slug_filter=slug_is_cyber_candidate,
+        default_from="20180101",
+        split_years=True,
+        # Technology desks carry hacking and data-breach stories that never
+        # reach the crime pages. Not yet measured against CDX like the
+        # defaults in archive_harvester; a prefix an outlet does not use
+        # simply returns no rows.
+        extra_prefixes={
+            "The Daily Star": ("tech-startup/*",),
+            "The Business Standard": ("tech/*",),
+            "Dhaka Tribune": ("technology/*",),
+            "Dhaka Post": ("tech/*",),
+            "Risingbd": ("technology/*",),
+            "Jagonews24": ("technology/*",),
+        },
+    ),
+}
+
 STATE_DIR = Path(__file__).resolve().parent / ".backfill"
 CANDIDATES_PATH = STATE_DIR / "candidates.jsonl"
 ARTICLES_PATH = STATE_DIR / "articles.jsonl"
 INCIDENTS_PATH = STATE_DIR / "incidents.jsonl"
 POSTED_PATH = STATE_DIR / "posted.txt"
+TOPIC = TOPICS["asset"]
+
+
+def _use_topic(name: str) -> None:
+    """Point every stage at one topic's gates and checkpoint files."""
+    global STATE_DIR, CANDIDATES_PATH, ARTICLES_PATH, INCIDENTS_PATH
+    global POSTED_PATH, TOPIC
+    TOPIC = TOPICS[name]
+    STATE_DIR = Path(__file__).resolve().parent / TOPIC.state_dir_name
+    CANDIDATES_PATH = STATE_DIR / "candidates.jsonl"
+    ARTICLES_PATH = STATE_DIR / "articles.jsonl"
+    INCIDENTS_PATH = STATE_DIR / "incidents.jsonl"
+    POSTED_PATH = STATE_DIR / "posted.txt"
+
+
+def _year_windows(from_date: str, to_date: str) -> List[Tuple[str, str]]:
+    """[from, to] as one (YYYYMMDD, YYYYMMDD) window per calendar year."""
+    first, last = int(from_date[:4]), int(to_date[:4])
+    windows = []
+    for year in range(first, last + 1):
+        start = from_date if year == first else f"{year}0101"
+        end = to_date if year == last else f"{year}1231"
+        windows.append((start, end))
+    return windows
 
 INGEST_CHUNK_SIZE = 100
 POST_TIMEOUT = httpx.Timeout(90.0, connect=20.0)
@@ -147,22 +238,37 @@ async def stage_discover(args: argparse.Namespace) -> int:
         headers={"User-Agent": USER_AGENT},
         follow_redirects=True,
     ) as client:
+        windows = (
+            _year_windows(args.from_date, args.to_date)
+            if TOPIC.split_years
+            else [(args.from_date, args.to_date)]
+        )
         for source in sources:
-            found = await discover(
-                client,
-                source,
-                from_date=args.from_date,
-                to_date=args.to_date,
-                page_size=args.page_size,
-                max_pages=args.max_pages,
-            )
+            found = []
+            for from_date, to_date in windows:
+                found.extend(
+                    await discover(
+                        client,
+                        source,
+                        from_date=from_date,
+                        to_date=to_date,
+                        page_size=args.page_size,
+                        max_pages=args.max_pages,
+                        slug_filter=TOPIC.slug_filter,
+                        extra_prefixes=TOPIC.extra_prefixes.get(source.outlet, ()),
+                    )
+                )
+            # Year windows overlap on recrawled pages; keep the first capture.
+            unique: Dict[str, Dict[str, str]] = {}
+            for item in found:
+                unique.setdefault(item["url"], item)
             fresh = [
                 {
                     "url": item["url"],
                     "timestamp": item["timestamp"],
                     "outlet": source.outlet,
                 }
-                for item in found
+                for item in unique.values()
                 if item["url"] not in already
             ]
             for item in fresh:
@@ -247,8 +353,8 @@ async def stage_fetch(args: argparse.Namespace) -> int:
         # gate on its own. The headline and opening sentences are what the
         # article is actually about.
         blob = f"{result['title']} {str(result['body'])[:250]}"
-        if not is_asset_relevant(blob):
-            rejected.append({"url": url, "reason": "not asset-relevant"})
+        if not TOPIC.gate(blob):
+            rejected.append({"url": url, "reason": f"not {TOPIC.name}-relevant"})
             continue
 
         kept.append(
@@ -423,13 +529,24 @@ async def stage_post(args: argparse.Namespace) -> int:
 # ---------------------------------------------------------------------------
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Historical asset-protection backfill from the Wayback Machine."
+        description="Historical backfill from the Wayback Machine."
+    )
+    parser.add_argument(
+        "--topic",
+        choices=sorted(TOPICS),
+        default="asset",
+        help=(
+            "Which gate to collect through. 'cyber' is the cybercrime research "
+            "corpus, kept in its own state directory."
+        ),
     )
     parser.add_argument(
         "stage", choices=["discover", "fetch", "extract", "post", "status"]
     )
     parser.add_argument("--outlets", help="Comma-separated outlet or host filter.")
-    parser.add_argument("--from-date", default="20230101", help="YYYYMMDD.")
+    parser.add_argument(
+        "--from-date", help="YYYYMMDD. Defaults to the topic's start (asset 2023, cyber 2018)."
+    )
     parser.add_argument("--to-date", default="20261231", help="YYYYMMDD.")
     parser.add_argument("--page-size", type=int, default=1500)
     parser.add_argument("--max-pages", type=int, default=6)
@@ -476,6 +593,9 @@ def stage_status() -> int:
 
 def main() -> int:
     args = build_parser().parse_args()
+    _use_topic(args.topic)
+    if not args.from_date:
+        args.from_date = TOPIC.default_from
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s %(levelname)-8s %(name)s: %(message)s",
