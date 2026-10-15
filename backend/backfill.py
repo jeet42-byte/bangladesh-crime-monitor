@@ -15,6 +15,14 @@ asset backfill:
     python backend/backfill.py --topic cyber fetch --limit 1000
     python backend/backfill.py --topic cyber extract --max-calls 200
 
+For the cyber topic ``extract`` codes every gated article against the study
+codebook (``app/research/cyber_codebook.py``) into ``coded.jsonl`` instead of
+producing dashboard incidents, and three more stages support the validation:
+
+    python backend/backfill.py --topic cyber export --sample 400
+    python backend/backfill.py --topic cyber score --coder-a a.csv --coder-b b.csv
+    python backend/backfill.py --topic cyber codebook
+
 Why three separate stages with checkpoints
 ------------------------------------------
 This job cannot run to completion in one sitting and pretending otherwise
@@ -138,19 +146,24 @@ CANDIDATES_PATH = STATE_DIR / "candidates.jsonl"
 ARTICLES_PATH = STATE_DIR / "articles.jsonl"
 INCIDENTS_PATH = STATE_DIR / "incidents.jsonl"
 POSTED_PATH = STATE_DIR / "posted.txt"
+CODED_PATH = STATE_DIR / "coded.jsonl"
 TOPIC = TOPICS["asset"]
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+CODEBOOK_PATH = REPO_ROOT / "research" / "cybercrime-paper" / "CODEBOOK.md"
 
 
 def _use_topic(name: str) -> None:
     """Point every stage at one topic's gates and checkpoint files."""
     global STATE_DIR, CANDIDATES_PATH, ARTICLES_PATH, INCIDENTS_PATH
-    global POSTED_PATH, TOPIC
+    global POSTED_PATH, CODED_PATH, TOPIC
     TOPIC = TOPICS[name]
     STATE_DIR = Path(__file__).resolve().parent / TOPIC.state_dir_name
     CANDIDATES_PATH = STATE_DIR / "candidates.jsonl"
     ARTICLES_PATH = STATE_DIR / "articles.jsonl"
     INCIDENTS_PATH = STATE_DIR / "incidents.jsonl"
     POSTED_PATH = STATE_DIR / "posted.txt"
+    CODED_PATH = STATE_DIR / "coded.jsonl"
 
 
 def _year_windows(from_date: str, to_date: str) -> List[Tuple[str, str]]:
@@ -386,6 +399,8 @@ async def stage_fetch(args: argparse.Namespace) -> int:
 # Stage 3: extract (the expensive one)
 # ---------------------------------------------------------------------------
 async def stage_extract(args: argparse.Namespace) -> int:
+    if TOPIC.name == "cyber":
+        return await stage_code(args)
     articles = _read_jsonl(ARTICLES_PATH)
     if not articles:
         logger.error("No gated articles. Run 'fetch' first.")
@@ -463,9 +478,151 @@ async def stage_extract(args: argparse.Namespace) -> int:
 
 
 # ---------------------------------------------------------------------------
+# Stage 3 (cyber): code against the study codebook
+# ---------------------------------------------------------------------------
+#: Consecutive failed calls before stopping. A quota or key problem repeats
+#: for every article; stopping keeps them pending for the next run.
+MAX_CONSECUTIVE_CALL_FAILURES = 3
+
+
+async def stage_code(args: argparse.Namespace) -> int:
+    from app.research.cyber_extractor import ModelUnavailable, code_article_async
+
+    articles = _read_jsonl(ARTICLES_PATH)
+    if not articles:
+        logger.error("No gated articles. Run 'fetch' first.")
+        return 1
+
+    failed_path = STATE_DIR / "coding_failed.jsonl"
+    done = _seen_urls(CODED_PATH) | _seen_urls(failed_path)
+    pending = [a for a in articles if a["url"] not in done][: args.max_calls]
+    language = {source.outlet: source.language for source in ARCHIVE_SOURCES}
+
+    logger.info(
+        "%d articles gated, %d already coded, attempting %d (ceiling %d calls)",
+        len(articles), len(done), len(pending), args.max_calls,
+    )
+
+    coded = failed = consecutive = 0
+    for index, article in enumerate(pending, start=1):
+        published = datetime.fromisoformat(str(article["published"]))
+        try:
+            record = await code_article_async(
+                str(article["title"]), str(article["body"]), published
+            )
+        except ModelUnavailable as exc:
+            if exc.reached_model:
+                # The model answered but not usably: a property of this
+                # article. Recorded so it is not retried forever.
+                _append_jsonl(failed_path, [{"url": article["url"], "reason": str(exc)}])
+                failed += 1
+                consecutive = 0
+                continue
+            consecutive += 1
+            if consecutive >= MAX_CONSECUTIVE_CALL_FAILURES:
+                logger.warning(
+                    "%d calls in a row failed (%s); stopping with the rest still "
+                    "pending. Check GEMINI_API_KEY, GEMINI_MODEL and the quota.",
+                    consecutive, exc,
+                )
+                break
+            continue
+
+        consecutive = 0
+        # Written per article, not at the end: a run that dies on quota keeps
+        # everything it was charged for.
+        _append_jsonl(
+            CODED_PATH,
+            [
+                {
+                    "url": article["url"],
+                    "outlet": article["outlet"],
+                    "language": language.get(str(article["outlet"]), "unknown"),
+                    "published": article["published"],
+                    "title": article["title"],
+                    "body": article["body"],
+                    **record,
+                }
+            ],
+        )
+        coded += 1
+        if index % 25 == 0:
+            logger.info("  %d/%d processed", index, len(pending))
+
+    logger.info("coding complete: %d coded, %d unusable responses", coded, failed)
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Validation stages (cyber)
+# ---------------------------------------------------------------------------
+def stage_export(args: argparse.Namespace) -> int:
+    from app.research.cyber_validation import draw_sample, write_sheets
+
+    records = _read_jsonl(CODED_PATH)
+    if not records:
+        logger.error("No coded articles. Run 'extract' first.")
+        return 1
+    sample = draw_sample(
+        records, args.sample, min_per_language=args.min_per_language, seed=args.seed
+    )
+    sheet = STATE_DIR / "coding_sheet.csv"
+    key = STATE_DIR / "model_key.csv"
+    write_sheets(sample, sheet, key)
+
+    counts: Dict[str, int] = {}
+    for record in sample:
+        counts[str(record.get("language"))] = counts.get(str(record.get("language")), 0) + 1
+    logger.info("wrote %d items %s", len(sample), counts)
+    logger.info("give each coder their own copy of %s", sheet)
+    logger.info("keep %s away from the coders until scoring", key)
+    return 0
+
+
+def stage_score(args: argparse.Namespace) -> int:
+    from app.research.cyber_validation import read_coding, score, write_disagreements
+
+    if not args.coder_a:
+        logger.error("--coder-a is required.")
+        return 1
+    model, languages = read_coding(STATE_DIR / "model_key.csv")
+    _, sheet_languages = read_coding(STATE_DIR / "coding_sheet.csv")
+    languages.update(sheet_languages)
+    coder_a, _ = read_coding(Path(args.coder_a))
+    coder_b = read_coding(Path(args.coder_b))[0] if args.coder_b else None
+    gold = read_coding(Path(args.gold))[0] if args.gold else None
+
+    report, disagreements = score(coder_a, coder_b, model, languages, gold=gold)
+    report_path = STATE_DIR / "validation_report.md"
+    report_path.write_text(report, encoding="utf-8")
+    print(report)
+    if disagreements:
+        path = STATE_DIR / "disagreements.csv"
+        write_disagreements(disagreements, path)
+        logger.info("%d coder disagreements written to %s", len(disagreements), path)
+    logger.info("report written to %s", report_path)
+    return 0
+
+
+def stage_codebook() -> int:
+    from app.research.cyber_codebook import codebook_markdown
+
+    CODEBOOK_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CODEBOOK_PATH.write_text(codebook_markdown(), encoding="utf-8")
+    logger.info("wrote %s", CODEBOOK_PATH)
+    return 0
+
+
+# ---------------------------------------------------------------------------
 # Stage 4: post
 # ---------------------------------------------------------------------------
 async def stage_post(args: argparse.Namespace) -> int:
+    if TOPIC.name == "cyber":
+        logger.error(
+            "The cyber topic is a research corpus and is not posted to the "
+            "dashboard. Use 'export' and 'score'."
+        )
+        return 1
     incidents = _read_jsonl(INCIDENTS_PATH)
     if not incidents:
         logger.error("No extracted incidents. Run 'extract' first.")
@@ -541,7 +698,11 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
-        "stage", choices=["discover", "fetch", "extract", "post", "status"]
+        "stage",
+        choices=[
+            "discover", "fetch", "extract", "post", "status",
+            "export", "score", "codebook",
+        ],
     )
     parser.add_argument("--outlets", help="Comma-separated outlet or host filter.")
     parser.add_argument(
@@ -568,6 +729,18 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--ingest-key", default=os.getenv("INGEST_API_KEY", ""))
     parser.add_argument("--dry-run", action="store_true")
+    validation = parser.add_argument_group("validation (cyber topic)")
+    validation.add_argument("--sample", type=int, default=400, help="Items to export.")
+    validation.add_argument(
+        "--min-per-language",
+        type=int,
+        default=100,
+        help="Top up each language to at least this many items.",
+    )
+    validation.add_argument("--seed", type=int, default=2026)
+    validation.add_argument("--coder-a", help="Coder A's completed sheet.")
+    validation.add_argument("--coder-b", help="Coder B's completed sheet.")
+    validation.add_argument("--gold", help="Adjudicated sheet, once disagreements are settled.")
     parser.add_argument("--verbose", "-v", action="store_true")
     return parser
 
@@ -579,6 +752,7 @@ def stage_status() -> int:
         "fetch rejected": len(_read_jsonl(STATE_DIR / "fetch_rejected.jsonl")),
         "incidents extracted": len(_read_jsonl(INCIDENTS_PATH)),
         "extract failed": len(_read_jsonl(STATE_DIR / "extract_failed.jsonl")),
+        "coded (cyber)": len(_read_jsonl(CODED_PATH)),
         "posted": len(
             POSTED_PATH.read_text(encoding="utf-8").splitlines()
             if POSTED_PATH.exists()
@@ -604,6 +778,13 @@ def main() -> int:
 
     if args.stage == "status":
         return stage_status()
+    if args.stage in ("export", "score", "codebook"):
+        if TOPIC.name != "cyber":
+            logger.error("'%s' is for the cyber topic: add --topic cyber.", args.stage)
+            return 1
+        if args.stage == "codebook":
+            return stage_codebook()
+        return stage_export(args) if args.stage == "export" else stage_score(args)
 
     runner = {
         "discover": stage_discover,

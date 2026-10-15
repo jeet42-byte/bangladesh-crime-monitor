@@ -72,13 +72,24 @@ outlets already in `NEWS_FEEDS` plus the full CIRT advisory archive.
 
 ## Validation (RQ4)
 
-- Randomly sample **300–500 articles**; two coders (you + one classmate)
-  hand-code: is it a cybercrime report, category, platform, victim type,
-  location, date.
-- Report inter-coder agreement (Cohen's κ), then LLM vs. gold standard:
-  precision, recall, F1 per field and per language.
+Built. The field definitions live in `CODEBOOK.md` (generated from
+`backend/app/research/cyber_codebook.py`, which also writes the model prompt,
+so both sides answer the same questions).
+
+```
+cd backend
+python backfill.py --topic cyber export --sample 400 --min-per-language 100
+#   -> .backfill-cyber/coding_sheet.csv (blind)  +  model_key.csv (hidden)
+#   each coder fills their own copy of coding_sheet.csv
+python backfill.py --topic cyber score --coder-a a.csv --coder-b b.csv
+#   -> validation_report.md (κ, accuracy, F1 by field and language)
+#   -> disagreements.csv; settle them, then re-score with --gold gold.csv
+```
+
+- Two coders (you + one classmate) code independently using `CODEBOOK.md`.
+- Report coder agreement (Cohen's κ) first, then model vs. gold.
 - Error analysis: where the model fails (Bangla, multi-incident articles,
-  cold cases dated to announcement).
+  speech offences vs. other categories).
 
 ## Analysis (RQ1–3)
 
