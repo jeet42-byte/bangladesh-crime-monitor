@@ -306,8 +306,16 @@ _TRANSIENT_MARKERS = ("429", "503", "quota", "rate limit", "overloaded",
                       "high demand", "unavailable", "resource_exhausted")
 _MAX_ATTEMPTS = 4
 _BACKOFF_SECONDS = (4, 12, 30)
+# Without a deadline a stuck call waits on the client's own (long) default.
+_REQUEST_TIMEOUT_SECONDS = 60
+# After this many articles in a row whose every attempt failed, stop calling
+# Gemini for the rest of the run. A broken key or endpoint otherwise costs
+# ~50s of retries per article and the job dies at its timeout having posted
+# nothing - including the rows the heuristic path could still have kept.
+_MAX_CONSECUTIVE_FAILURES = 3
 
 _last_call_at = 0.0
+_consecutive_failures = 0
 
 
 def _is_transient(message: str) -> bool:
@@ -343,11 +351,32 @@ def _parse_json_response(text: str) -> Optional[Dict[str, Any]]:
 
 def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
     """One Gemini extraction, paced and retried through transient failures."""
-    global _last_call_at
+    global _consecutive_failures
+
+    if _consecutive_failures >= _MAX_CONSECUTIVE_FAILURES:
+        return None
 
     model = _get_model()
     if model is None:
         return None
+
+    result, reached_model = _attempt_gemini(model, raw_text)
+    if reached_model:
+        _consecutive_failures = 0
+    else:
+        _consecutive_failures += 1
+        if _consecutive_failures == _MAX_CONSECUTIVE_FAILURES:
+            logger.error(
+                "Gemini failed on %d articles in a row; skipping it for the "
+                "rest of this run. Check GEMINI_API_KEY and GEMINI_MODEL.",
+                _MAX_CONSECUTIVE_FAILURES,
+            )
+    return result
+
+
+def _attempt_gemini(model: Any, raw_text: str) -> tuple[Optional[Dict[str, Any]], bool]:
+    """Run the retry loop; also report whether Gemini answered at all."""
+    global _last_call_at
 
     for attempt in range(1, _MAX_ATTEMPTS + 1):
         # Pace calls so a burst does not trip the per-minute quota.
@@ -357,7 +386,10 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
 
         try:
             _last_call_at = time.monotonic()
-            response = model.generate_content(raw_text[:24000])
+            response = model.generate_content(
+                raw_text[:24000],
+                request_options={"timeout": _REQUEST_TIMEOUT_SECONDS},
+            )
             text = (response.text or "").strip()
 
             if not text:
@@ -365,17 +397,17 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
                     "Gemini returned an empty response (finish_reason may be "
                     "MAX_TOKENS or a safety block); falling back."
                 )
-                return None
+                return None, True
 
             parsed = _parse_json_response(text)
             if parsed is not None:
-                return parsed
+                return parsed, True
 
             logger.warning(
                 "Gemini returned unparseable output (%d chars); falling back.",
                 len(text),
             )
-            return None
+            return None, True
 
         except Exception as exc:  # noqa: BLE001 - quota, network, safety blocks
             message = str(exc)
@@ -393,7 +425,7 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
                     settings.GEMINI_MODEL,
                     message,
                 )
-                return None
+                return None, False
 
             if _is_transient(message) and attempt < _MAX_ATTEMPTS:
                 wait = _BACKOFF_SECONDS[attempt - 1]
@@ -409,9 +441,9 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
                 continue
 
             logger.warning("Gemini call failed (%s); falling back.", message[:200])
-            return None
+            return None, False
 
-    return None
+    return None, False
 
 
 # ===========================================================================

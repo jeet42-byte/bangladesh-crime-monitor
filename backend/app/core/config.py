@@ -137,6 +137,17 @@ class Settings(BaseSettings):
             return [item.strip() for item in stripped.split(",") if item.strip()]
         return value
 
+    @field_validator("GEMINI_API_KEY", "INGEST_API_KEY", mode="before")
+    @classmethod
+    def _strip_secret(cls, value: object) -> object:
+        """Drop whitespace pasted along with a secret.
+
+        A trailing newline in GEMINI_API_KEY is an illegal gRPC header value:
+        every Gemini call failed with "Illegal header value", was retried as
+        transient, and the ingest job hit its timeout run after run.
+        """
+        return value.strip() if isinstance(value, str) else value
+
     @field_validator("DATABASE_URL", mode="before")
     @classmethod
     def _normalise_driver(cls, value: object) -> object:
