@@ -52,22 +52,35 @@ CANDIDATE_FEEDS: dict[str, list[str]] = {
     "Amader Shomoy": ["https://www.dainikamadershomoy.com/rss.xml"],
     "Daily Sangram": ["https://dailysangram.com/rss.xml"],
     "The Daily Star (Crime)": ["https://www.thedailystar.net/news/bangladesh/crime-justice/rss.xml"],
+    "Bangla Tribune (Crime)": ["https://www.banglatribune.com/crime/feed/", "https://www.banglatribune.com/feed/crime"],
     "Prothom Alo (English)": ["https://en.prothomalo.com/feed"],
     "Dhaka Tribune (Bangla)": ["https://bangla.dhakatribune.com/feed"],
     "Jagonews24 (English)": ["https://www.jagonews24.com/en/rss/rss.xml"],
     "Risingbd (English)": ["https://www.risingbd.com/english/rss/rss.xml"],
 }
 
+# (query, locale) - Bangla queries need the Bangla edition or return nothing.
 GOOGLE_NEWS_QUERIES = [
-    "Bangladesh murder OR robbery OR arrested OR police",
-    "Bangladesh harassment OR rape OR \"sexual assault\" OR stalking",
-    "Bangladesh cybercrime OR hacking OR sextortion OR bKash fraud",
-    "ঢাকা হত্যা OR ছিনতাই OR গ্রেপ্তার",
+    ("Bangladesh murder OR robbery OR arrested OR police", "en"),
+    ("Bangladesh harassment OR rape OR \"sexual assault\" OR stalking", "en"),
+    ("Bangladesh cybercrime OR hacking OR sextortion OR bKash fraud", "en"),
+    ("হত্যা OR ছিনতাই OR গ্রেপ্তার OR ধর্ষণ", "bn"),
+    ("প্রতারণা OR হ্যাকিং OR সাইবার OR বিকাশ", "bn"),
+    ("যৌন হয়রানি OR ইভটিজিং OR নির্যাতন", "bn"),
 ]
 
+# Pages publishing aggregate statistics rather than incidents.
+STATISTICS_PAGES = {
+    "Ain o Salish Kendra (statistics)": "https://www.askbd.org/ask/category/statistics/",
+    "Ain o Salish Kendra (home)": "https://www.askbd.org/",
+    "Odhikar": "https://odhikar.org/",
+    "Bangladesh Mahila Parishad": "https://mahilaparishad.org/",
+    "BGD e-GOV CIRT alerts": "https://www.cirt.gov.bd/alerts/",
+}
+
 GDELT_QUERIES = [
-    "(murder OR robbery OR arrested OR harassment OR rape OR cybercrime) sourcecountry:BG",
-    "(hacking OR fraud OR sextortion OR bkash) sourcecountry:BG",
+    "Bangladesh murder sourcecountry:bangladesh",
+    "(murder OR robbery OR rape OR harassment OR hacking) sourcecountry:bangladesh",
 ]
 
 TIMEOUT = httpx.Timeout(20.0, connect=10.0)
@@ -107,19 +120,21 @@ async def probe_feed(client: httpx.AsyncClient, outlet: str, urls: list[str]) ->
         parsed = feedparser.parse(response.content)
         if response.status_code == 200 and parsed.entries:
             first_link = parsed.entries[0].get("link", "")
+            summaries = [len(e.get("summary", "")) for e in parsed.entries]
+            article_hint = f"avg-summary={sum(summaries) // max(len(summaries), 1)}ch"
             article = await _article_ok(client, first_link) if first_link else "no-link"
             return (
                 f"OK    {outlet:28} {url}  entries={len(parsed.entries)} "
-                f"newest={_newest(parsed)} {article}"
+                f"newest={_newest(parsed)} {article} {article_hint}"
             )
         last = f"{url} status={response.status_code} entries={len(parsed.entries)}"
     return f"FAIL  {outlet:28} {last}"
 
 
-async def probe_google_news(client: httpx.AsyncClient, query: str) -> str:
+async def probe_google_news(client: httpx.AsyncClient, query: str, lang: str) -> str:
     url = (
         "https://news.google.com/rss/search?q="
-        f"{quote(query + ' when:2d')}&hl=en-BD&gl=BD&ceid=BD:en"
+        f"{quote(query + ' when:2d')}&hl={lang}&gl=BD&ceid=BD:{lang}"
     )
     try:
         response = await client.get(url)
@@ -127,6 +142,7 @@ async def probe_google_news(client: httpx.AsyncClient, query: str) -> str:
         return f"FAIL  GoogleNews {query!r} error:{type(exc).__name__}"
     parsed = feedparser.parse(response.content)
     sources = sorted({e.get("source", {}).get("title", "?") for e in parsed.entries})
+    samples = " | ".join(e.get("title", "")[:90] for e in parsed.entries[:3])
     resolved = "n/a"
     if parsed.entries:
         try:
@@ -137,7 +153,8 @@ async def probe_google_news(client: httpx.AsyncClient, query: str) -> str:
     return (
         f"{'OK  ' if parsed.entries else 'FAIL'}  GoogleNews {query!r} status={response.status_code} "
         f"entries={len(parsed.entries)} outlets={len(sources)} first-link={resolved}\n"
-        f"      outlets: {', '.join(sources[:25])}"
+        f"      outlets: {', '.join(sources[:25])}\n"
+        f"      samples: {samples}"
     )
 
 
@@ -148,9 +165,12 @@ async def probe_gdelt(client: httpx.AsyncClient, query: str) -> str:
     )
     try:
         response = await client.get(url)
-        articles = json.loads(response.text or "{}").get("articles", [])
-    except (httpx.HTTPError, ValueError) as exc:
+    except httpx.HTTPError as exc:
         return f"FAIL  GDELT {query!r} error:{type(exc).__name__}"
+    try:
+        articles = json.loads(response.text or "{}").get("articles", [])
+    except ValueError:
+        return f"FAIL  GDELT {query!r} status={response.status_code} body={response.text[:200]!r}"
     domains: dict[str, int] = {}
     for item in articles:
         domains[item.get("domain", "?")] = domains.get(item.get("domain", "?"), 0) + 1
@@ -174,8 +194,11 @@ async def main() -> None:
         for line in sorted(feed_lines):
             print(line)
         print("\n=== Google News RSS ===")
-        for query in GOOGLE_NEWS_QUERIES:
-            print(await probe_google_news(client, query))
+        for query, lang in GOOGLE_NEWS_QUERIES:
+            print(await probe_google_news(client, query, lang))
+        print("\n=== Statistics / advisory pages ===")
+        for name, url in STATISTICS_PAGES.items():
+            print(f"      {name:34} {await _article_ok(client, url)}  {url}")
         print("\n=== GDELT DOC API ===")
         for query in GDELT_QUERIES:
             print(await probe_gdelt(client, query))

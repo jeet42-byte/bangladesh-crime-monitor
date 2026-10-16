@@ -27,10 +27,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import httpx  # noqa: E402
 
+from app.db.models import LEGACY_CATEGORY_FALLBACK  # noqa: E402
 from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
 from app.scrapers.cirt_scraper import scrape_cirt  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
+from app.scrapers.google_news_scraper import scrape_google_news  # noqa: E402
 from app.scrapers.news_scraper import scrape_news  # noqa: E402
+from app.scrapers.seen_cache import SeenCache  # noqa: E402
 from app.scrapers.telegram_scraper import scrape_telegram  # noqa: E402
 from app.scrapers.youtube_scraper import scrape_youtube  # noqa: E402
 
@@ -161,6 +164,7 @@ async def _post_chunk(
     headers = {"X-Ingest-Key": api_key, "Content-Type": "application/json"}
 
     last_error: Exception | None = None
+    downgraded = False
 
     for attempt in range(1, COLD_START_RETRIES + 1):
         try:
@@ -171,8 +175,35 @@ async def _post_chunk(
                     "Ingest rejected: INGEST_API_KEY does not match the backend."
                 )
             if response.status_code == 422:
+                # A backend not yet redeployed with a newer category list
+                # rejects the whole chunk over one value. Resend once with
+                # each new category mapped to its nearest older one rather
+                # than lose the batch.
+                if (
+                    not downgraded
+                    and "crime_category" in response.text
+                    and any(
+                        item["crime_category"] in LEGACY_CATEGORY_FALLBACK
+                        for item in payload["incidents"]
+                    )
+                ):
+                    downgraded = True
+                    for item in payload["incidents"]:
+                        item["crime_category"] = LEGACY_CATEGORY_FALLBACK.get(
+                            item["crime_category"], item["crime_category"]
+                        )
+                    logger.warning(
+                        "backend rejected a newer crime_category; resending with "
+                        "legacy categories (redeploy the API and run migration 006)"
+                    )
+                    continue
                 logger.error("Ingest rejected the payload: %s", response.text[:2000])
-                return {"inserted": 0, "duplicates_skipped": 0, "received": len(chunk)}
+                return {
+                    "inserted": 0,
+                    "duplicates_skipped": 0,
+                    "received": len(chunk),
+                    "rejected": len(chunk),
+                }
 
             response.raise_for_status()
             return response.json()
@@ -203,12 +234,27 @@ async def run(args: argparse.Namespace) -> int:
         args.lookback_hours,
     )
 
+    # Dry runs read the cache but never write it, so a test run does not hide
+    # articles from the next real one.
+    seen = SeenCache(Path(args.seen_cache) if args.seen_cache else None)
+    if seen.loaded:
+        logger.info("seen-cache: %d articles already processed on earlier runs", seen.loaded)
+
     tasks = []
     if not args.skip_news:
         tasks.append(
             scrape_news(
                 lookback_hours=args.lookback_hours,
                 max_articles=args.max_articles,
+                seen=seen,
+            )
+        )
+    if not args.skip_google_news:
+        tasks.append(
+            scrape_google_news(
+                lookback_hours=args.lookback_hours,
+                max_headlines=args.max_headlines,
+                seen=seen,
             )
         )
     if not args.skip_facebook:
@@ -223,6 +269,7 @@ async def run(args: argparse.Namespace) -> int:
             scrape_youtube(
                 lookback_hours=args.lookback_hours,
                 max_videos=args.max_videos,
+                processed=seen,
             )
         )
     if not args.skip_cirt:
@@ -292,6 +339,7 @@ async def run(args: argparse.Namespace) -> int:
 
     if not incidents:
         logger.info("nothing new in this window; exiting cleanly")
+        seen.save()
         return 0
 
     backend_url = args.backend_url.rstrip("/")
@@ -301,7 +349,7 @@ async def run(args: argparse.Namespace) -> int:
         return 1
 
     endpoint = f"{backend_url}/api/v1/ingest/batch"
-    totals = {"inserted": 0, "duplicates_skipped": 0, "received": 0}
+    totals = {"inserted": 0, "duplicates_skipped": 0, "received": 0, "rejected": 0}
 
     async with httpx.AsyncClient(timeout=POST_TIMEOUT, follow_redirects=True) as client:
         for index, chunk in enumerate(_chunk(incidents, INGEST_CHUNK_SIZE), start=1):
@@ -309,6 +357,15 @@ async def run(args: argparse.Namespace) -> int:
             result = await _post_chunk(client, endpoint, api_key, chunk)
             for key in totals:
                 totals[key] += int(result.get(key, 0))
+
+    # Only after every chunk posted: _post_chunk raises on failure, so if the
+    # backend was down these articles stay unrecorded and are retried. A
+    # rejected chunk likewise leaves the cache unwritten for the whole run -
+    # coarse, but it never marks an article done that did not land.
+    if totals["rejected"]:
+        logger.error("%d incidents rejected; seen-cache not updated", totals["rejected"])
+    else:
+        seen.save()
 
     elapsed = (datetime.now(timezone.utc) - started).total_seconds()
     logger.info(
@@ -381,6 +438,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Drop extractions below this self-reported confidence.",
     )
     parser.add_argument("--skip-news", action="store_true")
+    parser.add_argument("--skip-google-news", action="store_true")
+    parser.add_argument(
+        "--max-headlines",
+        type=int,
+        default=40,
+        help="Google News headlines sent to the model per run, across all queries.",
+    )
     parser.add_argument("--skip-facebook", action="store_true")
     parser.add_argument("--skip-youtube", action="store_true")
     parser.add_argument("--skip-cirt", action="store_true")
@@ -398,6 +462,15 @@ def build_parser() -> argparse.ArgumentParser:
         "--dry-run",
         action="store_true",
         help="Print the payload as JSON instead of posting it.",
+    )
+    parser.add_argument(
+        "--seen-cache",
+        default=None,
+        help=(
+            "JSON file of article URLs already sent to the model. Read and "
+            "updated each run so the same story is not re-extracted on every "
+            "cron tick; the workflow persists it through the Actions cache."
+        ),
     )
     parser.add_argument("--verbose", "-v", action="store_true")
     return parser

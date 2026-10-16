@@ -1,7 +1,52 @@
 # Handoff — Bangladesh Crime Monitor
 
-State as of **7 September 2026**. Written so a fresh session can resume
-without re-deriving anything. Read this first, then `README.md` for setup.
+State as of **7 September 2026**, with an **October 2026 update** directly
+below. Written so a fresh session can resume without re-deriving anything.
+Read this first, then `README.md` for setup.
+
+---
+
+## 0. October 2026 update (read first)
+
+**Fixed**
+- **Ingest had been dying for weeks.** A trailing newline in the
+  `GEMINI_API_KEY` secret made every Gemini call fail with gRPC
+  "Illegal header value"; each was retried as transient until the 25-min job
+  timeout. The key is now stripped on load, each call has a 60 s deadline,
+  and Gemini is skipped for the rest of a run after 3 consecutive articles
+  fail. A new key was issued and set on GitHub and Render.
+- **Repeat extraction.** Each article used to go to Gemini ~6 times (30-min
+  cron, 3-h lookback). `app/scrapers/seen_cache.py` + the Actions cache now
+  remember what the model has read; only final answers are recorded.
+- **Signup works** - `RESEND_API_KEY` is set (`/health` reports
+  `"email":"resend"`). Section 4 below is historical.
+- **All portal sections are open without an account** (Analytics, Archive,
+  TTP, Site Exposure, Methodology). `/account` and `/review` stay gated.
+
+**Added**
+- Sources: The Daily Star crime desk; Bangla Tribune and Sarabangla in
+  summary-only mode (`fetch_body=False`, article pages refuse the runner);
+  `google_news_scraper.py` - 4 Bangla + 3 English Google News searches,
+  headline only, confidence 65. Chosen by `tools/probe_sources.py` +
+  `probe_sources.yml`, which runs from a GitHub runner: 26 of 30 candidate
+  outlets refuse the runner outright. GDELT was probed and rejected.
+- Categories: `Sexual Violence`, `Domestic Violence`, `Human Trafficking`
+  (migration `006_harm_categories.sql`). The scraper falls back to the
+  pre-006 category if the backend has not been redeployed.
+- `/cyber` page - cyber incidents typed by the research codebook's
+  categories (keyword first pass), CIRT advisories, platform/district views.
+- `deploy_frontend.yml` - Vercel deploy on push to `main`, but its token is
+  rejected ("User not found"). The project lives under the Vercel **team
+  `jeet42-byte`** and has **Deployment Protection** on. Until fixed, deploy
+  with `npx vercel deploy --prod --yes` from `frontend/` on the owner's PC.
+
+**Ruled out - do not retry**
+- **Facebook Graph API.** A fresh Meta app cannot read public Pages (DMP,
+  Police, RAB): error 100/33 without *Page Public Content Access*, which
+  needs business verification + app review. The owner chose to skip it.
+- **Cybercrime research** lives on branch `claude/kind-carson-l4m0vg`
+  (plan, codebook, `--topic cyber` backfill, validation, analysis). Not
+  merged; the Wayback backfill must run from a home machine.
 
 ---
 

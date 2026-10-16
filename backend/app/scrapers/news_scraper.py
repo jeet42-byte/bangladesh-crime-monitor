@@ -26,8 +26,9 @@ from bs4 import BeautifulSoup
 from app.parsers.llm_extractor import (
     BST,
     ExtractedIncident,
-    extract_crime_entities_async,
+    extract_with_verdict_async,
 )
+from app.scrapers.seen_cache import SeenCache
 
 logger = logging.getLogger(__name__)
 
@@ -57,6 +58,7 @@ class NewsFeed:
         language: str = "en",
         body_selectors: Sequence[str] = (),
         source_platform: str = "news_portal",
+        fetch_body: bool = True,
     ) -> None:
         self.outlet = outlet
         self.url = url
@@ -68,6 +70,10 @@ class NewsFeed:
         # scored 95, a newsroom 80. Set per feed rather than per article,
         # because it is a property of who published it.
         self.source_platform = source_platform
+        # False for outlets whose feed is open but whose article pages refuse
+        # automated clients. Their feed summaries are long enough to extract
+        # from, and skipping the page avoids a guaranteed 403 per article.
+        self.fetch_body = fetch_body
 
     def __repr__(self) -> str:  # pragma: no cover
         return f"<NewsFeed {self.outlet}>"
@@ -139,6 +145,30 @@ NEWS_FEEDS: List[NewsFeed] = [
         "Ajker Patrika",
         "https://www.ajkerpatrika.com/feed",
         language="bn",
+    ),
+    # Added after backend/tools/probe_sources.py (Oct 2026). Of 30 candidate
+    # outlets probed from a GitHub runner, 26 refused the runner outright;
+    # these are the ones that answered.
+    NewsFeed(
+        # The paper's dedicated crime desk. The general Daily Star feeds above
+        # carry some of it, but most crime-desk stories never reach them.
+        "The Daily Star (Crime)",
+        "https://www.thedailystar.net/news/bangladesh/crime-justice/rss.xml",
+        body_selectors=("div.section-content .article-section",),
+    ),
+    NewsFeed(
+        # 100-entry feed with ~1,100-character summaries; article pages 403.
+        "Bangla Tribune",
+        "https://www.banglatribune.com/feed/",
+        language="bn",
+        fetch_body=False,
+    ),
+    NewsFeed(
+        # ~770-character summaries; article pages sit behind Cloudflare.
+        "Sarabangla",
+        "https://sarabangla.net/feed/",
+        language="bn",
+        fetch_body=False,
     ),
     # Reachable from most networks but 403 from GitHub's datacentre ranges, so
     # it contributes on local runs and drops out on the cron.
@@ -215,6 +245,8 @@ CRIME_KEYWORDS: tuple[str, ...] = (
     "cyber", "hacked", "online fraud", "phishing", "blackmail",
     "fraud", "forgery", "embezzle", "scam", "counterfeit", "cheating",
     "theft", "stolen", "burglary", "pickpocket",
+    "raping", "harass", "molest", "stalk", "eve-teas", "sexual", "dowry",
+    "domestic violence", "trafficking", "trafficked", "sextortion",
     "arrested", "detained", "police said", "case filed", "fir", "gd",
     "thana", "police station", "crime",
     # Bengali
@@ -223,6 +255,8 @@ CRIME_KEYWORDS: tuple[str, ...] = (
     "চাঁদাবাজি", "ইয়াবা", "মাদক", "গাঁজা", "হেরোইন", "সাইবার", "হ্যাক",
     "প্রতারণা", "জালিয়াতি", "আত্মসাৎ", "চুরি", "গ্রেপ্তার", "আটক",
     "থানা", "মামলা", "পুলিশ",
+    "যৌন হয়রানি", "শ্লীলতাহানি", "ইভটিজিং", "উত্ত্যক্ত", "যৌতুক",
+    "নির্যাতন", "পাচার",
 )
 
 _KEYWORD_RE = re.compile(
@@ -442,6 +476,7 @@ async def scrape_news(
     lookback_hours: int = 12,
     max_articles: int = 60,
     feeds: Optional[Iterable[NewsFeed]] = None,
+    seen: Optional[SeenCache] = None,
 ) -> List[ExtractedIncident]:
     """Run the full news pipeline and return normalised incidents.
 
@@ -469,6 +504,7 @@ async def scrape_news(
 
         candidates: List[Dict[str, object]] = []
         seen_links: set[str] = set()
+        skipped_seen = 0
 
         for result in feed_results:
             if isinstance(result, BaseException):
@@ -477,6 +513,11 @@ async def scrape_news(
             for entry in result:
                 link = str(entry["link"])
                 if link in seen_links:
+                    continue
+                # Already read by the model on an earlier run. Skipping here,
+                # before the cap, lets genuinely new articles take the slots.
+                if seen is not None and link in seen:
+                    skipped_seen += 1
                     continue
 
                 published = entry["published"]
@@ -543,11 +584,17 @@ async def scrape_news(
                 max_articles,
             )
 
+        if skipped_seen:
+            logger.info("skipped %d articles already processed on earlier runs", skipped_seen)
         logger.info("%d crime-candidate articles after filtering", len(candidates))
         if not candidates:
             return []
 
         semaphore = asyncio.Semaphore(MAX_CONCURRENT_FETCHES)
+
+        async def _no_body() -> str:
+            return ""
+
         bodies = await asyncio.gather(
             *(
                 _fetch_article_body(
@@ -556,6 +603,8 @@ async def scrape_news(
                     entry["feed"].body_selectors,  # type: ignore[union-attr]
                     semaphore,
                 )
+                if entry["feed"].fetch_body  # type: ignore[union-attr]
+                else _no_body()
                 for entry in candidates
             ),
             return_exceptions=True,
@@ -577,7 +626,7 @@ async def scrape_news(
         composed = f"{entry['title']}\n\n{article_text}"
 
         try:
-            incident = await extract_crime_entities_async(
+            incident, final = await extract_with_verdict_async(
                 composed,
                 entry["feed"].source_platform,  # type: ignore[union-attr]
                 source_url=str(entry["link"]),
@@ -586,6 +635,9 @@ async def scrape_news(
         except Exception as exc:  # noqa: BLE001 - one bad article must not stop the run
             logger.warning("extraction failed for %s: %s", entry["link"], exc)
             continue
+
+        if final and seen is not None:
+            seen.add(str(entry["link"]))
 
         if incident is not None:
             # The masthead, not the hostname. Until this was set, every news

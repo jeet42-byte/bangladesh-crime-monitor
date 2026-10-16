@@ -241,6 +241,20 @@ Rules:
    for ransom is Extortion; mugging and snatching are Robbery; pickpocketing
    and burglary are Theft; online fraud is Cybercrime; offline financial
    deception is Fraud.
+   Gender-based and exploitation offences have their own categories:
+     - `Sexual Violence`: rape, attempted rape, sexual assault, molestation,
+       sexual harassment, stalking and "eve-teasing" committed in person.
+       Online sexual harassment, sextortion and sharing of intimate images
+       are Cybercrime.
+     - `Domestic Violence`: violence or abuse by a spouse, in-laws or other
+       family member, including dowry-related abuse. If the victim was
+       killed, the category is Homicide; if raped, Sexual Violence.
+     - `Human Trafficking`: trafficking of people for labour, sex or
+       marriage, including smuggling of people across borders for those
+       purposes and the rescue of trafficking victims.
+   For these three, be strictest about identity: never record the survivor's
+   name, age if it identifies them, school, workplace, village or relation to
+   a named person. "A schoolgirl in Gazipur" is enough.
 7. Two categories are NOT criminal offences and exist because they damage or
    halt commercial assets:
      - `Industrial Accident`: fire, explosion, boiler burst, structural
@@ -351,14 +365,25 @@ def _parse_json_response(text: str) -> Optional[Dict[str, Any]]:
 
 def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
     """One Gemini extraction, paced and retried through transient failures."""
+    return _call_gemini_verdict(raw_text)[0]
+
+
+def _call_gemini_verdict(raw_text: str) -> tuple[Optional[Dict[str, Any]], bool]:
+    """Like ``_call_gemini``, but also say whether the model answered at all.
+
+    A ``None`` result is ambiguous on its own: the model may have read the
+    article and returned nothing usable, or never been reached. Callers that
+    remember which articles they have already processed need the difference -
+    only the first is a final answer.
+    """
     global _consecutive_failures
 
     if _consecutive_failures >= _MAX_CONSECUTIVE_FAILURES:
-        return None
+        return None, False
 
     model = _get_model()
     if model is None:
-        return None
+        return None, False
 
     result, reached_model = _attempt_gemini(model, raw_text)
     if reached_model:
@@ -371,7 +396,7 @@ def _call_gemini(raw_text: str) -> Optional[Dict[str, Any]]:
                 "rest of this run. Check GEMINI_API_KEY and GEMINI_MODEL.",
                 _MAX_CONSECUTIVE_FAILURES,
             )
-    return result
+    return result, reached_model
 
 
 def _attempt_gemini(model: Any, raw_text: str) -> tuple[Optional[Dict[str, Any]], bool]:
@@ -456,6 +481,15 @@ _CATEGORY_KEYWORDS: List[tuple[str, tuple[str, ...]]] = [
         "murder", "killed", "stabbed to death", "shot dead", "homicide",
         "body recovered", "beaten to death", "লাশ", "খুন", "হত্যা", "নিহত",
     )),
+    ("Sexual Violence", (
+        "rape", "raped", "raping", "sexual assault", "sexual harassment", "molest",
+        "stalking", "eve-teas", "ধর্ষণ", "যৌন হয়রানি", "শ্লীলতাহানি",
+        "ইভটিজিং", "উত্ত্যক্ত",
+    )),
+    ("Human Trafficking", (
+        "trafficking", "trafficked", "trafficker", "human smuggling",
+        "মানবপাচার", "মানব পাচার", "পাচারকারী",
+    )),
     ("Robbery", (
         "robbery", "robbed", "mugging", "mugger", "snatch", "dacoity",
         "gunpoint", "knifepoint", "ছিনতাই", "ডাকাতি", "দস্যুতা",
@@ -472,6 +506,10 @@ _CATEGORY_KEYWORDS: List[tuple[str, tuple[str, ...]]] = [
         "cyber", "hacked", "hacking", "online fraud", "digital security act",
         "cyber security act", "phishing", "deepfake", "blackmail online",
         "সাইবার", "হ্যাক", "অনলাইন প্রতারণা",
+    )),
+    ("Domestic Violence", (
+        "domestic violence", "dowry", "tortured by husband", "in-laws",
+        "যৌতুক", "পারিবারিক নির্যাতন", "স্বামীর নির্যাতন", "নারী নির্যাতন",
     )),
     ("Assault", (
         "assault", "attacked", "beaten", "clash", "injured", "acid attack",
@@ -497,6 +535,9 @@ _PENAL_CODE_BY_CATEGORY: Dict[str, List[str]] = {
     "Fraud": ["Penal Code 420"],
     "Narcotics": ["Narcotics Control Act 2018"],
     "Cybercrime": ["Cyber Security Act 2023"],
+    "Sexual Violence": ["Women and Children Repression Prevention Act 2000"],
+    "Domestic Violence": ["Domestic Violence (Prevention and Protection) Act 2010"],
+    "Human Trafficking": ["Prevention and Suppression of Human Trafficking Act 2012"],
 }
 
 # The capture group requires at least one digit via lookahead, so prose like
@@ -731,8 +772,26 @@ def extract_crime_entities(
     ``source_type`` is one of ``news_portal``, ``facebook_public`` or
     ``police_report``; it fixes ``source_confidence`` by policy.
     """
+    return extract_with_verdict(
+        raw_text, source_type, source_url=source_url, published_at=published_at
+    )[0]
+
+
+def extract_with_verdict(
+    raw_text: str,
+    source_type: str,
+    *,
+    source_url: str = "",
+    published_at: Optional[datetime] = None,
+) -> tuple[Optional[ExtractedIncident], bool]:
+    """``extract_crime_entities`` plus whether the outcome is final.
+
+    The flag is True when Gemini answered (crime or not) or when the text is
+    too short to ever qualify; False when the model was unreachable and the
+    article should be tried again on a later run.
+    """
     if not raw_text or len(raw_text.strip()) < 40:
-        return None
+        return None, True
 
     if source_type not in SOURCE_CONFIDENCE:
         raise ValueError(
@@ -758,7 +817,7 @@ def extract_crime_entities(
             f"{raw_text}"
         )
 
-    data = _call_gemini(prompt_text)
+    data, answered = _call_gemini_verdict(prompt_text)
     used_llm = data is not None
     if data is None:
         # The heuristic path reads the original text; the date banner would
@@ -766,14 +825,14 @@ def extract_crime_entities(
         data = _heuristic_extract(raw_text)
 
     if not data.get("is_crime_report", False):
-        return None
+        return None, answered
 
     # Redaction is applied to both paths: the model is instructed to strip
     # identifiers, but this pass is what actually guarantees it.
     title = redact((data.get("title") or "").strip())
     summary = redact((data.get("summary") or "").strip())
     if not title or not summary:
-        return None
+        return None, answered
 
     incident_date = _parse_incident_date(
         str(data.get("incident_date") or ""), published_at
@@ -804,7 +863,7 @@ def extract_crime_entities(
             reported_place,
             title[:70],
         )
-        return None
+        return None, answered
 
     # True when the match landed on a district centroid rather than a named
     # thana, i.e. the position is accurate to roughly a district, not a
@@ -822,7 +881,7 @@ def extract_crime_entities(
     confidence = float(data.get("confidence_score") or 0.0)
     confidence = min(max(confidence, 0.0), 1.0)
 
-    return ExtractedIncident(
+    incident = ExtractedIncident(
         title=title[:300],
         narrative=summary,
         crime_category=data.get("crime_category") or "Other",
@@ -842,6 +901,24 @@ def extract_crime_entities(
         extraction_confidence=confidence if used_llm else min(confidence, 0.4),
         is_crime_report=True,
         geocode_fallback=geocode_fallback,
+    )
+    return incident, answered
+
+
+async def extract_with_verdict_async(
+    raw_text: str,
+    source_type: str,
+    *,
+    source_url: str = "",
+    published_at: Optional[datetime] = None,
+) -> tuple[Optional[ExtractedIncident], bool]:
+    """Async wrapper for ``extract_with_verdict``."""
+    return await asyncio.to_thread(
+        extract_with_verdict,
+        raw_text,
+        source_type,
+        source_url=source_url,
+        published_at=published_at,
     )
 
 

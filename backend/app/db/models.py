@@ -42,6 +42,13 @@ CRIME_CATEGORIES: tuple[str, ...] = (
     "Fraud",
     "Extortion",
     "Theft",
+    # Gender-based and exploitation offences. Added because they were being
+    # folded into Assault or dropped as Other, which made the most
+    # under-reported harms in the archive invisible in its own breakdowns.
+    # See db_migrations/006_harm_categories.sql.
+    "Sexual Violence",
+    "Domestic Violence",
+    "Human Trafficking",
     # Non-criminal security incidents. Added for asset protection: business
     # interruption does not care whether a fire was arson or a boiler, and a
     # site closed by unrest is closed either way. Kept clearly distinct from
@@ -58,6 +65,15 @@ CRIME_CATEGORIES: tuple[str, ...] = (
 NON_CRIMINAL_CATEGORIES: frozenset[str] = frozenset(
     {"Industrial Accident", "Labour Unrest"}
 )
+
+#: Nearest pre-006 category for each category added since. The scraper uses
+#: this when a backend that has not been redeployed rejects a new value, so a
+#: rollout can happen in either order without losing a batch.
+LEGACY_CATEGORY_FALLBACK: dict[str, str] = {
+    "Sexual Violence": "Assault",
+    "Domestic Violence": "Assault",
+    "Human Trafficking": "Other",
+}
 
 COLLECTION_MODES: tuple[str, ...] = ("live", "backfill")
 REVIEW_STATUSES: tuple[str, ...] = ("unreviewed", "approved", "rejected")
@@ -184,7 +200,9 @@ class CrimeIncident(Base):
         ),
         CheckConstraint(
             "crime_category IN ('Homicide','Robbery','Assault','Narcotics',"
-            "'Cybercrime','Fraud','Extortion','Theft','Other')",
+            "'Cybercrime','Fraud','Extortion','Theft',"
+            "'Sexual Violence','Domestic Violence','Human Trafficking',"
+            "'Industrial Accident','Labour Unrest','Other')",
             name="ck_crime_category",
         ),
         CheckConstraint(

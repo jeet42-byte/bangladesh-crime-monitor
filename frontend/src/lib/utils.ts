@@ -36,6 +36,9 @@ const SEVERITY_BY_CATEGORY: Record<CrimeCategory, SeverityLevel> = {
   Cybercrime: "low",
   Fraud: "low",
   Theft: "low",
+  "Sexual Violence": "high",
+  "Human Trafficking": "high",
+  "Domestic Violence": "medium",
   // An industrial fire or explosion routinely kills and injures more people
   // than the property offences above, so it is banded high rather than being
   // treated as lesser for not being a crime.

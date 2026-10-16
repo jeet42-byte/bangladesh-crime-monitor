@@ -14,6 +14,7 @@ import {
   Lock,
   Menu,
   Radar,
+  ShieldAlert,
   X,
 } from "lucide-react";
 
@@ -26,6 +27,7 @@ const NAV_ITEMS = [
   { href: "/", label: "Command Center", icon: Radar, gated: false },
   { href: "/analytics", label: "Analytics", icon: BarChart3, gated: false },
   { href: "/database", label: "Archive", icon: Database, gated: false },
+  { href: "/cyber", label: "Cyber", icon: ShieldAlert, gated: false },
   { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: false },
   { href: "/exposure", label: "Site Exposure", icon: Building2, gated: false },
   { href: "/methodology", label: "Methodology", icon: FileText, gated: false },
