@@ -58,6 +58,7 @@ class NewsFeed:
         language: str = "en",
         body_selectors: Sequence[str] = (),
         source_platform: str = "news_portal",
+        fetch_body: bool = True,
     ) -> None:
         self.outlet = outlet
         self.url = url
@@ -69,6 +70,10 @@ class NewsFeed:
         # scored 95, a newsroom 80. Set per feed rather than per article,
         # because it is a property of who published it.
         self.source_platform = source_platform
+        # False for outlets whose feed is open but whose article pages refuse
+        # automated clients. Their feed summaries are long enough to extract
+        # from, and skipping the page avoids a guaranteed 403 per article.
+        self.fetch_body = fetch_body
 
     def __repr__(self) -> str:  # pragma: no cover
         return f"<NewsFeed {self.outlet}>"
@@ -140,6 +145,30 @@ NEWS_FEEDS: List[NewsFeed] = [
         "Ajker Patrika",
         "https://www.ajkerpatrika.com/feed",
         language="bn",
+    ),
+    # Added after backend/tools/probe_sources.py (Oct 2026). Of 30 candidate
+    # outlets probed from a GitHub runner, 26 refused the runner outright;
+    # these are the ones that answered.
+    NewsFeed(
+        # The paper's dedicated crime desk. The general Daily Star feeds above
+        # carry some of it, but most crime-desk stories never reach them.
+        "The Daily Star (Crime)",
+        "https://www.thedailystar.net/news/bangladesh/crime-justice/rss.xml",
+        body_selectors=("div.section-content .article-section",),
+    ),
+    NewsFeed(
+        # 100-entry feed with ~1,100-character summaries; article pages 403.
+        "Bangla Tribune",
+        "https://www.banglatribune.com/feed/",
+        language="bn",
+        fetch_body=False,
+    ),
+    NewsFeed(
+        # ~770-character summaries; article pages sit behind Cloudflare.
+        "Sarabangla",
+        "https://sarabangla.net/feed/",
+        language="bn",
+        fetch_body=False,
     ),
     # Reachable from most networks but 403 from GitHub's datacentre ranges, so
     # it contributes on local runs and drops out on the cron.
@@ -562,6 +591,10 @@ async def scrape_news(
             return []
 
         semaphore = asyncio.Semaphore(MAX_CONCURRENT_FETCHES)
+
+        async def _no_body() -> str:
+            return ""
+
         bodies = await asyncio.gather(
             *(
                 _fetch_article_body(
@@ -570,6 +603,8 @@ async def scrape_news(
                     entry["feed"].body_selectors,  # type: ignore[union-attr]
                     semaphore,
                 )
+                if entry["feed"].fetch_body  # type: ignore[union-attr]
+                else _no_body()
                 for entry in candidates
             ),
             return_exceptions=True,

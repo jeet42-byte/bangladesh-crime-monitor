@@ -31,6 +31,7 @@ from app.db.models import LEGACY_CATEGORY_FALLBACK  # noqa: E402
 from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
 from app.scrapers.cirt_scraper import scrape_cirt  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
+from app.scrapers.google_news_scraper import scrape_google_news  # noqa: E402
 from app.scrapers.news_scraper import scrape_news  # noqa: E402
 from app.scrapers.seen_cache import SeenCache  # noqa: E402
 from app.scrapers.telegram_scraper import scrape_telegram  # noqa: E402
@@ -248,6 +249,14 @@ async def run(args: argparse.Namespace) -> int:
                 seen=seen,
             )
         )
+    if not args.skip_google_news:
+        tasks.append(
+            scrape_google_news(
+                lookback_hours=args.lookback_hours,
+                max_headlines=args.max_headlines,
+                seen=seen,
+            )
+        )
     if not args.skip_facebook:
         tasks.append(
             scrape_facebook(
@@ -429,6 +438,13 @@ def build_parser() -> argparse.ArgumentParser:
         help="Drop extractions below this self-reported confidence.",
     )
     parser.add_argument("--skip-news", action="store_true")
+    parser.add_argument("--skip-google-news", action="store_true")
+    parser.add_argument(
+        "--max-headlines",
+        type=int,
+        default=40,
+        help="Google News headlines sent to the model per run, across all queries.",
+    )
     parser.add_argument("--skip-facebook", action="store_true")
     parser.add_argument("--skip-youtube", action="store_true")
     parser.add_argument("--skip-cirt", action="store_true")
