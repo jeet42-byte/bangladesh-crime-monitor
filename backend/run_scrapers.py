@@ -27,6 +27,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import httpx  # noqa: E402
 
+from app.db.models import LEGACY_CATEGORY_FALLBACK  # noqa: E402
 from app.parsers.llm_extractor import BST, ExtractedIncident  # noqa: E402
 from app.scrapers.cirt_scraper import scrape_cirt  # noqa: E402
 from app.scrapers.fb_scraper import scrape_facebook  # noqa: E402
@@ -162,6 +163,7 @@ async def _post_chunk(
     headers = {"X-Ingest-Key": api_key, "Content-Type": "application/json"}
 
     last_error: Exception | None = None
+    downgraded = False
 
     for attempt in range(1, COLD_START_RETRIES + 1):
         try:
@@ -172,8 +174,35 @@ async def _post_chunk(
                     "Ingest rejected: INGEST_API_KEY does not match the backend."
                 )
             if response.status_code == 422:
+                # A backend not yet redeployed with a newer category list
+                # rejects the whole chunk over one value. Resend once with
+                # each new category mapped to its nearest older one rather
+                # than lose the batch.
+                if (
+                    not downgraded
+                    and "crime_category" in response.text
+                    and any(
+                        item["crime_category"] in LEGACY_CATEGORY_FALLBACK
+                        for item in payload["incidents"]
+                    )
+                ):
+                    downgraded = True
+                    for item in payload["incidents"]:
+                        item["crime_category"] = LEGACY_CATEGORY_FALLBACK.get(
+                            item["crime_category"], item["crime_category"]
+                        )
+                    logger.warning(
+                        "backend rejected a newer crime_category; resending with "
+                        "legacy categories (redeploy the API and run migration 006)"
+                    )
+                    continue
                 logger.error("Ingest rejected the payload: %s", response.text[:2000])
-                return {"inserted": 0, "duplicates_skipped": 0, "received": len(chunk)}
+                return {
+                    "inserted": 0,
+                    "duplicates_skipped": 0,
+                    "received": len(chunk),
+                    "rejected": len(chunk),
+                }
 
             response.raise_for_status()
             return response.json()
@@ -311,7 +340,7 @@ async def run(args: argparse.Namespace) -> int:
         return 1
 
     endpoint = f"{backend_url}/api/v1/ingest/batch"
-    totals = {"inserted": 0, "duplicates_skipped": 0, "received": 0}
+    totals = {"inserted": 0, "duplicates_skipped": 0, "received": 0, "rejected": 0}
 
     async with httpx.AsyncClient(timeout=POST_TIMEOUT, follow_redirects=True) as client:
         for index, chunk in enumerate(_chunk(incidents, INGEST_CHUNK_SIZE), start=1):
@@ -321,8 +350,13 @@ async def run(args: argparse.Namespace) -> int:
                 totals[key] += int(result.get(key, 0))
 
     # Only after every chunk posted: _post_chunk raises on failure, so if the
-    # backend was down these articles stay unrecorded and are retried.
-    seen.save()
+    # backend was down these articles stay unrecorded and are retried. A
+    # rejected chunk likewise leaves the cache unwritten for the whole run -
+    # coarse, but it never marks an article done that did not land.
+    if totals["rejected"]:
+        logger.error("%d incidents rejected; seen-cache not updated", totals["rejected"])
+    else:
+        seen.save()
 
     elapsed = (datetime.now(timezone.utc) - started).total_seconds()
     logger.info(

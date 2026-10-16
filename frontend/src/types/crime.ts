@@ -13,6 +13,11 @@ export const CRIME_CATEGORIES = [
   "Fraud",
   "Extortion",
   "Theft",
+  // Gender-based and exploitation offences. Online harassment and sextortion
+  // stay under Cybercrime and are broken down on the Cyber page.
+  "Sexual Violence",
+  "Domestic Violence",
+  "Human Trafficking",
   // Not criminal offences. Present because they damage or halt commercial
   // assets, which is the question the archive is increasingly asked - a site
   // closed by a boiler explosion is closed just as thoroughly as one closed

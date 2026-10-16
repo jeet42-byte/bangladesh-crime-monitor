@@ -119,8 +119,8 @@ export default function MapCanvas({
     () =>
       [
         { label: "Homicide", color: SEVERITY_HEX.critical },
-        { label: "Robbery / Extortion", color: SEVERITY_HEX.high },
-        { label: "Assault / Narcotics", color: SEVERITY_HEX.medium },
+        { label: "Robbery / Extortion / Sexual / Trafficking", color: SEVERITY_HEX.high },
+        { label: "Assault / Domestic / Narcotics", color: SEVERITY_HEX.medium },
         { label: "Theft / Fraud / Cyber", color: SEVERITY_HEX.low },
       ] as const,
     []

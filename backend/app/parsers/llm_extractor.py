@@ -241,6 +241,20 @@ Rules:
    for ransom is Extortion; mugging and snatching are Robbery; pickpocketing
    and burglary are Theft; online fraud is Cybercrime; offline financial
    deception is Fraud.
+   Gender-based and exploitation offences have their own categories:
+     - `Sexual Violence`: rape, attempted rape, sexual assault, molestation,
+       sexual harassment, stalking and "eve-teasing" committed in person.
+       Online sexual harassment, sextortion and sharing of intimate images
+       are Cybercrime.
+     - `Domestic Violence`: violence or abuse by a spouse, in-laws or other
+       family member, including dowry-related abuse. If the victim was
+       killed, the category is Homicide; if raped, Sexual Violence.
+     - `Human Trafficking`: trafficking of people for labour, sex or
+       marriage, including smuggling of people across borders for those
+       purposes and the rescue of trafficking victims.
+   For these three, be strictest about identity: never record the survivor's
+   name, age if it identifies them, school, workplace, village or relation to
+   a named person. "A schoolgirl in Gazipur" is enough.
 7. Two categories are NOT criminal offences and exist because they damage or
    halt commercial assets:
      - `Industrial Accident`: fire, explosion, boiler burst, structural
@@ -467,6 +481,15 @@ _CATEGORY_KEYWORDS: List[tuple[str, tuple[str, ...]]] = [
         "murder", "killed", "stabbed to death", "shot dead", "homicide",
         "body recovered", "beaten to death", "লাশ", "খুন", "হত্যা", "নিহত",
     )),
+    ("Sexual Violence", (
+        "rape", "raped", "raping", "sexual assault", "sexual harassment", "molest",
+        "stalking", "eve-teas", "ধর্ষণ", "যৌন হয়রানি", "শ্লীলতাহানি",
+        "ইভটিজিং", "উত্ত্যক্ত",
+    )),
+    ("Human Trafficking", (
+        "trafficking", "trafficked", "trafficker", "human smuggling",
+        "মানবপাচার", "মানব পাচার", "পাচারকারী",
+    )),
     ("Robbery", (
         "robbery", "robbed", "mugging", "mugger", "snatch", "dacoity",
         "gunpoint", "knifepoint", "ছিনতাই", "ডাকাতি", "দস্যুতা",
@@ -483,6 +506,10 @@ _CATEGORY_KEYWORDS: List[tuple[str, tuple[str, ...]]] = [
         "cyber", "hacked", "hacking", "online fraud", "digital security act",
         "cyber security act", "phishing", "deepfake", "blackmail online",
         "সাইবার", "হ্যাক", "অনলাইন প্রতারণা",
+    )),
+    ("Domestic Violence", (
+        "domestic violence", "dowry", "tortured by husband", "in-laws",
+        "যৌতুক", "পারিবারিক নির্যাতন", "স্বামীর নির্যাতন", "নারী নির্যাতন",
     )),
     ("Assault", (
         "assault", "attacked", "beaten", "clash", "injured", "acid attack",
@@ -508,6 +535,9 @@ _PENAL_CODE_BY_CATEGORY: Dict[str, List[str]] = {
     "Fraud": ["Penal Code 420"],
     "Narcotics": ["Narcotics Control Act 2018"],
     "Cybercrime": ["Cyber Security Act 2023"],
+    "Sexual Violence": ["Women and Children Repression Prevention Act 2000"],
+    "Domestic Violence": ["Domestic Violence (Prevention and Protection) Act 2010"],
+    "Human Trafficking": ["Prevention and Suppression of Human Trafficking Act 2012"],
 }
 
 # The capture group requires at least one digit via lookahead, so prose like

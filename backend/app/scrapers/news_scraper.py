@@ -216,6 +216,8 @@ CRIME_KEYWORDS: tuple[str, ...] = (
     "cyber", "hacked", "online fraud", "phishing", "blackmail",
     "fraud", "forgery", "embezzle", "scam", "counterfeit", "cheating",
     "theft", "stolen", "burglary", "pickpocket",
+    "raping", "harass", "molest", "stalk", "eve-teas", "sexual", "dowry",
+    "domestic violence", "trafficking", "trafficked", "sextortion",
     "arrested", "detained", "police said", "case filed", "fir", "gd",
     "thana", "police station", "crime",
     # Bengali
@@ -224,6 +226,8 @@ CRIME_KEYWORDS: tuple[str, ...] = (
     "চাঁদাবাজি", "ইয়াবা", "মাদক", "গাঁজা", "হেরোইন", "সাইবার", "হ্যাক",
     "প্রতারণা", "জালিয়াতি", "আত্মসাৎ", "চুরি", "গ্রেপ্তার", "আটক",
     "থানা", "মামলা", "পুলিশ",
+    "যৌন হয়রানি", "শ্লীলতাহানি", "ইভটিজিং", "উত্ত্যক্ত", "যৌতুক",
+    "নির্যাতন", "পাচার",
 )
 
 _KEYWORD_RE = re.compile(
