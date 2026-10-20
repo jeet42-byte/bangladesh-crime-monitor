@@ -808,6 +808,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--ingest-key", default=os.getenv("INGEST_API_KEY", ""))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--rpm",
+        type=float,
+        help=(
+            "Gemini requests per minute to stay under. Free-tier limits are "
+            "per model and per project (check AI Studio > Rate limits). "
+            "Defaults to 14 for the cyber topic, else the extractor's own pace."
+        ),
+    )
     validation = parser.add_argument_group("validation (cyber topic)")
     validation.add_argument("--sample", type=int, default=400, help="Items to export.")
     validation.add_argument(
@@ -850,6 +859,13 @@ def main() -> int:
     _use_topic(args.topic)
     if not args.from_date:
         args.from_date = TOPIC.default_from
+    rpm = args.rpm or (14 if TOPIC.name == "cyber" else None)
+    if rpm:
+        # Pacing lives in the shared extractor so a research run and a
+        # dashboard scrape on the same key respect one limit.
+        from app.parsers import llm_extractor
+
+        llm_extractor._MIN_SECONDS_BETWEEN_CALLS = 60.0 / rpm
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
         format="%(asctime)s %(levelname)-8s %(name)s: %(message)s",

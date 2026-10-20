@@ -427,6 +427,13 @@ def _attempt_gemini(model: Any, raw_text: str) -> tuple[Optional[Dict[str, Any]]
                 )
                 return None, False
 
+            # A per-day quota does not reset in seconds. Retrying it only
+            # burns more of tomorrow's allowance on rejected calls, which is
+            # how a 100-article run once used up a 500-request daily quota.
+            if "429" in message and "perday" in message.lower().replace(" ", ""):
+                logger.error("Gemini daily quota exhausted; stopping retries.")
+                return None, False
+
             if _is_transient(message) and attempt < _MAX_ATTEMPTS:
                 wait = _BACKOFF_SECONDS[attempt - 1]
                 logger.info(
