@@ -11,7 +11,13 @@ from pydantic import BaseModel
 from sqlalchemy import Select, func, select
 
 from app.api.deps import DbSession, require_reader
-from app.db.models import CRIME_CATEGORIES, SOURCE_PLATFORMS, CrimeIncident, Jurisdiction
+from app.db.models import (
+    CRIME_CATEGORIES,
+    SOURCE_PLATFORMS,
+    CrimeIncident,
+    Jurisdiction,
+    public_incidents,
+)
 
 router = APIRouter(
     prefix="/crimes",
