@@ -210,6 +210,31 @@ async def _post_chunk(
 
         except (httpx.TimeoutException, httpx.ConnectError, httpx.HTTPStatusError) as exc:
             last_error = exc
+            # A backend redeployed with the new categories but pointed at a
+            # database without migration 006 accepts the payload and then
+            # fails the insert on ck_crime_category - a 500, not a 422. Make
+            # the same one-time downgrade, so one record's category cannot
+            # keep a whole chunk out of the archive on every run.
+            if (
+                isinstance(exc, httpx.HTTPStatusError)
+                and exc.response.status_code >= 500
+                and not downgraded
+                and any(
+                    item["crime_category"] in LEGACY_CATEGORY_FALLBACK
+                    for item in payload["incidents"]
+                )
+            ):
+                downgraded = True
+                for item in payload["incidents"]:
+                    item["crime_category"] = LEGACY_CATEGORY_FALLBACK.get(
+                        item["crime_category"], item["crime_category"]
+                    )
+                logger.warning(
+                    "backend returned %d for a chunk with newer categories; "
+                    "resending with legacy categories (is migration 006 applied?)",
+                    exc.response.status_code,
+                )
+                continue
             if attempt == COLD_START_RETRIES:
                 break
             wait = COLD_START_BACKOFF_SECONDS * attempt
