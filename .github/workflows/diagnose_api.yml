@@ -1,0 +1,63 @@
+name: Diagnose public API
+
+# Manual only. Answers "the site shows zero records" from the outside: is the
+# API up, does it issue guest tokens, do the read endpoints the dashboard
+# calls answer, does CORS allow the site's origin, and which API address the
+# deployed frontend was built against. Prints status codes and short bodies.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      API: ${{ secrets.BACKEND_URL }}
+      SITE: https://bangladesh-crime-monitor.vercel.app
+    steps:
+      - name: Probe API and site
+        run: |
+          set +e
+          show() { printf '\n=== %s\n' "$1"; }
+          show "health"
+          curl -s -m 90 "$API/health"; echo
+
+          show "guest token"
+          token=$(curl -s -m 60 -X POST "$API/api/v1/auth/guest" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("access_token",""))' 2>/dev/null)
+          [ -n "$token" ] && echo "issued (len ${#token})" || echo "NO TOKEN"
+          echo "::add-mask::$token"
+          auth="Authorization: Bearer $token"
+
+          for path in \
+            "/api/v1/crimes/feed?limit=3" \
+            "/api/v1/crimes/feed?limit=3&start_date=$(date -u -d '30 days ago' +%Y-%m-%d)" \
+            "/api/v1/crimes/feed?limit=3&category=Cybercrime" \
+            "/api/v1/crimes/geojson?days=30&limit=5" \
+            "/api/v1/crimes/thanas" \
+            "/api/v1/analytics/summary" ; do
+            show "GET $path"
+            curl -s -m 60 -o /tmp/body -w 'HTTP %{http_code}\n' -H "$auth" "$API$path"
+            head -c 400 /tmp/body | tr -d '\n'; echo
+          done
+
+          show "feed without a token (PUBLIC_API off => 401 expected)"
+          curl -s -m 60 -o /dev/null -w 'HTTP %{http_code}\n' "$API/api/v1/crimes/feed?limit=1"
+
+          show "CORS preflight from the site origin"
+          curl -s -m 60 -o /dev/null -D - -X OPTIONS "$API/api/v1/crimes/feed" \
+            -H "Origin: $SITE" -H "Access-Control-Request-Method: GET" \
+            -H "Access-Control-Request-Headers: authorization" | grep -i -E '^HTTP|access-control'
+
+          show "CORS on guest POST"
+          curl -s -m 60 -o /dev/null -D - -X POST "$API/api/v1/auth/guest" -H "Origin: $SITE" | grep -i -E '^HTTP|access-control'
+
+          show "deployed site: status and which API it calls"
+          curl -s -m 60 -o /tmp/site -w 'HTTP %{http_code}\n' "$SITE/"
+          grep -o -E 'https?://[a-zA-Z0-9.-]*(onrender\.com|127\.0\.0\.1|localhost)[^"]*' /tmp/site | sort -u | head
+          for js in $(grep -o -E '/_next/static/chunks/[^"]+\.js' /tmp/site | sort -u | head -40); do
+            curl -s -m 30 "$SITE$js" | grep -o -E 'https?://[a-zA-Z0-9.-]*(onrender\.com|127\.0\.0\.1:8000|localhost:8000)'
+          done | sort | uniq -c
