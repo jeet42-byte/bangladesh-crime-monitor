@@ -843,7 +843,9 @@ def extract_with_verdict(
     # Bagerhat murder on a Dhaka street and inflates whichever thana is used
     # as the default into a fake hotspot.
     reported_place = (data.get("thana_name") or "").strip()
-    location = resolve_thana(reported_place)
+    location = resolve_thana(
+        reported_place, district_hint=(data.get("district") or "").strip() or None
+    )
 
     if location is None:
         # The model often reports an upazila the gazetteer does not carry
