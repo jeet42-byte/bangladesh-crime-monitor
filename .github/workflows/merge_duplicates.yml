@@ -1,0 +1,50 @@
+name: Merge duplicate incidents
+
+# Manual only. Finds incidents already stored twice (the same event reported
+# by several outlets) and, when "apply" is ticked, hides the later copies.
+# Hidden copies are set to review_status='rejected' with a note naming the
+# record they duplicate - nothing is deleted. Run once without "apply" first
+# and read the list.
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Hide the duplicates (leave unticked for a dry run)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      API: ${{ secrets.BACKEND_URL }}
+      KEY: ${{ secrets.INGEST_API_KEY }}
+    steps:
+      - name: Wake the backend
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 60 "$API/health" || echo 000)
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+
+      - name: Find duplicates
+        run: |
+          curl -s -m 300 -X POST -H "X-Ingest-Key: $KEY" \
+            "$API/api/v1/ingest/merge-duplicates?apply=${{ inputs.apply }}" > result.json
+          python3 - <<'PY'
+          import json
+          d = json.load(open("result.json"))
+          if "count" not in d:
+              print("Unexpected response:", d)
+              raise SystemExit(1)
+          print(f"{'APPLIED' if d['applied'] else 'DRY RUN'}: {d['count']} duplicate(s)")
+          for m in d["merges"]:
+              print(f"- [{m['category']} / {m['thana']}] {m['duplicate_title']}")
+              print(f"      duplicate of: {m['survivor_title']}")
+          PY

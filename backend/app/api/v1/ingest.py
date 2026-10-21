@@ -11,6 +11,7 @@ from pydantic import BaseModel, Field, field_validator
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.api.deps import DbSession, IngestAuth
+from app.services.dedupe import corroborate, find_near_duplicate, merge_stored_duplicates
 from app.db.models import (
     COLLECTION_MODES,
     CRIME_CATEGORIES,
@@ -111,6 +112,10 @@ class IngestBatchOut(BaseModel):
     inserted: int
     duplicates_skipped: int
     received: int
+    #: Of duplicates_skipped, how many were the same incident from another
+    #: outlet (folded into an existing record) rather than a byte-identical
+    #: re-send.
+    merged: int = 0
 
 
 @router.post(
@@ -177,29 +182,80 @@ async def ingest_batch(
             }
         )
 
-    statement = (
-        pg_insert(CrimeIncident)
-        .values(rows)
-        .on_conflict_do_nothing(index_elements=["raw_content_hash"])
-        .returning(CrimeIncident.id)
-    )
+    # One row at a time so each new record is checked against the archive
+    # and against the rows inserted earlier in this same batch. A batch is
+    # at most MAX_BATCH_SIZE rows, so the extra round trips are cheap.
+    inserted = 0
+    merged = 0
+    for row in rows:
+        existing = await find_near_duplicate(
+            session,
+            title=row["title"],
+            narrative=row["narrative"],
+            thana_name=row["thana_name"],
+            crime_category=row["crime_category"],
+            incident_date=row["incident_date"],
+        )
+        if existing is not None:
+            # The same incident from another outlet: confirm the stored
+            # record instead of counting the incident twice.
+            corroborate(existing, row["source_handle"])
+            merged += 1
+            continue
 
-    result = await session.execute(statement)
-    inserted = len(result.scalars().all())
+        statement = (
+            pg_insert(CrimeIncident)
+            .values(row)
+            .on_conflict_do_nothing(index_elements=["raw_content_hash"])
+            .returning(CrimeIncident.id)
+        )
+        result = await session.execute(statement)
+        inserted += len(result.scalars().all())
+
     await session.commit()
 
     duplicates_skipped = received - inserted
 
     logger.info(
-        "ingest: received=%d inserted=%d duplicates=%d (%d within payload)",
+        "ingest: received=%d inserted=%d duplicates=%d (%d within payload, "
+        "%d merged as the same incident)",
         received,
         inserted,
         duplicates_skipped,
         in_payload_duplicates,
+        merged,
     )
 
     return IngestBatchOut(
         inserted=inserted,
         duplicates_skipped=duplicates_skipped,
         received=received,
+        merged=merged,
     )
+
+
+class MergeOut(BaseModel):
+    applied: bool
+    count: int
+    merges: List[dict]
+
+
+@router.post(
+    "/merge-duplicates",
+    response_model=MergeOut,
+    summary="Find (and optionally hide) duplicate incidents already stored",
+)
+async def merge_duplicates(
+    session: DbSession,
+    _: IngestAuth,
+    apply: bool = False,
+) -> MergeOut:
+    """Dry run unless ``apply=true``.
+
+    Applying hides each later duplicate (review_status='rejected', note
+    naming the survivor) and marks the survivor corroborated. Nothing is
+    deleted; the review queue can restore any record.
+    """
+    merges = await merge_stored_duplicates(session, apply=apply)
+    logger.info("merge-duplicates: %d found, applied=%s", len(merges), apply)
+    return MergeOut(applied=apply, count=len(merges), merges=merges)
