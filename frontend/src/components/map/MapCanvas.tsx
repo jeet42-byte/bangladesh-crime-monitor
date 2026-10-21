@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
-import { Layers } from "lucide-react";
+import { Flame, Layers, MapPin } from "lucide-react";
 
+import HeatGrid, { HEAT_GRADIENT_CSS } from "@/components/map/HeatGrid";
 import MapMarker from "@/components/map/MapMarker";
 import type { CrimeGeoJSON } from "@/types/crime";
 import { cn, DHAKA_CENTER, SEVERITY_HEX } from "@/lib/utils";
@@ -114,6 +115,10 @@ export default function MapCanvas({
   className,
 }: MapCanvasProps) {
   const [tile, setTile] = useState<TileKey>("dark");
+  // Density first: with hundreds of reports stacked on district centroids,
+  // individual pins hide how much sits under each one.
+  const [mode, setMode] = useState<"heat" | "points">("heat");
+  const [heatMax, setHeatMax] = useState(0);
 
   const legend = useMemo(
     () =>
@@ -166,17 +171,34 @@ export default function MapCanvas({
         <InvalidateOnResize />
         <FitToFeatures data={data} />
 
-        {data.features.map((feature) => (
-          <MapMarker
-            key={feature.properties.id}
-            feature={feature}
-            onSelect={onSelectIncident}
-          />
-        ))}
+        {mode === "heat" ? (
+          <HeatGrid data={data} onScale={setHeatMax} />
+        ) : (
+          data.features.map((feature) => (
+            <MapMarker
+              key={feature.properties.id}
+              feature={feature}
+              onSelect={onSelectIncident}
+            />
+          ))
+        )}
       </MapContainer>
 
-      {/* Basemap switch */}
-      <div className="pointer-events-auto absolute right-3 top-3 z-[1000]">
+      {/* Basemap and layer switches */}
+      <div className="pointer-events-auto absolute right-3 top-3 z-[1000] flex gap-2">
+        <button
+          type="button"
+          onClick={() => setMode(mode === "heat" ? "points" : "heat")}
+          className="btn px-2.5 py-1.5 text-xs shadow-lg"
+          title="Switch between density grid and individual incidents"
+        >
+          {mode === "heat" ? (
+            <MapPin className="h-3.5 w-3.5" aria-hidden />
+          ) : (
+            <Flame className="h-3.5 w-3.5" aria-hidden />
+          )}
+          {mode === "heat" ? "Show points" : "Show heat map"}
+        </button>
         <button
           type="button"
           onClick={() => setTile(tile === "dark" ? "streets" : "dark")}
@@ -189,6 +211,20 @@ export default function MapCanvas({
       </div>
 
       {/* Legend */}
+      {mode === "heat" ? (
+        <div className="pointer-events-none absolute bottom-6 left-3 z-[1000] w-56 rounded-lg border border-surface-border/70 bg-surface/90 px-3 py-2.5 backdrop-blur-sm">
+          <p className="label-mono mb-2">Incidents per cell</p>
+          <div className="h-2.5 w-full rounded" style={{ background: HEAT_GRADIENT_CSS }} aria-hidden />
+          <div className="mt-1 flex justify-between font-mono text-[10px] text-zinc-400">
+            <span>1</span>
+            <span>{heatMax > 1 ? heatMax : ""}</span>
+          </div>
+          <p className="mt-1.5 text-[10px] leading-snug text-zinc-500">
+            Log scale. Cells shrink as you zoom; click one to zoom in. Outside
+            Dhaka, reports sit on district centres.
+          </p>
+        </div>
+      ) : (
       <div className="pointer-events-none absolute bottom-6 left-3 z-[1000] rounded-lg border border-surface-border/70 bg-surface/90 px-3 py-2.5 backdrop-blur-sm">
         <p className="label-mono mb-2">Severity</p>
         <ul className="space-y-1.5">
@@ -204,6 +240,7 @@ export default function MapCanvas({
           ))}
         </ul>
       </div>
+      )}
 
       {/* Feature count / truncation notice */}
       <div className="pointer-events-none absolute left-3 top-3 z-[1000] rounded-lg border border-surface-border/70 bg-surface/90 px-3 py-1.5 backdrop-blur-sm">
