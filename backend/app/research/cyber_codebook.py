@@ -42,14 +42,21 @@ FIELDS: Tuple[Field, ...] = (
     Field(
         "is_cybercrime",
         "Does the article report a specific cybercrime incident in Bangladesh - "
-        "an offence, an arrest, a case filed or a court action about one?",
+        "an offence, an arrest, a case filed, a court action, or a specific scam "
+        "or abuse campaign circulating in Bangladesh?",
         (
-            ("yes", "A specific incident, arrest, case or verdict, in Bangladesh, "
-                    "where a computer, phone, network or online service is the "
-                    "means or the target of the offence."),
-            ("no", "Anything else: offline crime, policy or law debate, awareness "
-                   "pieces, statistics round-ups, incidents abroad, warnings about "
-                   "a risk rather than an event."),
+            ("yes", "A specific incident, arrest, case or verdict in Bangladesh or "
+                    "with Bangladeshi victims, where a computer, phone, network or "
+                    "online service is the means or the target of the offence. "
+                    "Includes a specific named scam or abuse campaign reported as "
+                    "currently targeting people in Bangladesh (e.g. particular fake "
+                    "pages, deepfake ads or fraud calls)."),
+            ("no", "Anything else: offline crime; policy, law or court-order "
+                   "debate; awareness pieces and safety tips; statistics and trend "
+                   "reports; warnings about a risk rather than an event; and "
+                   "incidents abroad or worldwide (e.g. a global data leak, a "
+                   "foreign ransomware takedown) unless the article reports "
+                   "Bangladeshi victims specifically."),
         ),
     ),
     Field(
