@@ -346,7 +346,12 @@ _DISTRICT_ALIASES: Dict[str, str] = {
     "chapai nawabganj": "Chapainawabganj", "maulvibazar": "Moulvibazar",
     "moulavibazar": "Moulvibazar", "sunamgonj": "Sunamganj",
     "khagrachari": "Khagrachhari", "jhenaidaha": "Jhenaidah",
-    # Upazilas and towns that appear far more often than their district name.
+}
+
+# Upazilas and towns that appear far more often than their district name.
+# Unlike the spellings above these are not district names, so an upazila
+# match (when the gazetteer has one) takes precedence over them.
+_DISTRICT_TOWNS: Dict[str, str] = {
     "savar": "Dhaka", "keraniganj": "Dhaka", "dohar": "Dhaka",
     "nawabganj dhaka": "Dhaka", "ashulia": "Dhaka",
     "tongi": "Gazipur", "kaliakair": "Gazipur", "sreepur": "Gazipur",
@@ -365,6 +370,10 @@ _DISTRICT_LOOKUP: Dict[str, str] = {}
 for _name in DISTRICT_COORDINATES:
     _DISTRICT_LOOKUP[_normalise(_name)] = _name
 for _alias, _canon in _DISTRICT_ALIASES.items():
+    _DISTRICT_LOOKUP.setdefault(_normalise(_alias), _canon)
+#: Keys that name a district itself, not a town within one.
+_DISTRICT_NAME_KEYS = frozenset(_DISTRICT_LOOKUP)
+for _alias, _canon in _DISTRICT_TOWNS.items():
     _DISTRICT_LOOKUP.setdefault(_normalise(_alias), _canon)
 
 
@@ -450,6 +459,11 @@ def _load_upazilas() -> Dict[str, List[ThanaLocation]]:
 _UPAZILA_ALIASES: Dict[str, str] = {
     "joydebpur": "Gazipur Sadar",
     "jaydebpur": "Gazipur Sadar",
+    "tongi": "Gazipur Sadar",
+    "ashulia": "Savar",
+    "ukhiya": "Ukhia",
+    "benapole": "Sharsha",
+    "siddhirganj": "Narayanganj Sadar",
 }
 
 _UPAZILA_LOOKUP: Dict[str, List[ThanaLocation]] = _load_upazilas()
@@ -559,7 +573,7 @@ def resolve_thana(
     # unless the district hint says the upazila is meant.
     upazila = resolve_upazila(thana_name, district_hint)
     if upazila is not None and (
-        _DISTRICT_LOOKUP.get(needle) is None
+        needle not in _DISTRICT_NAME_KEYS
         or (district_hint and upazila["district"] == (resolve_district(district_hint) or {}).get("district"))
     ):
         return upazila
@@ -604,7 +618,7 @@ def find_place_in_text(text: str, *, max_chars: int = 400) -> Optional[ThanaLoca
     # An upazila named in the opening, settled by a district named alongside
     # it when the upazila name is shared.
     for key in sorted(_UPAZILA_LOOKUP, key=len, reverse=True):
-        if len(key) >= 5 and f" {key} " in padded and _DISTRICT_LOOKUP.get(key) is None:
+        if len(key) >= 5 and f" {key} " in padded and key not in _DISTRICT_NAME_KEYS:
             found = _pick(_UPAZILA_LOOKUP[key], text[:max_chars])
             if found is not None:
                 return found
