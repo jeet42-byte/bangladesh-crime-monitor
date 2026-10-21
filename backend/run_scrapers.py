@@ -374,7 +374,7 @@ async def run(args: argparse.Namespace) -> int:
         return 1
 
     endpoint = f"{backend_url}/api/v1/ingest/batch"
-    totals = {"inserted": 0, "duplicates_skipped": 0, "received": 0, "rejected": 0}
+    totals = {"inserted": 0, "duplicates_skipped": 0, "received": 0, "rejected": 0, "merged": 0}
 
     async with httpx.AsyncClient(timeout=POST_TIMEOUT, follow_redirects=True) as client:
         for index, chunk in enumerate(_chunk(incidents, INGEST_CHUNK_SIZE), start=1):
@@ -394,10 +394,11 @@ async def run(args: argparse.Namespace) -> int:
 
     elapsed = (datetime.now(timezone.utc) - started).total_seconds()
     logger.info(
-        "=== done in %.1fs: inserted=%d duplicates_skipped=%d received=%d ===",
+        "=== done in %.1fs: inserted=%d duplicates_skipped=%d (merged=%d) received=%d ===",
         elapsed,
         totals["inserted"],
         totals["duplicates_skipped"],
+        totals["merged"],
         totals["received"],
     )
 

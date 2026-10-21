@@ -1,0 +1,69 @@
+name: Fetch upazila gazetteer
+
+# Manual only. Pulls every upazila (OSM admin_level=6) with its centroid and
+# parent district (admin_level=5) from the public Overpass API and prints it
+# as JSON, so the backend gazetteer can be regenerated from open data rather
+# than typed by hand. Data (c) OpenStreetMap contributors, ODbL.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Query Overpass
+        run: |
+          cat > q.overpassql <<'Q'
+          [out:json][timeout:600];
+          area["ISO3166-1"="BD"]["admin_level"="2"]->.bd;
+          rel(area.bd)["boundary"="administrative"]["admin_level"="5"]->.districts;
+          foreach.districts->.d(
+            .d out tags;
+            .d map_to_area->.da;
+            rel(area.da)["boundary"="administrative"]["admin_level"="6"];
+            out center tags;
+          );
+          Q
+          for url in https://overpass-api.de/api/interpreter https://overpass.kumi.systems/api/interpreter; do
+            if curl -s -m 900 -A "BangladeshCrimeMonitor/1.0 (gazetteer build)" \
+                 --data-urlencode "data@q.overpassql" "$url" -o raw.json && python3 -c "import json;json.load(open('raw.json'))['elements']"; then
+              echo "fetched from $url"; break
+            fi
+          done
+
+      - name: Reduce to district -> upazilas
+        run: |
+          python3 - <<'PY'
+          import json
+          els = json.load(open("raw.json"))["elements"]
+          out, district = [], None
+          for e in els:
+              t = e.get("tags", {})
+              lvl = t.get("admin_level")
+              name = t.get("name:en") or t.get("name")
+              if lvl == "5":
+                  district = name
+                  continue
+              if lvl == "6" and "center" in e and district:
+                  out.append({
+                      "upazila": name,
+                      "bn": t.get("name:bn") or t.get("name"),
+                      "district": district,
+                      "lat": round(e["center"]["lat"], 4),
+                      "lon": round(e["center"]["lon"], 4),
+                  })
+          seen, rows = set(), []
+          for r in out:
+              key = (r["upazila"], r["district"])
+              if key not in seen:
+                  seen.add(key); rows.append(r)
+          print("DISTRICTS", len({r["district"] for r in rows}), "UPAZILAS", len(rows))
+          print("BEGIN_JSON")
+          print(json.dumps(rows, ensure_ascii=False))
+          print("END_JSON")
+          PY
