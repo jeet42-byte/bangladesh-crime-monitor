@@ -18,7 +18,10 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        env_file_encoding="utf-8",
+        # utf-8-sig, not utf-8: Windows Notepad saves with a byte-order mark,
+        # which otherwise glues onto the first variable name and silently
+        # drops whatever is on line one (usually the API key).
+        env_file_encoding="utf-8-sig",
         case_sensitive=False,
         extra="ignore",
     )
