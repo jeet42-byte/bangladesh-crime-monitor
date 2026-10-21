@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 
 import AccountMenu from "@/components/auth/AccountMenu";
+import InstallApp from "@/components/navigation/InstallApp";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { fetchHealth } from "@/lib/api";
 import { cn, currentBSTClock } from "@/lib/utils";
@@ -193,6 +194,8 @@ export default function Navbar() {
             </span>
             <span className="font-mono text-[10px] text-zinc-500">BST</span>
           </div>
+
+          <InstallApp />
 
           <AccountMenu />
 
