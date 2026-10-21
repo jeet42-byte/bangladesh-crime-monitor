@@ -41,6 +41,16 @@ export const metadata: Metadata = {
     type: "website",
   },
   robots: { index: true, follow: true },
+  applicationName: "BD Crime",
+  appleWebApp: {
+    capable: true,
+    title: "BD Crime",
+    statusBarStyle: "black-translucent",
+  },
+  icons: {
+    icon: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+    apple: [{ url: "/icons/apple-touch-icon.png", sizes: "180x180" }],
+  },
 };
 
 export const viewport: Viewport = {
