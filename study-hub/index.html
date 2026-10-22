@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Hub</title>
+  <meta name="description" content="Quiz banks, study resources, grade and CGPA planner, assignment guides and exam forecast.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#/">Study<span>Hub</span></a>
+      <nav class="nav">
+        <a href="#/" data-view="home">Home</a>
+        <a href="#/exams" data-view="exams">Exams</a>
+        <a href="#/resources" data-view="resources">Resources</a>
+        <a href="#/grades" data-view="grades">Grade &amp; CGPA</a>
+        <a href="#/assignments" data-view="assignments">Assignments</a>
+        <a href="#/forecast" data-view="forecast">Forecast</a>
+      </nav>
+      <button class="theme-btn" id="theme-btn" aria-label="Toggle dark mode">☾</button>
+    </div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer>Study Hub · <span id="year"></span> · Progress and notes are saved only in your browser.</footer>
+
+  <!-- core -->
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/util.js"></script>
+
+  <!-- data: add a <script> line here for every new data file -->
+  <script src="data/courses.js"></script>
+  <script src="data/grading.js"></script>
+  <script src="data/quizzes/research-methods-ch3.js"></script>
+  <script src="data/resources.js"></script>
+  <script src="data/assignments.js"></script>
+  <script src="data/schedule.js"></script>
+
+  <!-- views -->
+  <script src="assets/js/exams.js"></script>
+  <script src="assets/js/resources.js"></script>
+  <script src="assets/js/grades.js"></script>
+  <script src="assets/js/assignments.js"></script>
+  <script src="assets/js/forecast.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
