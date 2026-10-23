@@ -189,6 +189,8 @@ POST_TIMEOUT = httpx.Timeout(90.0, connect=20.0)
 # Concurrency against the Wayback Machine. Deliberately low: it is a free
 # public archive doing us a favour, and it 504s when pushed.
 SNAPSHOT_CONCURRENCY = 4
+#: Articles fetched, gated and saved per step of a fetch run.
+FETCH_CHUNK = 250
 
 
 # ---------------------------------------------------------------------------
@@ -330,24 +332,58 @@ async def stage_fetch(args: argparse.Namespace) -> int:
     floor = datetime.strptime(args.from_date, "%Y%m%d").replace(tzinfo=timezone.utc)
     ceiling = datetime.now(timezone.utc)
 
-    kept: List[Dict[str, object]] = []
-    rejected: List[Dict[str, object]] = []
+    kept_total = 0
+    reasons: Dict[str, int] = {}
 
     async with httpx.AsyncClient(
         timeout=SNAPSHOT_TIMEOUT,
         headers={"User-Agent": USER_AGENT},
         follow_redirects=True,
     ) as client:
-        semaphore = asyncio.Semaphore(SNAPSHOT_CONCURRENCY)
-        results = await asyncio.gather(
-            *(
-                fetch_snapshot(client, item, by_outlet[str(item["outlet"])], semaphore)
-                for item in pending
-            ),
-            return_exceptions=True,
-        )
+        semaphore = asyncio.Semaphore(args.concurrency)
+        # Saved chunk by chunk: a multi-hour run that is interrupted keeps
+        # everything up to its last completed chunk instead of nothing.
+        for start in range(0, len(pending), FETCH_CHUNK):
+            chunk = pending[start : start + FETCH_CHUNK]
+            results = await asyncio.gather(
+                *(
+                    fetch_snapshot(client, item, by_outlet[str(item["outlet"])], semaphore)
+                    for item in chunk
+                ),
+                return_exceptions=True,
+            )
+            kept, rejected = _gate_fetched(chunk, results, floor, ceiling)
+            _append_jsonl(ARTICLES_PATH, kept)
+            _append_jsonl(STATE_DIR / "fetch_rejected.jsonl", rejected)
 
-    for item, result in zip(pending, results):
+            kept_total += len(kept)
+            # Group by kind, not by the individual date - otherwise every
+            # rejected publication date becomes its own bucket.
+            for row in rejected:
+                text = str(row["reason"])
+                kind = "published outside window" if text.startswith("published ") else text
+                reasons[kind] = reasons.get(kind, 0) + 1
+            logger.info(
+                "  %d/%d fetched, %d kept so far",
+                min(start + FETCH_CHUNK, len(pending)), len(pending), kept_total,
+            )
+
+    logger.info(
+        "fetch complete: %d kept, %d rejected %s",
+        kept_total, sum(reasons.values()), reasons,
+    )
+    return 0
+
+
+def _gate_fetched(
+    chunk: List[Dict[str, object]],
+    results: List[object],
+    floor: datetime,
+    ceiling: datetime,
+) -> "tuple[List[Dict[str, object]], List[Dict[str, object]]]":
+    kept: List[Dict[str, object]] = []
+    rejected: List[Dict[str, object]] = []
+    for item, result in zip(chunk, results):
         url = str(item["url"])
         if isinstance(result, BaseException) or result is None:
             rejected.append({"url": url, "reason": "unretrievable"})
@@ -386,20 +422,7 @@ async def stage_fetch(args: argparse.Namespace) -> int:
                 "published": published.isoformat(),
             }
         )
-
-    _append_jsonl(ARTICLES_PATH, kept)
-    _append_jsonl(STATE_DIR / "fetch_rejected.jsonl", rejected)
-
-    # Group by kind, not by the individual date - otherwise every rejected
-    # publication date becomes its own bucket and the summary is unreadable.
-    reasons: Dict[str, int] = {}
-    for row in rejected:
-        text = str(row["reason"])
-        kind = "published outside window" if text.startswith("published ") else text
-        reasons[kind] = reasons.get(kind, 0) + 1
-
-    logger.info("fetch complete: %d kept, %d rejected %s", len(kept), len(rejected), reasons)
-    return 0
+    return kept, rejected
 
 
 # ---------------------------------------------------------------------------
@@ -808,6 +831,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--ingest-key", default=os.getenv("INGEST_API_KEY", ""))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--concurrency",
+        type=int,
+        default=SNAPSHOT_CONCURRENCY,
+        help=(
+            "Parallel Wayback downloads in fetch. Above ~10 the archive starts "
+            "refusing requests, which shows up as more 'unretrievable'."
+        ),
+    )
     parser.add_argument(
         "--rpm",
         type=float,
