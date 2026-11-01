@@ -26,7 +26,7 @@ from sqlalchemy import (
     func,
     text,
 )
-from sqlalchemy.dialects.postgresql import ARRAY, UUID as PGUUID
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB, UUID as PGUUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db.database import Base
@@ -344,3 +344,73 @@ def public_incidents():
     are backfilled history awaiting review, or history a reviewer rejected.
     """
     return CrimeIncident.review_status == PUBLIC_REVIEW_STATUS
+
+
+# ---------------------------------------------------------------------------
+# Public Pulse - see db_migrations/007_public_pulse.sql
+# ---------------------------------------------------------------------------
+PULSE_TOPIC_TYPES: tuple[str, ...] = (
+    "crime_safety",
+    "politics",
+    "governance",
+    "society",
+    "religion",
+    "economy",
+    "disaster",
+    "entertainment",
+    "sports",
+    "other",
+)
+
+#: Signals worth an analyst's attention, each requiring evidence in the comments.
+PULSE_FLAGS: tuple[str, ...] = (
+    "mob_justice",
+    "violent_threats",
+    "communal_hostility",
+    "hate_speech",
+    "misinformation",
+    "doxxing",
+    "coordinated_activity",
+)
+
+PULSE_STANCES: tuple[str, ...] = ("critical", "supportive", "mixed", "not_discussed")
+
+
+class PulseTopic(Base):
+    """Aggregated public reaction to one viral video. Never per-commenter."""
+
+    __tablename__ = "pulse_topics"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        PGUUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    platform: Mapped[str] = mapped_column(Text, nullable=False, server_default="YouTube")
+    video_id: Mapped[str] = mapped_column(Text, nullable=False, unique=True)
+    url: Mapped[str] = mapped_column(Text, nullable=False)
+    title: Mapped[str] = mapped_column(Text, nullable=False)
+    channel: Mapped[Optional[str]] = mapped_column(Text)
+    published_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+    discovered_via: Mapped[str] = mapped_column(Text, nullable=False, server_default="trending")
+    view_count: Mapped[Optional[int]] = mapped_column(BigInteger)
+    like_count: Mapped[Optional[int]] = mapped_column(BigInteger)
+    comment_count: Mapped[Optional[int]] = mapped_column(BigInteger)
+    comments_analysed: Mapped[int] = mapped_column(Integer, nullable=False)
+    topic: Mapped[str] = mapped_column(Text, nullable=False)
+    topic_type: Mapped[str] = mapped_column(Text, nullable=False)
+    crime_category: Mapped[Optional[str]] = mapped_column(Text)
+    positive_pct: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False)
+    neutral_pct: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False)
+    negative_pct: Mapped[Decimal] = mapped_column(Numeric(5, 2), nullable=False)
+    emotions: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default=text("'{}'::jsonb"))
+    stance_authorities: Mapped[str] = mapped_column(Text, nullable=False, server_default="not_discussed")
+    themes: Mapped[list] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    flags: Mapped[list] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    summary: Mapped[str] = mapped_column(Text, nullable=False)
+    key_views: Mapped[list] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    history: Mapped[list] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    first_seen_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    analysed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )

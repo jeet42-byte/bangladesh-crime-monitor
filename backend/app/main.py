@@ -14,9 +14,10 @@ from datetime import datetime, timezone
 
 from sqlalchemy import text
 
-from app.api.v1 import analytics, assets, auth, crimes, ingest, review, ttp
+from app.api.v1 import analytics, assets, auth, crimes, ingest, pulse, review, ttp
 from app.core.config import settings
 from app.db.database import AsyncSessionLocal, dispose_engine
+from app.db.schema import ensure_schema
 from app.services.email import describe_backend
 
 logging.basicConfig(
@@ -131,6 +132,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         logger.error("Database health check failed at startup: %s", exc)
         app.state.db_healthy = False
 
+    await ensure_schema()
+
     try:
         await _seed_owner()
     except Exception as exc:  # noqa: BLE001 - never block startup on seeding
@@ -187,6 +190,7 @@ def create_app() -> FastAPI:
     app.include_router(ttp.router, prefix=settings.API_V1_PREFIX)
     app.include_router(assets.router, prefix=settings.API_V1_PREFIX)
     app.include_router(review.router, prefix=settings.API_V1_PREFIX)
+    app.include_router(pulse.router, prefix=settings.API_V1_PREFIX)
 
     @app.get("/", tags=["meta"], summary="Service banner")
     async def root() -> dict:

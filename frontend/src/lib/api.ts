@@ -49,7 +49,7 @@ function sleep(ms: number): Promise<void> {
  * Returns `null` when the request could not be satisfied; each public function
  * decides what an empty result looks like for its own shape.
  */
-async function request<T>(
+export async function request<T>(
   path: string,
   params: Record<string, string | number | null | undefined> = {},
   init: RequestInit = {}
