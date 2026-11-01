@@ -312,8 +312,20 @@ async def stage_fetch(args: argparse.Namespace) -> int:
         logger.error("No candidates. Run 'discover' first.")
         return 1
 
-    done = _seen_urls(ARTICLES_PATH) | _seen_urls(
-        STATE_DIR / "fetch_rejected.jsonl"
+    rejected_rows = _read_jsonl(STATE_DIR / "fetch_rejected.jsonl")
+    if args.retry_failed:
+        # Keep only verdicts that will not change: off-topic or out of window.
+        # Download and parse failures go back in the queue.
+        retryable = {
+            str(r.get("url"))
+            for r in rejected_rows
+            if str(r.get("reason", "")).startswith(("unretrievable", "unparseable"))
+        }
+        logger.info("%d failed downloads returned to the queue", len(retryable))
+    else:
+        retryable = set()
+    done = _seen_urls(ARTICLES_PATH) | (
+        {str(r.get("url")) for r in rejected_rows} - retryable
     )
     by_outlet = {source.outlet: source for source in ARCHIVE_SOURCES}
 
@@ -361,7 +373,12 @@ async def stage_fetch(args: argparse.Namespace) -> int:
             # rejected publication date becomes its own bucket.
             for row in rejected:
                 text = str(row["reason"])
-                kind = "published outside window" if text.startswith("published ") else text
+                if text.startswith("published "):
+                    kind = "published outside window"
+                elif text.startswith("unretrievable"):
+                    kind = "unretrievable"
+                else:
+                    kind = text
                 reasons[kind] = reasons.get(kind, 0) + 1
             logger.info(
                 "  %d/%d fetched, %d kept so far",
@@ -386,7 +403,10 @@ def _gate_fetched(
     for item, result in zip(chunk, results):
         url = str(item["url"])
         if isinstance(result, BaseException) or result is None:
-            rejected.append({"url": url, "reason": "unretrievable"})
+            rejected.append({"url": url, "reason": "unretrievable: exception"})
+            continue
+        if "error" in result:
+            rejected.append({"url": url, "reason": str(result["error"])})
             continue
 
         published = result["published"]
@@ -706,6 +726,72 @@ def stage_analyse(args: argparse.Namespace) -> int:
     return 0
 
 
+async def stage_probe(args: argparse.Namespace) -> int:
+    """Show why downloads fail, a few articles per outlet, so selectors can
+    be fixed from evidence rather than guessed."""
+    from app.scrapers.archive_harvester import (
+        SNAPSHOT_URL,
+        extract_body,
+        extract_published,
+        extract_title,
+    )
+
+    failed = [
+        r for r in _read_jsonl(STATE_DIR / "fetch_rejected.jsonl")
+        if str(r.get("reason", "")).startswith(("unretrievable", "unparseable"))
+    ]
+    failed_urls = {str(r["url"]) for r in failed}
+    by_outlet: Dict[str, List[Dict[str, object]]] = {}
+    for candidate in _read_jsonl(CANDIDATES_PATH):
+        if candidate["url"] in failed_urls:
+            by_outlet.setdefault(str(candidate["outlet"]), []).append(candidate)
+
+    sources = {source.outlet: source for source in ARCHIVE_SOURCES}
+    async with httpx.AsyncClient(
+        timeout=SNAPSHOT_TIMEOUT, headers={"User-Agent": USER_AGENT}, follow_redirects=True
+    ) as client:
+        for outlet, items in sorted(by_outlet.items()):
+            print(f"\n=== {outlet}: {len(items)} failed ===")
+            for item in items[: args.probe_count]:
+                url = SNAPSHOT_URL.format(timestamp=item["timestamp"], url=item["url"])
+                print(f"- {item['url']}")
+                try:
+                    response = await client.get(url)
+                except httpx.HTTPError as exc:
+                    print(f"    network error: {type(exc).__name__}")
+                    continue
+                print(f"    HTTP {response.status_code}, {len(response.text)} chars")
+                if response.status_code != 200:
+                    continue
+                soup = BeautifulSoup(response.text, "html.parser")
+                for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
+                    tag.decompose()
+                title = extract_title(soup)
+                body = extract_body(soup, sources[outlet].body_selectors)
+                print(f"    title: {title[:70]!r}")
+                print(f"    body via selectors: {len(body)} chars")
+                print(f"    date: {extract_published(soup)}")
+                dates = [
+                    f"{m.get('property') or m.get('name') or m.get('itemprop')}={str(m.get('content'))[:25]}"
+                    for m in soup.find_all("meta")
+                    if any(k in str(m.get("property") or m.get("name") or m.get("itemprop") or "").lower()
+                           for k in ("date", "time", "publish"))
+                ]
+                print(f"    date-like meta: {dates[:4]}")
+                blocks = sorted(
+                    soup.find_all(["div", "article", "section"]),
+                    key=lambda t: len(t.find_all("p", recursive=False)),
+                    reverse=True,
+                )[:3]
+                for block in blocks:
+                    print(
+                        f"    text block: <{block.name} class={' '.join(block.get('class') or [])!r} "
+                        f"id={block.get('id')!r}> {len(block.find_all('p', recursive=False))} paragraphs"
+                    )
+                await asyncio.sleep(2)
+    return 0
+
+
 def stage_codebook() -> int:
     from app.research.cyber_codebook import codebook_markdown
 
@@ -803,7 +889,7 @@ def build_parser() -> argparse.ArgumentParser:
         "stage",
         choices=[
             "discover", "fetch", "extract", "post", "status",
-            "export", "score", "codebook", "cirt", "analyse",
+            "export", "score", "codebook", "cirt", "analyse", "probe",
         ],
     )
     parser.add_argument("--outlets", help="Comma-separated outlet or host filter.")
@@ -831,6 +917,14 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--ingest-key", default=os.getenv("INGEST_API_KEY", ""))
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--probe-count", type=int, default=3, help="probe: failed articles to test per outlet."
+    )
+    parser.add_argument(
+        "--retry-failed",
+        action="store_true",
+        help="fetch: retry articles that previously failed to download or parse.",
+    )
     parser.add_argument(
         "--concurrency",
         type=int,
@@ -906,6 +1000,8 @@ def main() -> int:
 
     if args.stage == "status":
         return stage_status()
+    if args.stage == "probe":
+        return asyncio.run(stage_probe(args))
     if args.stage in ("export", "score", "codebook", "cirt", "analyse"):
         if TOPIC.name != "cyber":
             logger.error("'%s' is for the cyber topic: add --topic cyber.", args.stage)

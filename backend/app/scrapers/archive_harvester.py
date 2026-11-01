@@ -430,24 +430,52 @@ def extract_body(soup: BeautifulSoup, selectors: Sequence[str]) -> str:
     return " ".join(p for p in paragraphs if len(p) > 40).strip()
 
 
+#: Retries for a snapshot the archive refused or timed out on. A busy Wayback
+#: answers 429/5xx or drops the connection; the first overnight run lost most
+#: of 88,000 articles that way because nothing was retried.
+SNAPSHOT_RETRIES = 3
+SNAPSHOT_BACKOFF_SECONDS = (5, 15, 45)
+
+
 async def fetch_snapshot(
     client: httpx.AsyncClient,
     candidate: Dict[str, str],
     source: ArchiveSource,
     semaphore: asyncio.Semaphore,
-) -> Optional[Dict[str, object]]:
-    """Retrieve one archived article and pull out title, body and date."""
+) -> Dict[str, object]:
+    """Retrieve one archived article and pull out title, body and date.
+
+    Always returns a dict. On failure it carries only ``error``, saying
+    which kind: ``unretrievable: ...`` (the archive would not serve it, even
+    after retries) or ``unparseable: ...`` (served, but the headline, text or
+    date could not be found - a selector problem, not a network one).
+    """
     url = SNAPSHOT_URL.format(
         timestamp=candidate["timestamp"], url=candidate["url"]
     )
 
-    async with semaphore:
-        try:
-            response = await client.get(url)
-            response.raise_for_status()
-        except httpx.HTTPError as exc:
-            logger.debug("snapshot failed %s: %s", candidate["url"], exc)
-            return None
+    response = None
+    last_error = ""
+    for attempt in range(SNAPSHOT_RETRIES + 1):
+        async with semaphore:
+            try:
+                response = await client.get(url)
+            except httpx.HTTPError as exc:
+                last_error = type(exc).__name__
+                response = None
+        if response is not None and response.status_code == 200:
+            break
+        if response is not None:
+            last_error = f"HTTP {response.status_code}"
+            # 404 and friends will not change on retry.
+            if response.status_code < 500 and response.status_code != 429:
+                break
+        if attempt < SNAPSHOT_RETRIES:
+            await asyncio.sleep(SNAPSHOT_BACKOFF_SECONDS[attempt])
+
+    if response is None or response.status_code != 200:
+        logger.debug("snapshot failed %s: %s", candidate["url"], last_error)
+        return {"error": f"unretrievable: {last_error}"}
 
     soup = BeautifulSoup(response.text, "html.parser")
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
@@ -457,8 +485,13 @@ async def fetch_snapshot(
     body = extract_body(soup, source.body_selectors)
     published = extract_published(soup)
 
-    if not title or len(body) < 200 or published is None:
-        return None
+    missing = [
+        name
+        for name, ok in (("title", bool(title)), ("body", len(body) >= 200), ("date", published is not None))
+        if not ok
+    ]
+    if missing:
+        return {"error": "unparseable: no " + "/".join(missing)}
 
     return {
         "url": candidate["url"],
