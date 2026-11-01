@@ -1,0 +1,44 @@
+THE PEOPLE v. YOUR APPS · 3D COURTROOM SCENES · PROMPTS
+(7 images, then 7 silent 6-second clips)
+
+STEP 1 · IMAGES (Microsoft Designer / Bing Image Creator / Gemini)
+Paste each prompt; choose landscape 16:9. Save as the file name shown (court_title.png, case1.png ... verdict.png).
+Every prompt already includes the style and the two recurring characters so they look the same in every image.
+
+STYLE (included below): 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), soft cinematic lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered for subtitles, no readable text, no logos.
+JUDGE: a dignified Bangladeshi woman judge in her fifties, black judicial robe with white collar bands, grey-streaked hair in a neat bun, reading glasses.
+PROSECUTOR: a Bangladeshi man in his twenties, black barrister gown over a white shirt with white collar bands, neat short black hair, confident.
+
+--- court_title.png ---
+A grand wood-panelled Bangladeshi courtroom with tall windows and ceiling fans; the JUDGE takes her seat at the raised bench while the gallery stands; the PROSECUTOR stands at his table holding a thick case file; a large screen behind the bench glows with five blank app-style icons. Characters: JUDGE as above; PROSECUTOR as above. Style as above.
+
+--- case1.png  (Facebook · account recovery) ---
+In the courtroom, a young Bangladeshi woman in her twenties in a blue kameez stands in the witness box, distressed, holding up her phone showing a locked-out login screen; the PROSECUTOR beside her holds up a printed fake "copyright" email; the JUDGE listens closely from the bench. Characters: JUDGE; PROSECUTOR. Style as above.
+
+--- case2.png  (Instagram · private messages) ---
+In the courtroom, a young Bangladeshi woman university student in a green kameez sits in the witness box covering her mouth, upset, her phone showing a chat screen; the gallery whispers; the PROSECUTOR points at a large screen showing blurred private messages; the JUDGE frowns. Characters: JUDGE; PROSECUTOR. Style as above.
+
+--- case3.png  (WhatsApp · the shared code) ---
+In the courtroom, a young Bangladeshi man in a checked shirt stands in the witness box looking embarrassed, holding his phone that shows a six-digit code message; the PROSECUTOR gestures toward him sympathetically; the JUDGE peers over her glasses. Characters: JUDGE; PROSECUTOR. Style as above.
+
+--- case4.png  (Gmail · phishing page) ---
+In the courtroom, the PROSECUTOR presents a large printed board of a fake email login page on an easel, pointing at a suspicious web address; the JUDGE leans forward examining it through her reading glasses; a court clerk holds a laptop. Characters: JUDGE; PROSECUTOR. Style as above.
+
+--- case5.png  (bKash · the OTP scam) ---
+In the courtroom, an elderly Bangladeshi man with a white beard and a cap stands in the witness box holding a simple mobile phone, sad and confused; the PROSECUTOR places a reassuring hand on the rail beside him; the JUDGE looks on with concern. Characters: JUDGE; PROSECUTOR. Style as above.
+
+--- verdict.png ---
+Close shot of the JUDGE at the bench raising a wooden gavel to deliver the verdict, the PROSECUTOR standing below waiting, the gallery holding its breath, warm light through the tall windows. Characters: JUDGE; PROSECUTOR. Style as above.
+
+
+STEP 2 · CLIPS (Kling AI / Hailuo / Luma / Pika) — 6 seconds, 16:9, sound OFF
+Upload each image, paste its acting prompt, save as court_title.mp4, case1.mp4 ... verdict.mp4.
+Add if allowed: "Keep faces, clothes and the setting exactly as in the image. Pixar-style 3D animation. No text, no new characters."
+
+court_title.mp4 · The JUDGE sits down and adjusts her glasses; the gallery sits down; the PROSECUTOR opens his case file and looks up confidently. Slow camera push-in.
+case1.mp4 · The woman in the witness box speaks emotionally and shows her phone to the court; the PROSECUTOR holds the email up higher toward the JUDGE, who nods slowly. Slow camera push-in.
+case2.mp4 · The student lowers her hand and wipes a tear; the PROSECUTOR points at the screen; the JUDGE shakes her head in disapproval. Slow camera push-in.
+case3.mp4 · The young man looks down at his phone, rubs the back of his neck and explains; the PROSECUTOR nods; the JUDGE writes a note. Slow camera push-in.
+case4.mp4 · The PROSECUTOR taps the fake web address on the board twice; the JUDGE leans closer, then sits back with raised eyebrows. Slow camera push-in.
+case5.mp4 · The elderly man holds up his phone with a trembling hand and explains; the PROSECUTOR listens and nods gently; the JUDGE sighs. Slow camera push-in.
+verdict.mp4 · The JUDGE brings the gavel down firmly once; the PROSECUTOR gives a small satisfied nod; the gallery reacts. Slow camera push-in.
