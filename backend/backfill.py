@@ -764,13 +764,14 @@ async def stage_probe(args: argparse.Namespace) -> int:
                 if response.status_code != 200:
                     continue
                 soup = BeautifulSoup(response.text, "html.parser")
+                published = extract_published(soup)
                 for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
                     tag.decompose()
                 title = extract_title(soup)
                 body = extract_body(soup, sources[outlet].body_selectors)
                 print(f"    title: {title[:70]!r}")
                 print(f"    body via selectors: {len(body)} chars")
-                print(f"    date: {extract_published(soup)}")
+                print(f"    date: {published}")
                 dates = [
                     f"{m.get('property') or m.get('name') or m.get('itemprop')}={str(m.get('content'))[:25]}"
                     for m in soup.find_all("meta")

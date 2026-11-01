@@ -363,20 +363,96 @@ def extract_published(soup: BeautifulSoup) -> Optional[datetime]:
         if parsed:
             return parsed
 
-    # JSON-LD is the common fallback on these outlets.
+    # JSON-LD is the common fallback on these outlets. It lives in a <script>
+    # tag, so this must run before scripts are stripped from the page.
+    for block in _jsonld_blocks(soup):
+        for key in ("datePublished", "dateCreated"):
+            parsed = _parse_iso(str(block.get(key) or ""))
+            if parsed:
+                return parsed
+
+    # Jagonews24 publishes only an update time, as a Unix timestamp. Edits
+    # usually follow publication within hours, so it is an acceptable
+    # stand-in; it is used only when nothing better exists.
+    for attrs in ({"property": "og:updated_time"}, {"property": "article:modified_time"}):
+        tag = soup.find("meta", attrs=attrs)
+        parsed = _parse_iso(str((tag.get("content") if tag else "") or ""))
+        if parsed:
+            return parsed
+
+    # Last resort: a "published" line in the visible text, English or Bangla
+    # (Risingbd carries no machine-readable date at all). Only text right
+    # after a published/updated label counts - a bare date elsewhere on the
+    # page is usually today's date in the masthead.
+    return _visible_published(soup.get_text(" "))
+
+
+def _jsonld_blocks(soup: BeautifulSoup) -> List[Dict[str, object]]:
+    blocks: List[Dict[str, object]] = []
     for script in soup.find_all("script", type="application/ld+json"):
         try:
             payload = json.loads(script.string or "")
         except (json.JSONDecodeError, TypeError):
             continue
-        for block in payload if isinstance(payload, list) else [payload]:
-            if not isinstance(block, dict):
-                continue
-            for key in ("datePublished", "dateCreated"):
-                parsed = _parse_iso(str(block.get(key) or ""))
-                if parsed:
-                    return parsed
+        stack = payload if isinstance(payload, list) else [payload]
+        while stack:
+            block = stack.pop(0)
+            if isinstance(block, dict):
+                blocks.append(block)
+                graph = block.get("@graph")
+                if isinstance(graph, list):
+                    stack.extend(graph)
+    return blocks
 
+
+def extract_jsonld_body(soup: BeautifulSoup) -> str:
+    """Article text from JSON-LD, for pages that render the body client-side."""
+    for block in _jsonld_blocks(soup):
+        body = block.get("articleBody")
+        if isinstance(body, str) and len(body) > 200:
+            return re.sub(r"\s+", " ", BeautifulSoup(body, "html.parser").get_text(" ")).strip()
+    return ""
+
+
+_BN_DIGITS = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
+_MONTHS_BY_NAME = {
+    "জানুয়ারি": 1, "ফেব্রুয়ারি": 2, "মার্চ": 3, "এপ্রিল": 4, "মে": 5, "জুন": 6,
+    "জুলাই": 7, "আগস্ট": 8, "সেপ্টেম্বর": 9, "অক্টোবর": 10, "নভেম্বর": 11,
+    "ডিসেম্বর": 12,
+    "january": 1, "february": 2, "march": 3, "april": 4, "may": 5, "june": 6,
+    "july": 7, "august": 8, "september": 9, "october": 10, "november": 11,
+    "december": 12, "jan": 1, "feb": 2, "mar": 3, "apr": 4, "jun": 6, "jul": 7,
+    "aug": 8, "sep": 9, "sept": 9, "oct": 10, "nov": 11, "dec": 12,
+}
+_PUBLISHED_LABEL_RE = re.compile(
+    r"(প্রকাশিত|প্রকাশ|আপডেট|published|updated|posted)\s*[:：]?", re.IGNORECASE
+)
+_MONTH_ALT = "|".join(sorted((re.escape(m) for m in _MONTHS_BY_NAME), key=len, reverse=True))
+_DAY_MONTH_YEAR_RE = re.compile(
+    rf"(\d{{1,2}})\s*({_MONTH_ALT})[\s,]*(\d{{4}})", re.IGNORECASE
+)
+_MONTH_DAY_YEAR_RE = re.compile(
+    rf"({_MONTH_ALT})\s*(\d{{1,2}}),?\s*(\d{{4}})", re.IGNORECASE
+)
+
+
+def _visible_published(text: str) -> Optional[datetime]:
+    text = re.sub(r"\s+", " ", text.translate(_BN_DIGITS))
+    for label in _PUBLISHED_LABEL_RE.finditer(text):
+        window = text[label.end() : label.end() + 80]
+        for pattern, order in ((_DAY_MONTH_YEAR_RE, "dmy"), (_MONTH_DAY_YEAR_RE, "mdy")):
+            match = pattern.search(window)
+            if not match:
+                continue
+            if order == "dmy":
+                day, month_name, year = match.groups()
+            else:
+                month_name, day, year = match.groups()
+            month = _MONTHS_BY_NAME.get(month_name.lower())
+            try:
+                return datetime(int(year), month or 0, int(day), tzinfo=timezone.utc)
+            except (ValueError, TypeError):
+                continue
     return None
 
 
@@ -384,6 +460,11 @@ def _parse_iso(value: str) -> Optional[datetime]:
     if not value:
         return None
     text = value.strip().replace("Z", "+00:00")
+    if re.fullmatch(r"\d{9,10}", text):
+        try:
+            return datetime.fromtimestamp(int(text), tz=timezone.utc)
+        except (ValueError, OSError):
+            return None
     try:
         parsed = datetime.fromisoformat(text)
     except ValueError:
@@ -427,7 +508,23 @@ def extract_body(soup: BeautifulSoup, selectors: Sequence[str]) -> str:
     paragraphs = [
         re.sub(r"\s+", " ", p.get_text(" ")).strip() for p in soup.find_all("p")
     ]
-    return " ".join(p for p in paragraphs if len(p) > 40).strip()
+    swept = " ".join(p for p in paragraphs if len(p) > 40).strip()
+    if len(swept) > 200:
+        return swept
+
+    # Some layouts (Dhaka Post) put paragraphs in <div>s, not <p>s. Take the
+    # container whose direct children carry the most sentence-length text.
+    best, best_len = "", 0
+    for node in soup.find_all(["div", "article", "section"]):
+        pieces = [
+            re.sub(r"\s+", " ", child.get_text(" ")).strip()
+            for child in node.find_all(recursive=False)
+        ]
+        pieces = [piece for piece in pieces if len(piece) > 40]
+        total = sum(len(piece) for piece in pieces)
+        if len(pieces) >= 3 and total > best_len:
+            best, best_len = " ".join(pieces), total
+    return best or swept
 
 
 #: Retries for a snapshot the archive refused or timed out on. A busy Wayback
@@ -478,12 +575,18 @@ async def fetch_snapshot(
         return {"error": f"unretrievable: {last_error}"}
 
     soup = BeautifulSoup(response.text, "html.parser")
+    # Before stripping scripts: the date and, on some outlets, the body live
+    # in JSON-LD <script> blocks. Stripping first silently lost the date on
+    # most of 75,000 pages.
+    published = extract_published(soup)
+    ld_body = extract_jsonld_body(soup)
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
         tag.decompose()
 
     title = extract_title(soup)
     body = extract_body(soup, source.body_selectors)
-    published = extract_published(soup)
+    if len(body) < 200 and ld_body:
+        body = ld_body
 
     missing = [
         name
