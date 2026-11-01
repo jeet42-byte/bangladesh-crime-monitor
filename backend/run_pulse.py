@@ -44,6 +44,8 @@ logger = logging.getLogger("run_pulse")
 POST_TIMEOUT = httpx.Timeout(90.0, connect=20.0)
 COLD_START_RETRIES = 4
 COLD_START_BACKOFF_SECONDS = 15
+#: Analysed but not published: no bearing on public affairs.
+SKIPPED_TOPIC_TYPES = frozenset({"entertainment", "sports"})
 
 
 def _backend(method: str, url: str, key: str, **kwargs: Any) -> httpx.Response:
@@ -100,7 +102,9 @@ def run(args: argparse.Namespace) -> int:
     videos = yt.details(sources)
     for video in videos:
         video.discovered_via = sources.get(video.video_id, "trending")
-    chosen = select_viral(videos, limit=args.max_videos, skip=recent, now=now)
+    # Over-select: some picks turn out to be entertainment once read, and
+    # comment sections can be disabled. Analysis stops at --max-videos kept.
+    chosen = select_viral(videos, limit=args.max_videos * 2, skip=recent, now=now)
     logger.info(
         "candidates: %d ids, %d with details, %d chosen (%s)",
         len(sources), len(videos), len(chosen),
@@ -109,6 +113,8 @@ def run(args: argparse.Namespace) -> int:
 
     topics: List[Dict[str, Any]] = []
     for video in chosen:
+        if len(topics) >= args.max_videos:
+            break
         try:
             comments = yt.comments(video.video_id, limit=args.comments_per_video)
         except YouTubeAPIError as exc:
@@ -120,6 +126,10 @@ def run(args: argparse.Namespace) -> int:
         result = analyse(video.title, video.channel, comments)
         if result is None:
             logger.warning("no analysis for %s (%s)", video.video_id, video.title[:60])
+            continue
+        if result["topic_type"] in SKIPPED_TOPIC_TYPES:
+            # Celebrity and sports reaction is not public-affairs pulse.
+            logger.info("skip %s: %s", video.video_id, result["topic_type"])
             continue
         topics.append({
             "platform": "YouTube",

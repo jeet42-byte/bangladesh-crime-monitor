@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import logging
 import math
+import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, Iterable, List, Optional
@@ -36,8 +37,15 @@ API = "https://www.googleapis.com/youtube/v3"
 TIMEOUT = httpx.Timeout(30.0, connect=10.0)
 
 #: YouTube categories with no public-affairs reaction worth reading:
-#: Film, Autos, Music, Pets, Sports, Travel, Gaming, Comedy.
-EXCLUDED_CATEGORIES = frozenset({"1", "2", "10", "15", "17", "19", "20", "23"})
+#: Film, Autos, Music, Pets, Sports, Travel, Gaming, Comedy, Entertainment.
+#: The first live run picked three entertainment videos out of four - the BD
+#: trending chart is mostly trailers, creators and gaming - so Entertainment
+#: (24) is excluded too; TV talk shows mostly file under News & Politics.
+EXCLUDED_CATEGORIES = frozenset({"1", "2", "10", "15", "17", "19", "20", "23", "24"})
+
+#: The trending chart for BD includes Indian and international uploads; a
+#: title with no Bengali script is almost never Bangladeshi public affairs.
+_BENGALI = re.compile(r"[\u0980-\u09FF]")
 
 #: Below this a comment section says little about public mood.
 MIN_COMMENTS = 40
@@ -212,6 +220,7 @@ def select_viral(
         v for v in videos
         if v.video_id not in skipped
         and v.category_id not in EXCLUDED_CATEGORIES
+        and _BENGALI.search(v.title)
         and v.comment_count >= MIN_COMMENTS
         and (v.published_at is None or now - v.published_at <= MAX_AGE)
     ]
