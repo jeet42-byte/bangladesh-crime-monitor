@@ -61,3 +61,8 @@ jobs:
           for js in $(grep -o -E '/_next/static/chunks/[^"]+\.js' /tmp/site | sort -u | head -40); do
             curl -s -m 30 "$SITE$js" | grep -o -E 'https?://[a-zA-Z0-9.-]*(onrender\.com|127\.0\.0\.1:8000|localhost:8000)'
           done | sort | uniq -c
+
+          show "installable app: manifest, service worker, install link"
+          curl -s -m 60 -o /tmp/mf -w 'manifest HTTP %{http_code}\n' "$SITE/manifest.webmanifest"; head -c 120 /tmp/mf; echo
+          curl -s -m 60 -o /dev/null -w 'sw.js HTTP %{http_code}\n' "$SITE/sw.js"
+          grep -o -E '<link rel="manifest"[^>]*>' /tmp/site | head -1
