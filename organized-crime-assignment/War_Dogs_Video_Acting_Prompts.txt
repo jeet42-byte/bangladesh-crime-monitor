@@ -1,0 +1,47 @@
+WAR DOGS · ACTING PROMPTS FOR IMAGE-TO-VIDEO (silent clips)
+
+How to use
+1. Open a free image-to-video tool on your laptop (Kling AI, Hailuo / MiniMax, Luma Dream Machine or Pika).
+2. Upload the image named below (from organized-crime-assignment/3d_scene_images/ or your own copies).
+3. Paste the prompt. Settings: 16:9, 5–10 seconds, sound OFF, no text.
+4. Download the MP4 and name it like the image (title.mp4, s01.mp4 ... s12.mp4). Send them back here.
+Add this to the end of every prompt if the tool allows: "Keep the characters' faces, clothes and the setting exactly as in the image. Pixar-style 3D animation. No speech bubbles, no text, no new characters."
+
+--- title.mp4  (image: title.jpg) ---
+David and Efraim stand in front of the ammunition crates at sunset. Efraim lowers his sunglasses slightly and gives a confident smirk; David glances sideways at him, nervous, then looks back at the camera. Palm trees sway gently. Slow camera push-in.
+
+--- s01.mp4  (image: s01.jpg) ---
+David sits among unsold bedsheet boxes, rubs his forehead, sighs, looks down at the boxes and shakes his head slowly, then looks up worried. A ceiling fan turns softly. Slow camera push-in.
+
+--- s02.mp4  (image: s02.jpg) ---
+Efraim leans in toward David, talks excitedly and points at the laptop screen with a big grin; David's eyes widen, he leans closer to the screen and slowly nods. Sunset light flickers through the blinds. Slow camera push-in.
+
+--- s03.mp4  (image: s03.jpg) ---
+David grips the steering wheel tightly, eyes darting nervously at the road; Efraim braces against the dashboard and glances out of the side window. The truck bounces over the rough desert road, dust blowing past. Camera shakes slightly with the truck.
+
+--- s04.mp4  (image: s04.jpg) ---
+Efraim pumps both fists and laughs, celebrating; David smiles awkwardly, then his smile fades as he looks down at the stacks of cash, uneasy. The sports car gleams outside. Slow camera push-in.
+
+--- s05.mp4  (image: s05.jpg) ---
+The silver-haired man in the dark suit leans toward David and Efraim and talks quietly with a sly smile, handing over a brochure; Efraim nods with interest, David listens uneasily. Crowd moves in the background of the expo hall. Slow camera push-in.
+
+--- s06.mp4  (image: s06.jpg) ---
+The silver-haired man walks slowly forward between stacks of old green ammunition crates, glances around the warehouse and gives a small satisfied nod. Dust floats in the light beams. Slow camera dolly forward.
+
+--- s07.mp4  (image: s07.jpg) ---
+Efraim waves the signed government contract in the air, laughing and cheering; David looks at the contract, surprised, then breaks into a nervous smile. Papers flutter down. Slow camera push-in.
+
+--- s08.mp4  (image: s08.jpg) ---
+Efraim talks quietly on the phone with a sneaky smile; in the background the silver-haired man reads the letter, his face tightens with anger and he crumples the paper. Slow camera push-in.
+
+--- s09.mp4  (image: s09.jpg) ---
+David moves his flashlight across the crate, leans closer to read the markings, his eyes widen in shock and he slowly steps back. Dust drifts in the beam. Slow camera push-in.
+
+--- s10.mp4  (image: s10.jpg) ---
+Workers move ammunition from green crates into plain cardboard boxes and tape them shut; Efraim stands with arms crossed, looks around suspiciously, then smirks. Slow camera pan.
+
+--- s11.mp4  (image: s11.jpg) ---
+David and Efraim argue face to face: David gestures with open hands, pleading and upset; Efraim shakes his head angrily and points at him. Rain streams down the windows. Slow camera push-in.
+
+--- s12.mp4  (image: s12.jpg) ---
+In the courtroom David rubs his forehead and lowers his head in regret; Efraim sighs, slumps further onto his hand and stares blankly. The people in the gallery shift quietly. Slow camera push-in.
