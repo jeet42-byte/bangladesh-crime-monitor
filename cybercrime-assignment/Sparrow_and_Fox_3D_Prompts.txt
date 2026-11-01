@@ -1,52 +1,67 @@
-LOCKED OR LEAKED? · SPARROW & FOX · 3D SCENE PROMPTS
-(9 images, then 9 silent 6-second clips)
+SPARROW & FOX · READY-TO-PASTE PROMPTS (each one is complete on its own)
 
-STEP 1 · IMAGES (Microsoft Designer / Bing Image Creator / Gemini) — landscape 16:9
-Save each with the file name shown (title.png, s1.png ... s8.png). Every prompt includes the style and the characters,
-so Sparrow and Fox look the same in every image.
+STEP 1 · IMAGES: paste the IMAGE prompt into Microsoft Designer / Bing Image Creator / Gemini, choose 16:9 (landscape), save as the file name shown.
+STEP 2 · CLIPS: upload that image to Kling / Hailuo / Luma / Pika, paste the CLIP prompt, 6 seconds, 16:9, sound OFF, save as the .mp4 name shown.
 
-STYLE: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered for subtitles, no readable text, no logos.
-SPARROW: a 21-year-old Bangladeshi university student, long dark hair in a loose side braid, big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin.
-FOX: a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, black hoodie, fingerless gloves, a small orange fox-tail keychain hanging from his laptop.
+==================== title ====================
+IMAGE (title.png):
+Split scene at night in Dhaka: on the left, Sparrow sits on her bed in a cosy dorm room lit by her phone screen, smiling at a message; on the right, separated by a glowing line, Fox sits in a dark room full of monitors, watching her chat window with a sly grin. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Fox is a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, wearing a black hoodie and fingerless gloves, with a small orange fox-tail keychain hanging from his laptop. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
 
---- title.png ---
-Split scene at night in Dhaka: on the left, SPARROW sits on her bed in a cosy dorm room lit by her phone screen, smiling at a message; on the right, separated by a glowing line, FOX sits in a dark room full of monitors, watching her chat window with a sly grin. Characters: SPARROW and FOX as above. Style as above.
+CLIP (title.mp4):
+Sparrow smiles and types on her phone; on the other side Fox leans toward his monitor and his grin widens. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
 
---- s1.png  (11:47 PM · the message) ---
-SPARROW lies in bed late at night scrolling her phone, fairy lights on the wall, the city lights of Dhaka through the window; her phone shows a chat bubble from a friend; she looks relaxed and trusting. Character: SPARROW. Style as above.
+==================== s1 ====================
+IMAGE (s1.png):
+Sparrow lies in bed late at night scrolling her phone, fairy lights on the wall, the city lights of Dhaka through the window; her phone shows a chat bubble from a friend; she looks relaxed and trusting. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
 
---- s2.png  (11:49 PM · WhatsApp lost) ---
-SPARROW sits up in bed staring at her phone in shock, the screen glowing red with a warning; her other hand covers her mouth. Character: SPARROW. Style as above.
+CLIP (s1.mp4):
+Sparrow reads the message, smiles, then types a quick reply with her thumbs and taps send. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
 
---- s3.png  (Fox revealed) ---
-FOX in a dark room lit by several glowing monitors showing chat windows and code, leaning back in his chair with a sly grin, typing on a keyboard, the orange fox-tail keychain swinging. Character: FOX. Style as above.
+==================== s2 ====================
+IMAGE (s2.png):
+Sparrow sits up in bed at night staring at her phone in shock, the screen glowing red with a warning; her other hand covers her mouth. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
 
---- s4.png  (12:20 AM · Gmail phishing) ---
-SPARROW at her desk at night typing on her laptop, worried, a fake warning email on the screen; behind her, as a faint ghostly reflection in the dark window, FOX watches her type. Characters: SPARROW and FOX. Style as above.
+CLIP (s2.mp4):
+Sparrow sits up suddenly, taps the screen again and again, then freezes with her hand over her mouth. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
 
---- s5.png  (12:35 AM · Facebook locked) ---
-SPARROW at her laptop pressing keys in frustration, a red "locked out" screen in front of her; in a small inset on the right, FOX types fast on his keyboard with a smirk. Characters: SPARROW and FOX. Style as above.
+==================== s3 ====================
+IMAGE (s3.png):
+Fox sits in a dark room lit by several glowing monitors showing chat windows and code, leaning back in his chair with a sly grin, typing on a keyboard, the orange fox-tail keychain swinging. Fox is a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, wearing a black hoodie and fingerless gloves, with a small orange fox-tail keychain hanging from his laptop. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
 
---- s6.png  (1:10 AM · Instagram blackmail) ---
-SPARROW curled up on her bed holding her phone with tears in her eyes, a threatening message glowing on the screen; the room is dark except for the phone light. Character: SPARROW. Style as above.
+CLIP (s3.mp4):
+Fox leans forward, types quickly, the screens flicker, then he leans back with a satisfied grin. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
 
---- s7.png  (11:58 PM · bKash scam) ---
-In a different home, Sparrow's kind aunt, a Bangladeshi woman in her fifties in a saree, looks worriedly at her phone showing an "urgent" money request, about to send money; in an inset, FOX speaks on a phone pretending to be customer care. Characters: FOX; the aunt. Style as above.
+==================== s4 ====================
+IMAGE (s4.png):
+Sparrow sits at her desk at night typing on her laptop, worried, a fake warning email on the screen; behind her, as a faint ghostly reflection in the dark window, Fox watches her type. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Fox is a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, wearing a black hoodie and fingerless gloves, with a small orange fox-tail keychain hanging from his laptop. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
 
---- s8.png  (Replay · same night, different ending) ---
-SPARROW in bed with her phone, shaking her head with a confident smile and pressing "No", a glowing shield on her screen; in an inset on the right, FOX slams his laptop shut in frustration. Characters: SPARROW and FOX. Style as above.
+CLIP (s4.mp4):
+Sparrow types her password carefully and clicks; the ghostly reflection of Fox nods slowly. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
 
+==================== s5 ====================
+IMAGE (s5.png):
+Sparrow sits at her laptop at night pressing keys in frustration, a red locked-out screen in front of her; in a small inset on the right, Fox types fast on his keyboard with a smirk. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Fox is a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, wearing a black hoodie and fingerless gloves, with a small orange fox-tail keychain hanging from his laptop. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
 
-STEP 2 · CLIPS (Kling AI / Hailuo / Luma / Pika) — 6 seconds, 16:9, sound OFF
-Upload each image, paste its acting prompt, save as title.mp4, s1.mp4 ... s8.mp4.
-Add if allowed: "Keep faces, clothes and the setting exactly as in the image. Pixar-style 3D animation. No text, no new characters."
+CLIP (s5.mp4):
+Sparrow presses keys again and again and pushes the laptop away in frustration; Fox types faster and smirks. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
 
-title.mp4 · Sparrow smiles and types on her phone; on the other side Fox leans toward his monitor and his grin widens. Slow camera push-in.
-s1.mp4 · Sparrow reads the message, smiles, then types a quick reply with her thumbs and taps send. Slow camera push-in.
-s2.mp4 · Sparrow sits up suddenly, taps the screen again and again, then freezes with her hand over her mouth. Slow camera push-in.
-s3.mp4 · Fox leans forward, types quickly, the screens flicker, he leans back with a satisfied grin. Slow camera push-in.
-s4.mp4 · Sparrow types her password carefully and clicks; the ghostly reflection of Fox nods slowly. Slow camera push-in.
-s5.mp4 · Sparrow presses keys again and again and pushes the laptop away in frustration; Fox types faster and smirks. Slow camera push-in.
-s6.mp4 · Sparrow reads the message, tears roll down, she pulls her knees closer and hugs them. Slow camera push-in.
-s7.mp4 · The aunt reads the request, frowns with worry and starts typing the amount; Fox talks smoothly on the phone. Slow camera push-in.
-s8.mp4 · Sparrow shakes her head, smiles and taps "No"; Fox slams his laptop shut and throws his hands up. Slow camera push-in.
+==================== s6 ====================
+IMAGE (s6.png):
+Sparrow is curled up on her bed at night holding her phone with tears in her eyes, a threatening message glowing on the screen; the room is dark except for the phone light. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
+
+CLIP (s6.mp4):
+Sparrow reads the message, tears roll down, and she pulls her knees closer and hugs them. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
+
+==================== s7 ====================
+IMAGE (s7.png):
+In a different home at night, Sparrow’s aunt looks worriedly at her phone showing an urgent money request, about to send money; in a small inset, Fox speaks on a phone pretending to be customer care. her aunt is a kind Bangladeshi woman in her fifties wearing a saree. Fox is a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, wearing a black hoodie and fingerless gloves, with a small orange fox-tail keychain hanging from his laptop. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
+
+CLIP (s7.mp4):
+The aunt reads the request, frowns with worry and starts typing an amount; Fox talks smoothly on the phone. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
+
+==================== s8 ====================
+IMAGE (s8.png):
+Sparrow sits in bed at night with her phone, shaking her head with a confident smile and pressing No, a glowing shield on her screen; in a small inset on the right, Fox slams his laptop shut in frustration. Sparrow is a 21-year-old Bangladeshi university student with long dark hair in a loose side braid and big expressive brown eyes, wearing a soft light-brown hoodie with a tiny bird pin. Fox is a mysterious hacker whose face stays mostly hidden in the shadow of a black hood, only a sly grin and the glow of screens on his face visible, wearing a black hoodie and fingerless gloves, with a small orange fox-tail keychain hanging from his laptop. Style: 3D animated feature-film still in a polished Pixar-like style, original cartoon characters (not real people), cinematic night lighting, shallow depth of field, rich colour, 16:9 wide shot, faces in the upper two-thirds of the frame and the lower fifth kept calm and uncluttered, no readable text, no logos.
+
+CLIP (s8.mp4):
+Sparrow shakes her head, smiles and taps No; Fox slams his laptop shut and throws his hands up. Slow camera push-in. Keep the faces, clothes and setting exactly as in the image. Pixar-style 3D animation. No text, no new characters, no sound.
