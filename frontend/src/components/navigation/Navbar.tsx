@@ -13,6 +13,7 @@ import {
   FileText,
   Lock,
   Menu,
+  MessagesSquare,
   Radar,
   ShieldAlert,
   X,
@@ -29,6 +30,7 @@ const NAV_ITEMS = [
   { href: "/analytics", label: "Analytics", icon: BarChart3, gated: false },
   { href: "/database", label: "Archive", icon: Database, gated: false },
   { href: "/cyber", label: "Cyber", icon: ShieldAlert, gated: false },
+  { href: "/pulse", label: "Public Pulse", icon: MessagesSquare, gated: false },
   { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: false },
   { href: "/exposure", label: "Site Exposure", icon: Building2, gated: false },
   { href: "/methodology", label: "Methodology", icon: FileText, gated: false },
@@ -118,7 +120,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="ml-6 hidden items-center gap-1 lg:flex">
+        <nav className="ml-6 hidden items-center gap-1 xl:flex">
           {NAV_ITEMS.map(({ href, label, icon: Icon, gated }) => {
             const active =
               href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -130,7 +132,7 @@ export default function Navbar() {
                 aria-current={active ? "page" : undefined}
                 title={needsAccount ? `${label} requires an account` : undefined}
                 className={cn(
-                  "flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors",
+                  "flex items-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-2 text-sm transition-colors",
                   active
                     ? "bg-surface-overlay text-zinc-100"
                     : needsAccount
@@ -138,7 +140,7 @@ export default function Navbar() {
                       : "text-zinc-400 hover:bg-surface-overlay/60 hover:text-zinc-200"
                 )}
               >
-                <Icon className="h-4 w-4" aria-hidden />
+                <Icon className="hidden h-4 w-4 shrink-0 2xl:block" aria-hidden />
                 {label}
                 {needsAccount && (
                   <Lock className="h-3 w-3 text-zinc-600" aria-label="Account required" />
@@ -166,7 +168,7 @@ export default function Navbar() {
 
         <div className="ml-auto flex items-center gap-3">
           {/* Heartbeat */}
-          <div className="hidden items-center gap-2 rounded-lg border border-surface-border/70 bg-surface-raised/60 px-3 py-1.5 md:flex">
+          <div className="hidden items-center gap-2 rounded-lg border border-surface-border/70 bg-surface-raised/60 px-3 py-1.5 min-[1700px]:flex">
             <span className="relative flex h-2 w-2">
               {stream === "live" && (
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-60" />
@@ -184,7 +186,7 @@ export default function Navbar() {
           </div>
 
           {/* BST clock */}
-          <div className="flex items-center gap-2 rounded-lg border border-surface-border/70 bg-surface-raised/60 px-3 py-1.5">
+          <div className="hidden items-center gap-2 rounded-lg border border-surface-border/70 bg-surface-raised/60 px-3 py-1.5 sm:flex xl:hidden 2xl:flex">
             <Activity className="h-3.5 w-3.5 text-zinc-500" aria-hidden />
             <span
               className="font-mono text-xs tabular-nums text-zinc-300"
@@ -203,7 +205,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="rounded-lg border border-surface-border p-2 text-zinc-300 lg:hidden"
+            className="rounded-lg border border-surface-border p-2 text-zinc-300 xl:hidden"
             aria-label={menuOpen ? "Close navigation" : "Open navigation"}
             aria-expanded={menuOpen}
           >
@@ -218,7 +220,7 @@ export default function Navbar() {
 
       {/* Mobile nav */}
       {menuOpen && (
-        <nav className="border-t border-surface-border/70 bg-surface px-4 py-2 lg:hidden">
+        <nav className="border-t border-surface-border/70 bg-surface px-4 py-2 xl:hidden">
           {NAV_ITEMS.map(({ href, label, icon: Icon, gated }) => {
             const active =
               href === "/" ? pathname === "/" : pathname.startsWith(href);

@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import logging
-from datetime import datetime
-from typing import List, Optional
+from datetime import datetime, timedelta, timezone
+from typing import Dict, List, Optional
 
 from fastapi import APIRouter, status
 from pydantic import BaseModel, Field, field_validator
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.api.deps import DbSession, IngestAuth
@@ -17,7 +18,11 @@ from app.db.models import (
     CRIME_CATEGORIES,
     SOURCE_PLATFORMS,
     VERIFICATION_LEVELS,
+    PULSE_FLAGS,
+    PULSE_STANCES,
+    PULSE_TOPIC_TYPES,
     CrimeIncident,
+    PulseTopic,
 )
 
 logger = logging.getLogger(__name__)
@@ -259,3 +264,123 @@ async def merge_duplicates(
     merges = await merge_stored_duplicates(session, apply=apply)
     logger.info("merge-duplicates: %d found, applied=%s", len(merges), apply)
     return MergeOut(applied=apply, count=len(merges), merges=merges)
+
+
+# ===========================================================================
+# Public Pulse
+# ===========================================================================
+class PulseKeyViewIn(BaseModel):
+    view: str = Field(..., min_length=3, max_length=300)
+    share: float = Field(..., ge=0, le=1)
+
+
+class PulseTopicIn(BaseModel):
+    """One analysed video. Aggregates only - no commenter identities or quotes."""
+
+    platform: str = Field(default="YouTube", max_length=30)
+    video_id: str = Field(..., min_length=5, max_length=40)
+    url: str = Field(..., min_length=10, max_length=300)
+    title: str = Field(..., min_length=1, max_length=500)
+    channel: Optional[str] = Field(default=None, max_length=200)
+    published_at: Optional[datetime] = None
+    discovered_via: str = Field(default="trending", max_length=30)
+    view_count: Optional[int] = Field(default=None, ge=0)
+    like_count: Optional[int] = Field(default=None, ge=0)
+    comment_count: Optional[int] = Field(default=None, ge=0)
+    comments_analysed: int = Field(..., ge=1)
+    topic: str = Field(..., min_length=2, max_length=200)
+    topic_type: str
+    crime_category: Optional[str] = None
+    positive_pct: float = Field(..., ge=0, le=100)
+    neutral_pct: float = Field(..., ge=0, le=100)
+    negative_pct: float = Field(..., ge=0, le=100)
+    emotions: Dict[str, float] = Field(default_factory=dict)
+    stance_authorities: str = "not_discussed"
+    themes: List[str] = Field(default_factory=list, max_length=12)
+    flags: List[str] = Field(default_factory=list, max_length=10)
+    summary: str = Field(..., min_length=10, max_length=2000)
+    key_views: List[PulseKeyViewIn] = Field(default_factory=list, max_length=6)
+
+    @field_validator("topic_type")
+    @classmethod
+    def _valid_type(cls, value: str) -> str:
+        if value not in PULSE_TOPIC_TYPES:
+            raise ValueError(f"topic_type must be one of {PULSE_TOPIC_TYPES}")
+        return value
+
+    @field_validator("stance_authorities")
+    @classmethod
+    def _valid_stance(cls, value: str) -> str:
+        return value if value in PULSE_STANCES else "not_discussed"
+
+    @field_validator("flags")
+    @classmethod
+    def _valid_flags(cls, value: List[str]) -> List[str]:
+        return [flag for flag in dict.fromkeys(value) if flag in PULSE_FLAGS]
+
+    @field_validator("crime_category")
+    @classmethod
+    def _valid_crime(cls, value: Optional[str]) -> Optional[str]:
+        return value if value in CRIME_CATEGORIES else None
+
+
+class PulseBatchIn(BaseModel):
+    topics: List[PulseTopicIn] = Field(..., min_length=1, max_length=100)
+
+
+class PulseBatchOut(BaseModel):
+    created: int
+    updated: int
+
+
+#: Earlier snapshots kept per video, so a shift in mood can be shown.
+PULSE_HISTORY_LIMIT = 30
+
+
+@router.get("/pulse/recent", summary="Videos analysed recently, so the collector can skip them")
+async def pulse_recent(
+    session: DbSession,
+    _: IngestAuth,
+    hours: int = 12,
+) -> Dict[str, str]:
+    since = datetime.now(timezone.utc) - timedelta(hours=hours)
+    rows = await session.execute(
+        select(PulseTopic.video_id, PulseTopic.analysed_at).where(PulseTopic.analysed_at >= since)
+    )
+    return {video_id: at.isoformat() for video_id, at in rows.all()}
+
+
+@router.post(
+    "/pulse",
+    response_model=PulseBatchOut,
+    status_code=status.HTTP_200_OK,
+    summary="Upsert analysed videos for Public Pulse",
+)
+async def ingest_pulse(payload: PulseBatchIn, session: DbSession, _: IngestAuth) -> PulseBatchOut:
+    created = updated = 0
+    now = datetime.now(timezone.utc)
+    for item in payload.topics:
+        data = item.model_dump()
+        existing = (
+            await session.execute(select(PulseTopic).where(PulseTopic.video_id == item.video_id))
+        ).scalar_one_or_none()
+        if existing is None:
+            session.add(PulseTopic(**data, analysed_at=now))
+            created += 1
+            continue
+        snapshot = {
+            "at": existing.analysed_at.isoformat(),
+            "negative_pct": float(existing.negative_pct),
+            "positive_pct": float(existing.positive_pct),
+            "comments_analysed": existing.comments_analysed,
+            "view_count": existing.view_count,
+        }
+        history = (list(existing.history or []) + [snapshot])[-PULSE_HISTORY_LIMIT:]
+        for field, value in data.items():
+            setattr(existing, field, value)
+        existing.history = history
+        existing.analysed_at = now
+        updated += 1
+    await session.commit()
+    logger.info("pulse ingest: %d created, %d updated", created, updated)
+    return PulseBatchOut(created=created, updated=updated)
