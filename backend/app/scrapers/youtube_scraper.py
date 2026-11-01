@@ -113,9 +113,9 @@ _ALGOSPEAK_PAIRS: tuple[tuple[str, str], ...] = (
     ("লা/শ", "লাশ"),
 )
 
-# A slash wedged between two Bengali letters is always obfuscation - Bengali
-# orthography has no such construction.
-_BENGALI_SLASH = re.compile(r"(?<=[ঀ-৿])\s*/\s*(?=[ঀ-৿])")
+# One or more slashes wedged between two Bengali letters ("ধ//র্ষ//ণ") is
+# always obfuscation - Bengali orthography has no such construction.
+_BENGALI_SLASH = re.compile(r"(?<=[ঀ-৿])\s*/+\s*(?=[ঀ-৿])")
 
 
 def _deobfuscate(text: str) -> str:
