@@ -63,6 +63,8 @@ RATE_LIMITS: dict[str, tuple[int, timedelta]] = {
     # Generous: one visitor legitimately refreshes and reopens tabs. Tight
     # enough that a scraper cannot mint thousands of sessions from one host.
     "guest": (40, timedelta(hours=1)),
+    # Area alert subscribe/update: a person changes their area a few times.
+    "alerts": (20, timedelta(hours=1)),
 }
 
 ACCOUNT_LOCK_THRESHOLD = 8

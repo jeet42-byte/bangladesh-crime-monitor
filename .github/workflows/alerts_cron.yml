@@ -1,0 +1,42 @@
+name: Area alerts (every 2 hours)
+
+# Sends a push notification to each browser subscribed on My Area when new
+# reports have come in near its area. The backend does the work; this only
+# calls it on a schedule. At most one notification per subscription per
+# six hours.
+
+on:
+  schedule:
+    - cron: "43 */2 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Count who would be notified without sending"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      API: ${{ secrets.BACKEND_URL }}
+      KEY: ${{ secrets.INGEST_API_KEY }}
+    steps:
+      - name: Wake the backend
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 60 "$API/health" || echo 000)
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+
+      - name: Dispatch
+        run: |
+          code=$(curl -s -m 300 -o result.json -w '%{http_code}' -X POST -H "X-Ingest-Key: $KEY" \
+            "$API/api/v1/ingest/alerts/dispatch?dry_run=${{ inputs.dry_run || false }}")
+          echo "HTTP $code"; cat result.json; echo
+          [ "$code" = "200" ]

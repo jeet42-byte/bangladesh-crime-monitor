@@ -6,7 +6,7 @@
  * Build assets (/_next/static) are content-hashed, so cache first is safe.
  * API calls go to the backend's own origin and are not touched here.
  */
-const VERSION = "bcm-v1";
+const VERSION = "bcm-v2";
 const OFFLINE_URL = "/offline.html";
 
 self.addEventListener("install", (event) => {
@@ -55,4 +55,40 @@ self.addEventListener("fetch", (event) => {
         .catch(() => caches.match(request).then((hit) => hit || caches.match(OFFLINE_URL)))
     );
   }
+});
+
+// Area alerts (My Area). The payload is {title, body, url, tag}; anything
+// else falls back to a generic notice rather than failing silently.
+self.addEventListener("push", (event) => {
+  let data = {};
+  try {
+    data = event.data ? event.data.json() : {};
+  } catch {
+    data = {};
+  }
+  event.waitUntil(
+    self.registration.showNotification(data.title || "New reports near your area", {
+      body: data.body || "Open My Area to see them.",
+      icon: "/icons/icon-192.png",
+      badge: "/icons/icon-192.png",
+      tag: data.tag || "bcm-area",
+      data: { url: data.url || "/area" },
+    })
+  );
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const target = new URL(event.notification.data?.url || "/area", self.location.origin).href;
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((windows) => {
+      for (const client of windows) {
+        if (client.url.startsWith(self.location.origin) && "focus" in client) {
+          client.navigate(target);
+          return client.focus();
+        }
+      }
+      return self.clients.openWindow(target);
+    })
+  );
 });
