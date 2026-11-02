@@ -12,6 +12,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert as pg_insert
 
 from app.api.deps import DbSession, IngestAuth
+from app.services import alerts as alerts_service
 from app.services.dedupe import corroborate, find_near_duplicate, merge_stored_duplicates
 from app.db.models import (
     COLLECTION_MODES,
@@ -384,3 +385,11 @@ async def ingest_pulse(payload: PulseBatchIn, session: DbSession, _: IngestAuth)
     await session.commit()
     logger.info("pulse ingest: %d created, %d updated", created, updated)
     return PulseBatchOut(created=created, updated=updated)
+
+
+# ===========================================================================
+# Area alerts
+# ===========================================================================
+@router.post("/alerts/dispatch", summary="Send push alerts for new reports near subscribed areas")
+async def dispatch_alerts(session: DbSession, _: IngestAuth, dry_run: bool = False) -> Dict[str, int]:
+    return await alerts_service.dispatch(session, dry_run=dry_run)

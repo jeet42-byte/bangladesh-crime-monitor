@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowDownRight, ArrowUpRight, LifeBuoy, LocateFixed, MapPin, Minus } from "lucide-react";
 
+import AlertToggle from "@/components/area/AlertToggle";
 import IncidentCard from "@/components/dashboard/IncidentCard";
 import {
   PLACE_KIND_LABEL,
@@ -268,6 +269,8 @@ export default function AreaPage() {
                   </div>
                 )}
               </section>
+
+              <AlertToggle area={area} />
 
               <section className="panel p-4" aria-label="What to do">
                 <p className="label-mono mb-2 flex items-center gap-1.5">
