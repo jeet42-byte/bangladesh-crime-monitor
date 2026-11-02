@@ -60,7 +60,13 @@ RESPONSE_SCHEMA: Dict[str, Any] = {
                     "district": {"type": "string"},
                     "title": {"type": "string"},
                 },
-                "required": ["index", "is_disruption"],
+                # Every field required: with only index and is_disruption
+                # required, the live model returned nothing else, and no
+                # disruption could be placed on the map.
+                "required": [
+                    "index", "is_disruption", "kind", "status", "starts_in_hours",
+                    "expected_hours", "place", "district", "title",
+                ],
             },
         }
     },
