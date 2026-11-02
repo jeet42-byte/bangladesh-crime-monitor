@@ -7,9 +7,11 @@ import {
   Activity,
   BarChart3,
   Building2,
+  ChevronDown,
   ClipboardCheck,
   Crosshair,
   Database,
+  FileText,
   LifeBuoy,
   Lock,
   MapPin,
@@ -17,6 +19,7 @@ import {
   MessagesSquare,
   Radar,
   ShieldAlert,
+  TrafficCone,
   X,
 } from "lucide-react";
 
@@ -29,14 +32,20 @@ import { cn, currentBSTClock } from "@/lib/utils";
 const NAV_ITEMS = [
   { href: "/", label: "Command Center", icon: Radar, gated: false },
   { href: "/area", label: "My Area", icon: MapPin, gated: false },
+  { href: "/disruptions", label: "Disruptions", icon: TrafficCone, gated: false },
+  { href: "/pulse", label: "Public Pulse", icon: MessagesSquare, gated: false },
   { href: "/analytics", label: "Analytics", icon: BarChart3, gated: false },
   { href: "/database", label: "Archive", icon: Database, gated: false },
   { href: "/cyber", label: "Cyber", icon: ShieldAlert, gated: false },
-  { href: "/pulse", label: "Public Pulse", icon: MessagesSquare, gated: false },
+  { href: "/help", label: "Get Help", icon: LifeBuoy, gated: false },
+] as const;
+
+// Specialist pages, behind "More" so the top bar stays on one line as
+// sections are added.
+const MORE_ITEMS = [
   { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: false },
   { href: "/exposure", label: "Site Exposure", icon: Building2, gated: false },
-  // Methodology lives in the footer; the top bar is for things people use.
-  { href: "/help", label: "Get Help", icon: LifeBuoy, gated: false },
+  { href: "/methodology", label: "Methodology", icon: FileText, gated: false },
 ] as const;
 
 // Shown only to the owner: it is a maintenance surface, not a section of the
@@ -59,6 +68,7 @@ export default function Navbar() {
   const [clock, setClock] = useState<string>("--:--:--");
   const [stream, setStream] = useState<StreamState>("checking");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [moreOpen, setMoreOpen] = useState(false);
 
   // The clock starts on the client only. Rendering a real time on the server
   // would guarantee a hydration mismatch, since the two run seconds apart.
@@ -89,6 +99,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMenuOpen(false);
+    setMoreOpen(false);
   }, [pathname]);
 
   const streamLabel =
@@ -151,6 +162,37 @@ export default function Navbar() {
               </Link>
             );
           })}
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() => setMoreOpen((open) => !open)}
+              aria-expanded={moreOpen}
+              className={cn(
+                "flex items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-2 text-sm transition-colors",
+                MORE_ITEMS.some((item) => pathname.startsWith(item.href))
+                  ? "bg-surface-overlay text-zinc-100"
+                  : "text-zinc-400 hover:bg-surface-overlay/60 hover:text-zinc-200"
+              )}
+            >
+              More <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+            </button>
+            {moreOpen && (
+              <div className="absolute right-0 z-50 mt-1 w-52 overflow-hidden rounded-lg border border-surface-border bg-surface-raised shadow-xl">
+                {MORE_ITEMS.map(({ href, label, icon: Icon }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    onClick={() => setMoreOpen(false)}
+                    className="flex items-center gap-2 px-3 py-2.5 text-sm text-zinc-300 hover:bg-surface-overlay"
+                  >
+                    <Icon className="h-4 w-4 text-zinc-500" aria-hidden />
+                    {label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
           {isOwner && (
             <Link
@@ -224,7 +266,7 @@ export default function Navbar() {
       {/* Mobile nav */}
       {menuOpen && (
         <nav className="border-t border-surface-border/70 bg-surface px-4 py-2 xl:hidden">
-          {NAV_ITEMS.map(({ href, label, icon: Icon, gated }) => {
+          {[...NAV_ITEMS, ...MORE_ITEMS].map(({ href, label, icon: Icon, gated }) => {
             const active =
               href === "/" ? pathname === "/" : pathname.startsWith(href);
             const needsAccount = gated && locked;

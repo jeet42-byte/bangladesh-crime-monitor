@@ -452,3 +452,30 @@ class PushSubscription(Base):
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
     last_notified_at: Mapped[Optional[datetime]] = mapped_column(DateTime(timezone=True))
+
+
+# ---------------------------------------------------------------------------
+# Live disruptions - see db_migrations/009_disruptions.sql
+# ---------------------------------------------------------------------------
+class Disruption(Base):
+    __tablename__ = "disruptions"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        PGUUID(as_uuid=True), primary_key=True, server_default=func.gen_random_uuid()
+    )
+    kind: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(Text, nullable=False, server_default="ongoing")
+    title: Mapped[str] = mapped_column(Text, nullable=False)
+    place: Mapped[str] = mapped_column(Text, nullable=False)
+    district: Mapped[str] = mapped_column(Text, nullable=False)
+    lat: Mapped[float] = mapped_column(Float, nullable=False)
+    lon: Mapped[float] = mapped_column(Float, nullable=False)
+    starts_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    sources: Mapped[list] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
