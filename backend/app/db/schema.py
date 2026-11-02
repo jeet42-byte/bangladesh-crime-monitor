@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 _MIGRATIONS = Path(__file__).resolve().parents[2] / "db_migrations"
 
 #: Files that consist only of CREATE ... IF NOT EXISTS statements.
-SELF_APPLIED = ("007_public_pulse.sql", "008_push_alerts.sql")
+SELF_APPLIED = ("007_public_pulse.sql", "008_push_alerts.sql", "009_disruptions.sql")
 
 
 def _statements(sql: str) -> list[str]:
