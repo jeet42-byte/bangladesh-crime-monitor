@@ -10,8 +10,9 @@ import {
   ClipboardCheck,
   Crosshair,
   Database,
-  FileText,
+  LifeBuoy,
   Lock,
+  MapPin,
   Menu,
   MessagesSquare,
   Radar,
@@ -27,13 +28,15 @@ import { cn, currentBSTClock } from "@/lib/utils";
 
 const NAV_ITEMS = [
   { href: "/", label: "Command Center", icon: Radar, gated: false },
+  { href: "/area", label: "My Area", icon: MapPin, gated: false },
   { href: "/analytics", label: "Analytics", icon: BarChart3, gated: false },
   { href: "/database", label: "Archive", icon: Database, gated: false },
   { href: "/cyber", label: "Cyber", icon: ShieldAlert, gated: false },
   { href: "/pulse", label: "Public Pulse", icon: MessagesSquare, gated: false },
   { href: "/ttp", label: "TTP & Treatment", icon: Crosshair, gated: false },
   { href: "/exposure", label: "Site Exposure", icon: Building2, gated: false },
-  { href: "/methodology", label: "Methodology", icon: FileText, gated: false },
+  // Methodology lives in the footer; the top bar is for things people use.
+  { href: "/help", label: "Get Help", icon: LifeBuoy, gated: false },
 ] as const;
 
 // Shown only to the owner: it is a maintenance surface, not a section of the
@@ -140,7 +143,7 @@ export default function Navbar() {
                       : "text-zinc-400 hover:bg-surface-overlay/60 hover:text-zinc-200"
                 )}
               >
-                <Icon className="hidden h-4 w-4 shrink-0 2xl:block" aria-hidden />
+                <Icon className="hidden h-4 w-4 shrink-0 min-[1800px]:block" aria-hidden />
                 {label}
                 {needsAccount && (
                   <Lock className="h-3 w-3 text-zinc-600" aria-label="Account required" />
