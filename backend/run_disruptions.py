@@ -110,7 +110,7 @@ def run(args: argparse.Namespace) -> int:
             continue
         loc = place_for(result, headline["title"])
         if loc is None:
-            logger.info("unplaced: %s", headline["title"][:80])
+            logger.info("unplaced (place=%r district=%r): %s", result.get("place"), result.get("district"), headline["title"][:80])
             continue
         published = headline["published"] or now
         starts = published + timedelta(hours=result["starts_in_hours"]) if result["status"] == "planned" else published

@@ -46,12 +46,14 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
 
+      # v2: entries saved before the classifier returned places are not
+      # final answers, so the cache starts fresh.
       - name: Restore classified-headline cache
         uses: actions/cache/restore@v4
         with:
           path: .disruption-cache/seen.json
-          key: disruption-seen-${{ github.run_id }}
-          restore-keys: disruption-seen-
+          key: disruption-seen-v2-${{ github.run_id }}
+          restore-keys: disruption-seen-v2-
 
       - name: Wake the backend
         continue-on-error: true
@@ -72,4 +74,4 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: .disruption-cache/seen.json
-          key: disruption-seen-${{ github.run_id }}
+          key: disruption-seen-v2-${{ github.run_id }}
