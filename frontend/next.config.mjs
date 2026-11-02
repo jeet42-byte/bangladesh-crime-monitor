@@ -22,7 +22,8 @@ const nextConfig = {
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
           {
             key: "Permissions-Policy",
-            value: "camera=(), microphone=(), geolocation=()",
+            // "Use my location" on My Area needs geolocation for this origin only.
+            value: "camera=(), microphone=(), geolocation=(self)",
           },
         ],
       },

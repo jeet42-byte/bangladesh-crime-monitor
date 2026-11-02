@@ -41,7 +41,7 @@ export default function AccountMenu() {
     return (
       <Link
         href="/login"
-        className="btn px-2.5 py-1.5 text-xs"
+        className="btn whitespace-nowrap px-2.5 py-1.5 text-xs"
         title={status === "guest" ? "Browsing as a guest" : "Sign in"}
       >
         <LogIn className="h-3.5 w-3.5" aria-hidden />
@@ -61,7 +61,7 @@ export default function AccountMenu() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="btn px-2.5 py-1.5 text-xs"
+        className="btn whitespace-nowrap px-2.5 py-1.5 text-xs"
       >
         <span
           className={cn(
