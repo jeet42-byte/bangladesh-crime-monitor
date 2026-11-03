@@ -40,7 +40,7 @@ For each headline decide:
 - district: the district, in English, if known.
 - title: a neutral English headline, max 100 characters.
 
-Return JSON: {"items": [...]} with one object per input headline, in the same order, each with its index."""
+Return JSON: {"items": [...]} with one object per input headline, in the same order, each with its index and headline_start: the first four words of that headline copied exactly, so each answer can be checked against the headline it describes."""
 
 RESPONSE_SCHEMA: Dict[str, Any] = {
     "type": "object",
@@ -51,6 +51,10 @@ RESPONSE_SCHEMA: Dict[str, Any] = {
                 "type": "object",
                 "properties": {
                     "index": {"type": "integer"},
+                    "headline_start": {
+                        "type": "string",
+                        "description": "The first four words of the input headline, copied exactly.",
+                    },
                     "is_disruption": {"type": "boolean"},
                     "kind": {"type": "string", "enum": list(DISRUPTION_KINDS)},
                     "status": {"type": "string", "enum": ["ongoing", "planned"]},
@@ -64,7 +68,7 @@ RESPONSE_SCHEMA: Dict[str, Any] = {
                 # required, the live model returned nothing else, and no
                 # disruption could be placed on the map.
                 "required": [
-                    "index", "is_disruption", "kind", "status", "starts_in_hours",
+                    "index", "headline_start", "is_disruption", "kind", "status", "starts_in_hours",
                     "expected_hours", "place", "district", "title",
                 ],
             },
@@ -118,6 +122,19 @@ def _clamp(value: Any, low: float, high: float, default: float) -> float:
         return default
 
 
+def _words(text: str) -> list[str]:
+    return [w for w in "".join(c if c.isalnum() or c.isspace() else " " for c in text.lower()).split()]
+
+
+def _echoes(echo: Any, headline: str) -> bool:
+    """True when the echoed opening words are the headline's own."""
+    said, actual = _words(str(echo or "")), _words(headline)
+    if len(said) < 2 or not actual:
+        return False
+    head = actual[: len(said) + 2]
+    return sum(1 for w in said if w in head) >= max(2, len(said) - 1)
+
+
 def classify(headlines: Sequence[str]) -> Optional[List[Optional[Dict[str, Any]]]]:
     """One result per headline (None where it is not a disruption).
 
@@ -140,6 +157,12 @@ def classify(headlines: Sequence[str]) -> Optional[List[Optional[Dict[str, Any]]
             except (TypeError, ValueError):
                 continue
             if not (0 <= index < len(chunk)) or not item.get("is_disruption"):
+                continue
+            # In batches the model can attach an answer to the wrong line
+            # (a Narayanganj clash came back placed on the Sajek road).
+            # Keep an answer only if it echoes its own headline.
+            if not _echoes(item.get("headline_start"), chunk[index]):
+                logger.info("dropped misaligned answer for line %d: %r", index, item.get("headline_start"))
                 continue
             kind = item.get("kind")
             if kind not in DISRUPTION_KINDS:
