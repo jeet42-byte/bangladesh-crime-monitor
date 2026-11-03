@@ -183,6 +183,18 @@ def create_app() -> FastAPI:
         response.headers["X-Response-Time-ms"] = f"{elapsed_ms:.1f}"
         return response
 
+    @app.middleware("http")
+    async def add_security_headers(request: Request, call_next):
+        """Baseline browser hardening for a JSON-only API."""
+        response = await call_next(request)
+        response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["Referrer-Policy"] = "no-referrer"
+        if not settings.ENABLE_DOCS:
+            response.headers["Content-Security-Policy"] = "default-src 'none'; frame-ancestors 'none'"
+        return response
+
     app.include_router(crimes.router, prefix=settings.API_V1_PREFIX)
     app.include_router(analytics.router, prefix=settings.API_V1_PREFIX)
     app.include_router(ingest.router, prefix=settings.API_V1_PREFIX)
