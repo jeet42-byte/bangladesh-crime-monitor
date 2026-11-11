@@ -2,7 +2,7 @@
 key: apon
 title: Justice Out of Reach: Lawyers' Accounts of Client-Side Barriers to Justice in Bangladesh
 subtitle: An individual qualitative research report based on semi-structured in-depth interviews
-author: Apon Sikder
+author: Md. Jubaer Islam Apon
 ---
 
 ## 1. Introduction

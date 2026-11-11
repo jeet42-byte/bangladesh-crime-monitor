@@ -2,7 +2,7 @@
 key: nabin
 title: Justice by Date: Institutional Delay and Procedural Obstruction as Challenges for Lawyers in Bangladesh
 subtitle: An individual qualitative research report based on semi-structured in-depth interviews
-author: Barrister M.A. Khan Nabin
+author: Minhaz Ahamed Khan Nabin
 ---
 
 ## 1. Introduction

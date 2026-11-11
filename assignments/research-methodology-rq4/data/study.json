@@ -1171,7 +1171,7 @@
  ],
  "papers": {
   "nabin": {
-   "author": "Barrister M.A. Khan Nabin",
+   "author": "Minhaz Ahamed Khan Nabin",
    "focus": [
     "T1",
     "T2",
@@ -1289,7 +1289,7 @@
    ]
   },
   "apon": {
-   "author": "Apon Sikder",
+   "author": "Md. Jubaer Islam Apon",
    "focus": [
     "T5",
     "T3",
@@ -1504,45 +1504,46 @@
  },
  "course": {
   "course": "Research Methodology",
-  "course_code": "[course code]",
-  "programme": "[programme]",
-  "batch": "[batch]",
-  "institution": "[university / department]",
+  "course_code": "MCCJ 521",
+  "programme": "Professional Masters in Criminology and Criminal Justice (MCCJ)",
+  "session": "2025–2026",
+  "department": "Department of Criminology",
+  "institution": "University of Dhaka",
   "teacher": "Sumaiya Iqbal",
-  "teacher_designation": "[designation]",
-  "submission_date": "[date of submission]"
+  "teacher_designation": "Course Teacher, Research Methodology (MCCJ 521)",
+  "submission_date": "November 2026"
  },
  "people": {
   "authors": {
    "nabin": {
-    "name": "Barrister M.A. Khan Nabin",
-    "roll": "[roll]"
+    "name": "Minhaz Ahamed Khan Nabin",
+    "roll": "27"
    },
    "apon": {
-    "name": "Apon Sikder",
-    "roll": "[roll]"
+    "name": "Md. Jubaer Islam Apon",
+    "roll": "1"
    },
    "tanvir": {
     "name": "Tanvir Ahmed Siddique",
-    "roll": "[roll]"
+    "roll": "28"
    }
   },
   "respondents": [
    {
-    "name": "Mobarak",
-    "roll": "[roll]"
+    "name": "Mohammad Mobarak Hosen",
+    "roll": "25"
    },
    {
-    "name": "Nafiul Haque Kingshuk",
-    "roll": "[roll]"
+    "name": "Nafiul Hoque Kingshuk",
+    "roll": "22"
    },
    {
-    "name": "Taj",
-    "roll": "[roll]"
+    "name": "Shams Bin Sharif Taj",
+    "roll": "14"
    },
    {
     "name": "Tashfia Ali",
-    "roll": "[roll]"
+    "roll": "41"
    },
    {
     "name": "Shohag",
@@ -1550,23 +1551,23 @@
    },
    {
     "name": "Marzia Rahman",
-    "roll": "[roll]"
+    "roll": "29"
    },
    {
     "name": "Imran Mridha",
-    "roll": "[roll]"
+    "roll": "33"
    },
    {
-    "name": "Mamun",
+    "name": "Abdullah Al Mamun",
     "roll": "2"
    },
    {
-    "name": "Akram",
+    "name": "Md. Akram Hossain Rifat",
     "roll": "38"
    },
    {
-    "name": "[your name]",
-    "roll": "[roll]"
+    "name": "Ahnaf Akif",
+    "roll": "24"
    }
   ]
  }

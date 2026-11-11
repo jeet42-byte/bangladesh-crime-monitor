@@ -7,9 +7,9 @@ There are three individual reports, each with its own analytical angle so the th
 
 | Author | Report angle | Focal themes | File |
 |---|---|---|---|
-| Barrister M.A. Khan Nabin | *Justice by Date*: institutional delay and procedural obstruction | T1, T2, T3, T7 | `output/RQ4_Report_Barrister_M_A_Khan_Nabin.docx` |
-| Apon Sikder | *Justice Out of Reach*: client-side barriers to access to justice | T5, T3, T1, T7 | `output/RQ4_Report_Apon_Sikder.docx` |
-| Tanvir Ahmed Siddique | *Between Duty and Pressure*: integrity, influence and professional strain | T4, T6, T2, T7 | `output/RQ4_Report_Tanvir_Ahmed_Siddique.docx` |
+| Minhaz Ahamed Khan Nabin (Roll 27) | *Justice by Date*: institutional delay and procedural obstruction | T1, T2, T3, T7 | `output/RQ4_Report_Minhaz_Ahamed_Khan_Nabin.docx` |
+| Md. Jubaer Islam Apon (Roll 1) | *Justice Out of Reach*: client-side barriers to access to justice | T5, T3, T1, T7 | `output/RQ4_Report_Md_Jubaer_Islam_Apon.docx` |
+| Tanvir Ahmed Siddique (Roll 28) | *Between Duty and Pressure*: integrity, influence and professional strain | T4, T6, T2, T7 | `output/RQ4_Report_Tanvir_Ahmed_Siddique.docx` |
 
 Each report contains the sections the instructions require: (a) Introduction, (b) Methodology, (c) Findings from thematic analysis with quotations, plus the **coding paradigm** (Strauss & Corbin paradigm model) and a coding framework table, and (d) Research limitations and Conclusion. They also include a respondent profile table, a Braun & Clarke phases table, five figures, references, and appendices (interview guide and full coding framework).
 
@@ -31,7 +31,7 @@ Everything personal lives in `data/study.json`:
 
 The answers for R1–R10 in `data/study.json` are **illustrative worked examples**, not real interviews. Do not attribute them to real classmates. The assignment requires findings from interviews you actually conduct, so:
 
-1. **Interview your batchmates** using your own questionnaire document. Planned respondents: Mobarak, Nafiul Haque Kingshuk, Taj, Tashfia Ali, Shohag, Marzia Rahman, Imran Mridha, Mamun (Roll 2), Akram (Roll 38), and one more. Each author should swap themselves out if they appear on another author's list. Ten interviews of 20–30 minutes each is realistic in two or three days.
+1. **Interview your batchmates** using your own questionnaire document. Respondents (from the MCCJ 2025–26 nominal roll): Mohammad Mobarak Hosen (25), Nafiul Hoque Kingshuk (22), Shams Bin Sharif Taj (14), Tashfia Ali (41), Shohag (roll to confirm), Marzia Rahman (29), Imran Mridha (33), Abdullah Al Mamun (2), Md. Akram Hossain Rifat (38) and Ahnaf Akif (24). Each author should swap themselves out if they appear on another author's list. Ten interviews of 20–30 minutes each is realistic in two or three days.
 2. **Enter the real answers** in `data/study.json`: the respondent profile, the `text` of each answer, and the `codes` you assign. Keep respondents anonymised as R1–R10 in the report.
 3. **Rebuild** (below). All charts, tables, counts, the word count and every quotation are regenerated from the data.
 4. **Revise the prose** in `papers/<author>.md` so it matches what your respondents actually said. Some numbers in the prose are typed by hand (e.g. "mentioned by eight respondents"), so re-check them against `data/stats.json`. Update the paradigm boxes under `papers` in `data/study.json`.
@@ -44,6 +44,6 @@ The answers for R1–R10 in `data/study.json` are **illustrative worked examples
 bash tools/build.sh        # needs python3 + matplotlib, and node with the `docx` package
 ```
 
-`tools/charts.py` draws the figures into `charts/` and writes `data/stats.json`. `tools/build_docx.js` turns `papers/*.md` into the Word files in `output/`.
+`tools/charts.py` draws the figures into `charts/` and writes `data/stats.json`. `tools/build_docx.js` turns `papers/*.md` into the Word files in `output/`, and `tools/toc.py` fills the contents page with page numbers (two-pass build).
 
 **Paper markup:** `## / ###` headings, `**bold**`, `*italic*`, `[[Q:R3:Q7]]` inserts respondent R3's answer to Q7 as a quotation, `[[FIG:file.png|caption]]`, `[[TABLE:profile|…]]`, `[[TABLE:phases|…]]`, `[[TABLE:framework:T1,T2|…]]`, `[[STAT:codes]]`, `[[STAT:segments]]`, `[[APPENDIX]]`.

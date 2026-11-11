@@ -5,7 +5,8 @@ const path = require("path");
 const {
   Document, Packer, Paragraph, TextRun, ImageRun, Table, TableRow, TableCell,
   HeadingLevel, AlignmentType, WidthType, ShadingType, BorderStyle, PageBreak,
-  Footer, Header, PageNumber, LevelFormat, TableOfContents, LineRuleType,
+  Footer, Header, PageNumber, LevelFormat, LineRuleType,
+  Tab, TabStopType, LeaderType,
 } = require("docx");
 
 const ROOT = path.resolve(__dirname, "..");
@@ -144,9 +145,9 @@ function respondentForms(key) {
     const ans = (P.responses || {})[person.name] || [];
     out.push(new Paragraph({ heading: HeadingLevel.HEADING_2, pageBreakBefore: true, children: [new TextRun(`Questionnaire ${idx + 1} of ${PEOPLE.respondents.length}: ${person.name}`)] }));
     out.push(infoTable([
-      ["Respondent name", person.name], ["Roll", person.roll], ["Batch", person.batch || C.batch],
+      ["Respondent name", person.name], ["Roll", person.roll], ["Session", `${C.session} (MCCJ)`],
       ["Gender / years in practice", person.profile || ""], ["Main court / practice area", person.practice || ""],
-      ["Date, mode and duration", person.interview || ""], ["Interviewed by", `${A.name} (Roll ${A.roll}, Batch ${C.batch})`],
+      ["Date, mode and duration", person.interview || ""], ["Interviewed by", `${A.name} (Roll ${A.roll})`],
       ["Informed consent", person.consent ? "Yes, verbal consent given" : "☐ Yes   ☐ No"],
     ]));
     out.push(new Paragraph({ spacing: { after: 80 }, children: [] }));
@@ -186,7 +187,7 @@ function coverPage(key, meta, words) {
       ...lines.map(([k, v]) => new Paragraph({ spacing: { after: 50 }, children: runs(k ? `**${k}:** ${v}` : v, { size: 22 }) }))] });
   const gap = new TableCell({ width: { size: 200, type: WidthType.DXA }, borders: { top: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" }, bottom: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" }, left: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" }, right: { style: BorderStyle.NONE, size: 0, color: "FFFFFF" } }, children: [new Paragraph("")] });
   return [
-    band([ctr(C.institution, { run: { bold: true, size: 30, color: "FFFFFF" } }), ctr(`${C.programme} · Batch ${C.batch}`, { run: { size: 22, color: "FFFFFF" }, after: 0 })], ACCENT),
+    band([ctr(C.institution, { run: { bold: true, size: 32, color: "FFFFFF" } }), ctr(C.department, { run: { size: 24, color: "FFFFFF" } }), ctr(C.programme, { run: { size: 21, color: "FFFFFF" }, after: 0 })], ACCENT),
     ctr("", { after: 500 }),
     ctr(`**Course:** ${C.course} (${C.course_code})`, { run: { size: 24 } }),
     ctr("Individual Qualitative Research Report · Assignment (10 marks)", { run: { size: 22, color: "595959" }, after: 500 }),
@@ -195,9 +196,9 @@ function coverPage(key, meta, words) {
     band([ctr("**RESEARCH QUESTION 4**", { run: { size: 20, color: ACCENT } }), ctr(`*${S.research_question}*`, { run: { size: 23 }, after: 0 })], light),
     ctr("", { after: 500 }),
     new Table({ width: { size: W, type: WidthType.DXA }, columnWidths: [half, 200, half], rows: [new TableRow({ children: [
-      block("Submitted to", [["", `**${C.teacher}**`], ["", C.teacher_designation], ["", C.institution]]),
+      block("Submitted to", [["", `**${C.teacher}**`], ["", C.teacher_designation], ["", C.department], ["", C.institution]]),
       gap,
-      block("Submitted by", [["Name", A.name], ["Roll", A.roll], ["Batch", C.batch], ["Programme", C.programme]]),
+      block("Submitted by", [["Name", A.name], ["Roll", A.roll], ["Session", C.session], ["Programme", "MCCJ, 2nd semester"]]),
     ] })] }),
     ctr("", { after: 300 }),
     ctr(`**Date of submission:** ${C.submission_date}     **Word count:** ${words.toLocaleString("en-US")} (Sections 1–5)`, { run: { size: 21 } }),
@@ -264,13 +265,29 @@ async function buildPaper(file) {
   const meta = Object.fromEntries(fm.split("\n").map(l => { const i = l.indexOf(":"); return [l.slice(0, i).trim(), l.slice(i + 1).trim()]; }));
   const lines = body.split("\n");
   const words = wordCount(lines);
+  // static table of contents; page numbers come from data/toc_<key>.json (written by tools/toc.py)
+  const tocItems = [];
+  for (const l of lines) {
+    let m;
+    if ((m = l.match(/^## (.*)/))) tocItems.push([1, m[1]]);
+    else if ((m = l.match(/^### (.*)/))) tocItems.push([2, m[1].replace(/\*/g, "")]);
+    else if (l.trim() === "[[APPENDIX]]") tocItems.push([1, "Appendix A. Semi-structured interview questionnaire"], [1, "Appendix B. Complete coding framework"], [1, "Appendix C. Completed questionnaires"]);
+  }
+  const tocFile = path.join(ROOT, "data", `toc_${CUR}.json`);
+  const pages = fs.existsSync(tocFile) ? JSON.parse(fs.readFileSync(tocFile, "utf8")) : {};
+  fs.writeFileSync(path.join(ROOT, "data", `tocitems_${CUR}.json`), JSON.stringify(tocItems.map(t => t[1])));
+  const tocParas = tocItems.map(([lvl, text]) => new Paragraph({
+    indent: { left: lvl === 2 ? 440 : 0 }, spacing: { before: lvl === 1 ? 120 : 0, after: 40 },
+    tabStops: [{ type: TabStopType.RIGHT, position: CONTENT_W, leader: LeaderType.DOT }],
+    children: [new TextRun({ text, bold: lvl === 1, size: lvl === 1 ? 23 : 22 }),
+      new TextRun({ size: 22, bold: lvl === 1, children: [new Tab(), String(pages[text] ?? "")] })],
+  }));
 
   const cover = [
     ...coverPage(meta.key, meta, words),
     new Paragraph({ children: [new PageBreak()] }),
     new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Contents")] }),
-    new TableOfContents("Contents", { hyperlink: true, headingStyleRange: "1-2" }),
-    new Paragraph({ children: runs("*Right-click the table of contents and choose “Update field” in Word if page numbers do not appear.*", { size: 18, color: "7F7F7F" }) }),
+    ...tocParas,
     new Paragraph({ children: [new PageBreak()] }),
   ];
 
@@ -343,7 +360,7 @@ async function buildQuestionnaire(key) {
   const ch = [
     new Paragraph({ style: "Title", children: [new TextRun("Semi-Structured Interview Questionnaire")] }),
     new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: runs(`*Research question 4:* ${S.research_question}`) }),
-    infoTable([["Course", `${C.course} (${C.course_code})`], ["Researcher", A.name], ["Roll", A.roll], ["Batch", C.batch], ["Programme", C.programme], ["Submitted to", C.teacher]]),
+    infoTable([["Course", `${C.course} (${C.course_code})`], ["Researcher", A.name], ["Roll", A.roll], ["Session", C.session], ["Programme", C.programme], ["Institution", `${C.department}, ${C.institution}`], ["Submitted to", C.teacher]]),
     new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun("Consent script (read aloud)")] }),
     para("“I am conducting a short qualitative study for my Research Methodology course on the challenges lawyers face in pursuing justice within legal institutions. The interview will take about 25–40 minutes. Participation is voluntary; you can skip any question or stop at any time. Your name will not appear in the body of the report, and no client or case details will be used. May I record the interview (or take notes)? Do you agree to take part?”"),
     new Paragraph({ heading: HeadingLevel.HEADING_1, children: [new TextRun(`Questions (${P.questionnaire.length})`)] }),
