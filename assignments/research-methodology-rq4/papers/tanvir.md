@@ -29,7 +29,7 @@ Respondents were selected from among batchmates, as directed for this assignment
 
 ### 2.3 Data collection
 
-The interview guide contained **twelve open-ended questions** with probes (Appendix A). Questions 6, 8 and 9 were central to this report: they asked about influence and informal payments, professional relationships and hierarchy, and personal impact. Because these topics are sensitive, the guide placed them in the middle of the interview, after rapport had been established, and phrased them in the third person ("experienced or *witnessed*") to reduce discomfort. Interviews were held between [dates] by [mode], lasted roughly [duration] minutes, and were conducted in Bangla and English. They were recorded or noted with consent, then transcribed and translated.
+A separate questionnaire of **[[STAT:nq]] open-ended questions** with probes was used (Appendix A). Questions 2 to 7 were central to this report: they asked about political and social pressure, informal payments, the senior-junior hierarchy, Bar politics, gender and personal impact. Because these topics are sensitive, the questionnaire opened with a general question about the respondent's path into law to build rapport, and phrased pressure questions as "experienced or *witnessed*" to reduce discomfort. The completed questionnaire for each respondent is attached in Appendix C. Interviews were held between [dates] by [mode], lasted roughly [duration] minutes, and were conducted in Bangla and English. They were recorded or noted with consent, then transcribed and translated.
 
 ### 2.4 Ethical considerations
 

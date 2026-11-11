@@ -1,248 +1,1573 @@
 {
-  "_note": "ILLUSTRATIVE DATA. These R1-R10 responses are worked-example placeholders, not real interviews. Replace every answer and code with what your real respondents said, then run tools/build.sh. Keep respondents pseudonymised (R1-R10) in the report; record real names only in your private consent log.",
-  "research_question": "What challenges do lawyers face as they strive to pursue justice within legal institutions?",
-  "questions": [
-    {"id": "Q1", "text": "Could you tell me about your journey into the legal profession and what 'pursuing justice' means to you in your everyday work?", "probes": ["What made you choose this area of practice?", "Has your idea of justice changed since you started?"]},
-    {"id": "Q2", "text": "Thinking about a typical case you handle, what are the biggest obstacles that stand between your client and a just outcome?", "probes": ["Can you give me a recent example?", "Which obstacle do you think matters most?"]},
-    {"id": "Q3", "text": "How does the pace of the court process (adjournments, backlog, hearing dates) affect your work and your clients?", "probes": ["How many dates does a typical matter take?", "Who or what usually causes the adjournment?"]},
-    {"id": "Q4", "text": "Can you describe your experience with court administration, such as filing, cause lists, records and court staff?", "probes": ["What happens when a file cannot be found?", "Are there unofficial costs involved?"]},
-    {"id": "Q5", "text": "How do the quality of investigation and evidence (police reports, witnesses, forensic or documentary evidence) shape your ability to argue a case?", "probes": ["Can you recall a case where evidence failed?", "How do witnesses behave in court?"]},
-    {"id": "Q6", "text": "Have you ever experienced or witnessed influence, pressure or informal payments (political, administrative or social) affecting a case? How did you respond?", "probes": ["How did it make you feel?", "Did it change how you handle such cases?"]},
-    {"id": "Q7", "text": "How do your clients' circumstances (income, literacy, gender, location) affect their access to justice, and what role does legal aid play?", "probes": ["What do clients struggle with most?", "Have you referred clients to legal aid?"]},
-    {"id": "Q8", "text": "How would you describe your professional relationships with judges, opposing counsel and senior members of the Bar?", "probes": ["Is there a hierarchy among lawyers?", "Does gender shape how you are treated?"]},
-    {"id": "Q9", "text": "How do these challenges affect you personally, for example your income, stress, wellbeing or motivation?", "probes": ["Have you thought about leaving practice?", "How do you switch off?"]},
-    {"id": "Q10", "text": "What strategies have you developed to cope with or work around these challenges?", "probes": ["Who do you turn to for help?", "Do you use mediation or settlement?"]},
-    {"id": "Q11", "text": "What has been your experience with digital or recent reforms, such as online cause lists, virtual hearings or e-filing?", "probes": ["What works and what does not?", "Has anything changed since COVID-19?"]},
-    {"id": "Q12", "text": "If you could change one thing about legal institutions to make justice more achievable, what would it be and why?", "probes": ["Who should be responsible for that change?", "Anything else you would like to add?"]}
-  ],
-  "themes": [
-    {"id": "T1", "name": "Institutional delay and case backlog", "short": "Delay & backlog"},
-    {"id": "T2", "name": "Procedural and administrative bottlenecks", "short": "Admin bottlenecks"},
-    {"id": "T3", "name": "Weak investigation and evidentiary gaps", "short": "Investigation & evidence"},
-    {"id": "T4", "name": "External pressure and integrity dilemmas", "short": "Pressure & integrity"},
-    {"id": "T5", "name": "Access-to-justice barriers for clients", "short": "Client access barriers"},
-    {"id": "T6", "name": "Professional hierarchy, insecurity and wellbeing", "short": "Hierarchy & wellbeing"},
-    {"id": "T7", "name": "Coping strategies and reform aspirations", "short": "Coping & reform"}
-  ],
-  "codes": [
-    {"id": "c01", "theme": "T1", "label": "Frequent adjournments / time petitions"},
-    {"id": "c02", "theme": "T1", "label": "Case backlog and overloaded cause lists"},
-    {"id": "c03", "theme": "T1", "label": "Shortage of judges and courts"},
-    {"id": "c04", "theme": "T1", "label": "Witness non-appearance / summons not served"},
-    {"id": "c05", "theme": "T1", "label": "Clients losing faith because of delay"},
-    {"id": "c06", "theme": "T2", "label": "Informal 'speed money' to court staff"},
-    {"id": "c07", "theme": "T2", "label": "Missing or misplaced case records"},
-    {"id": "c08", "theme": "T2", "label": "Slow certified copies, orders and reports"},
-    {"id": "c09", "theme": "T2", "label": "Manual systems and poor court infrastructure"},
-    {"id": "c10", "theme": "T3", "label": "Weak or biased police investigation"},
-    {"id": "c11", "theme": "T3", "label": "Delayed or flawed charge sheets"},
-    {"id": "c12", "theme": "T3", "label": "Witness intimidation / hostile witnesses"},
-    {"id": "c13", "theme": "T3", "label": "Lack of forensic and digital-evidence support"},
-    {"id": "c14", "theme": "T4", "label": "Political influence on cases"},
-    {"id": "c15", "theme": "T4", "label": "Pressure or threats from influential parties"},
-    {"id": "c16", "theme": "T4", "label": "Bar politics and partisan alignment"},
-    {"id": "c17", "theme": "T4", "label": "Ethical dilemmas over informal payments"},
-    {"id": "c18", "theme": "T5", "label": "Litigation cost and lost income"},
-    {"id": "c19", "theme": "T5", "label": "Low legal literacy and exploitation by touts"},
-    {"id": "c20", "theme": "T5", "label": "Gender and social barriers for women clients"},
-    {"id": "c21", "theme": "T5", "label": "Weak reach and quality of legal aid"},
-    {"id": "c22", "theme": "T6", "label": "Irregular income of junior lawyers"},
-    {"id": "c23", "theme": "T6", "label": "Senior gatekeeping and dependency"},
-    {"id": "c24", "theme": "T6", "label": "Gender discrimination within the Bar"},
-    {"id": "c25", "theme": "T6", "label": "Stress, fear and burnout"},
-    {"id": "c26", "theme": "T7", "label": "Persistent follow-up and personal networks"},
-    {"id": "c27", "theme": "T7", "label": "Mediation, conciliation and arbitration"},
-    {"id": "c28", "theme": "T7", "label": "Digital tools (online cause list, virtual hearing)"},
-    {"id": "c29", "theme": "T7", "label": "Calls for structural reform"}
-  ],
-  "respondents": [
-    {"id": "R1", "gender": "Male", "years": 6, "role": "Advocate", "forum": "Dhaka Judge Court", "area": "Criminal",
-     "answers": {
-      "Q1": {"text": "I joined the Bar because I watched my uncle fight a land case for twenty years. For me justice means a fair hearing within a reasonable time. In criminal practice it also means the accused gets bail when the law allows it, not after months in jail.", "codes": []},
-      "Q2": {"text": "The biggest obstacle is time. A bail matter that should take one week takes two months. Then the witnesses do not come, the police report is weak, and at the end the client blames me.", "codes": ["c01", "c04", "c10", "c05"]},
-      "Q3": {"text": "I have a murder case running since 2017. Out of maybe forty dates, evidence was taken on six. The rest were adjournments: either the prosecution witness was absent or the court had no time. One judge sometimes has more than a hundred matters on the cause list.", "codes": ["c01", "c02", "c04"]},
-      "Q4": {"text": "Without giving the peshkar or the clerk something, your file does not move. Nobody calls it a bribe; they call it 'kharcha'. Twice my case records went missing on the hearing date.", "codes": ["c06", "c07"]},
-      "Q5": {"text": "Police investigation is the weakest link. The charge sheet often just copies the FIR. There is no forensic report, or it comes after two years. As defence I sometimes benefit, but as a citizen I feel justice is lost.", "codes": ["c10", "c11", "c13"]},
-      "Q6": {"text": "In politically sensitive cases you can feel the pressure. Bail becomes difficult when the accused is from the other side. A senior once told me not to 'push too hard'.", "codes": ["c14", "c15", "c23"]},
-      "Q7": {"text": "Most of my clients are day labourers' families. They sell a cow or take a loan to pay for the case. Many do not even know legal aid exists.", "codes": ["c18", "c21"]},
-      "Q8": {"text": "Judges are mostly respectful, but junior lawyers are often ignored at the bench. The senior takes the brief and the junior does the running.", "codes": ["c23"]},
-      "Q9": {"text": "I sleep less. Some days I have matters in four courts on four floors. Families call me at midnight. There is a moral tiredness when you know the system is the problem but people blame you.", "codes": ["c25"]},
-      "Q10": {"text": "I keep a personal diary of dates, I keep good relations with court staff, and I file applications for early hearing. Knowing people helps.", "codes": ["c26"]},
-      "Q11": {"text": "The online cause list is useful; I check it from home. Virtual bail hearings during COVID were actually faster, but they have mostly stopped.", "codes": ["c28"]},
-      "Q12": {"text": "More judges. Simply more judges and more courtrooms, and a strict limit on adjournments.", "codes": ["c29", "c03"]}
-     }},
-    {"id": "R2", "gender": "Female", "years": 3, "role": "Advocate", "forum": "Family Court, Dhaka", "area": "Family",
-     "answers": {
-      "Q1": {"text": "I wanted to work for women because in my own area I saw how women are denied dower and maintenance. Justice for me is when a woman actually gets the money the court ordered, not just a paper decree.", "codes": []},
-      "Q2": {"text": "Execution is the problem. We get a maintenance decree but the husband does not pay, and execution takes another year. Women give up halfway.", "codes": ["c01", "c05"]},
-      "Q3": {"text": "Family courts are supposed to be quick, but the summons is not served properly. The husband avoids it and the case goes date after date.", "codes": ["c04", "c01"]},
-      "Q4": {"text": "A certified copy of an order can take weeks unless you pay extra. The record room is crowded and everything is on paper.", "codes": ["c08", "c06", "c09"]},
-      "Q5": {"text": "In dowry or violence cases the medical certificate is late or weak. Police sometimes discourage women from filing and push them towards a 'compromise'.", "codes": ["c10", "c20"]},
-      "Q6": {"text": "Local influential people sometimes pressure my client to withdraw. Once a union parishad member came to the court premises to threaten her.", "codes": ["c15", "c12"]},
-      "Q7": {"text": "My clients are mostly women with no income of their own. They come with a brother or father and cannot speak freely. Many think the court is only for rich people.", "codes": ["c18", "c19", "c20"]},
-      "Q8": {"text": "Some clients ask me, 'Is there no male lawyer?' Some senior colleagues make jokes. As a woman you have to prove twice that you are competent.", "codes": ["c24"]},
-      "Q9": {"text": "My income is very irregular; some months I barely cover transport. Emotionally the cases are heavy, because I hear stories of abuse every day.", "codes": ["c22", "c25"]},
-      "Q10": {"text": "I try reconciliation first, because the family court allows it before and after trial. I also connect clients with legal-aid NGOs.", "codes": ["c27", "c26"]},
-      "Q11": {"text": "I have not seen much digitisation in the family court. Everything is still on paper.", "codes": ["c09"]},
-      "Q12": {"text": "Fast execution of maintenance decrees, and a women's help desk in every court.", "codes": ["c29"]}
-     }},
-    {"id": "R3", "gender": "Male", "years": 9, "role": "Advocate", "forum": "High Court Division", "area": "Writ / constitutional",
-     "answers": {
-      "Q1": {"text": "I practise in the High Court, mainly writ and constitutional matters. For me pursuing justice means holding public authorities accountable to the law.", "codes": []},
-      "Q2": {"text": "Listing is the first obstacle. A writ petition may wait months just to be heard because benches change and the cause list is long.", "codes": ["c02", "c01"]},
-      "Q3": {"text": "After a rule is issued, the final hearing can take five to ten years. Meanwhile the petitioner may have retired or even died. Delay has made the interim order the real remedy.", "codes": ["c02", "c05"]},
-      "Q4": {"text": "Bench officers have huge power over listing. Getting a matter mentioned without 'arrangements' is hard for a young lawyer.", "codes": ["c06", "c23"]},
-      "Q5": {"text": "In writ matters government offices do not file their affidavit-in-opposition on time, and the state machinery is slow to produce documents.", "codes": ["c08"]},
-      "Q6": {"text": "When a case involves powerful interests you sense the hesitation. Bar politics also matters: which panel you belong to can affect which briefs you receive and sometimes how you are treated.", "codes": ["c14", "c16"]},
-      "Q7": {"text": "Rural petitioners have to come to Dhaka and stay in hotels. A High Court case is beyond most ordinary people's means. Supreme Court legal aid exists, but few people know.", "codes": ["c18", "c21"]},
-      "Q8": {"text": "The hierarchy is strong. Juniors work for years under a senior for little or no pay. It is a guru-shishya culture.", "codes": ["c23", "c22"]},
-      "Q9": {"text": "Financially I am stable now, but the first five years were very hard. I saw many talented friends leave the profession.", "codes": ["c22", "c25"]},
-      "Q10": {"text": "I keep my drafting very precise so the bench can grasp the point in the short time we get. I also rely on my senior's name to get listed.", "codes": ["c26"]},
-      "Q11": {"text": "The Supreme Court's online cause list and case-tracking help, but e-filing is still not fully functional.", "codes": ["c28", "c09"]},
-      "Q12": {"text": "A separate, independent secretariat for the judiciary, and a transparent listing system.", "codes": ["c29"]}
-     }},
-    {"id": "R4", "gender": "Male", "years": 2, "role": "Junior advocate", "forum": "District Court, Gazipur", "area": "Civil / land",
-     "answers": {
-      "Q1": {"text": "I am new in practice. I joined because law gives social respect, and I want to help people from my village in land disputes.", "codes": []},
-      "Q2": {"text": "Land cases depend on records: khatian, porcha, deeds. The land office records are wrong or missing, and the case goes round in circles for years.", "codes": ["c07", "c02"]},
-      "Q3": {"text": "Civil suits in my district run for ten to fifteen years. Some suits were filed before I was born.", "codes": ["c02", "c01"]},
-      "Q4": {"text": "Staff ask for money for everything: finding a file, giving a date, even a photocopy. As a junior I feel ashamed telling the client he has to pay this.", "codes": ["c06", "c17"]},
-      "Q5": {"text": "In land matters the survey and local inspection reports are late; the advocate commissioner's report takes months.", "codes": ["c08"]},
-      "Q6": {"text": "I have not faced political pressure directly, but I can see the side with local power gets advantages, like witnesses changing their statements.", "codes": ["c15", "c12"]},
-      "Q7": {"text": "Villagers do not understand legal language. They sign documents without reading them. Many come to me after losing everything to a dalal.", "codes": ["c19", "c18"]},
-      "Q8": {"text": "I depend fully on my senior and get a small allowance. Without a senior, a new lawyer cannot get clients.", "codes": ["c22", "c23"]},
-      "Q9": {"text": "The financial pressure is serious. My family asks when I will earn properly. Sometimes I think of taking a job instead.", "codes": ["c22", "c25"]},
-      "Q10": {"text": "I learn by watching, and I explain the process honestly to clients so they do not have false hopes.", "codes": ["c26"]},
-      "Q11": {"text": "Our court's cause list is sometimes online now, but updates are irregular.", "codes": ["c28", "c09"]},
-      "Q12": {"text": "Digitise land records and connect them to the courts. Half the civil cases would disappear.", "codes": ["c29"]}
-     }},
-    {"id": "R5", "gender": "Female", "years": 5, "role": "Advocate", "forum": "Nari-o-Shishu Tribunal & CMM Court", "area": "Criminal (survivors)",
-     "answers": {
-      "Q1": {"text": "I mostly represent survivors before the Nari-o-Shishu Nirjatan Daman Tribunal. Justice for me means the survivor is not humiliated by the process.", "codes": []},
-      "Q2": {"text": "The survivor gets exhausted. The law says the trial should finish within 180 days, but in reality it takes years.", "codes": ["c01", "c02", "c05"]},
-      "Q3": {"text": "The time limit exists only on paper. Prosecutors are overloaded, witnesses are not produced, and the date is shifted again.", "codes": ["c01", "c04"]},
-      "Q4": {"text": "There is no private waiting space for survivors. They sit right next to the accused's family.", "codes": ["c09", "c20"]},
-      "Q5": {"text": "The medical examination and DNA reports are delayed. Investigating officers change, and the new one does not know the case.", "codes": ["c10", "c13", "c11"]},
-      "Q6": {"text": "The pressure to compromise is huge. The accused side offers money or threatens the family. Sometimes the survivor turns hostile in the witness box.", "codes": ["c12", "c15"]},
-      "Q7": {"text": "Poor families cannot afford to keep travelling, and stigma stops them too. Legal-aid panel lawyers exist, but they are paid little and overloaded.", "codes": ["c18", "c20", "c21"]},
-      "Q8": {"text": "Some male colleagues think women lawyers are only suited to family matters. In the bar association women's voices are few.", "codes": ["c24", "c16"]},
-      "Q9": {"text": "I carry the cases home. Secondary trauma is real, but nobody talks about it in our profession.", "codes": ["c25"]},
-      "Q10": {"text": "I prepare the survivor before testimony and explain cross-examination. I coordinate with the one-stop crisis centres.", "codes": ["c26"]},
-      "Q11": {"text": "Virtual testimony could protect survivors, but in practice it is rarely allowed.", "codes": ["c28"]},
-      "Q12": {"text": "A victim and witness protection law. Without protection there is no evidence, and without evidence there is no justice.", "codes": ["c29", "c12"]}
-     }},
-    {"id": "R6", "gender": "Male", "years": 12, "role": "Advocate", "forum": "District Court, Narayanganj", "area": "Land / civil",
-     "answers": {
-      "Q1": {"text": "I have practised for twelve years. Justice to me is restoring a person's lawful rights, especially over land, which is the root of most disputes in Bangladesh.", "codes": []},
-      "Q2": {"text": "Multiplicity of cases. One land dispute produces civil suits, criminal cases and even false cases filed to harass the other side.", "codes": ["c02", "c15"]},
-      "Q3": {"text": "Adjournment has become a culture. Lawyers file time petitions too; I will be honest, we are part of the problem. But judges also carry impossible workloads.", "codes": ["c01", "c03"]},
-      "Q4": {"text": "Our record room is in a very bad state. Files are tied in bundles, sometimes damaged by water. Finding a file depends on the staff's goodwill.", "codes": ["c07", "c09", "c06"]},
-      "Q5": {"text": "False evidence and false witnesses are common in land cases. Forged documents are hard to detect without proper forensic examination.", "codes": ["c13", "c12"]},
-      "Q6": {"text": "I have refused cases where clients wanted me to 'manage' things. Clients sometimes leave because another lawyer promises to manage. That is the ethical dilemma.", "codes": ["c17"]},
-      "Q7": {"text": "Litigation cost is not only fees. It is the cost of coming to court fifty times.", "codes": ["c18"]},
-      "Q8": {"text": "With experience, relations with the bench become professional. But Bar elections divide lawyers along party lines, and that hurts collegiality.", "codes": ["c16"]},
-      "Q9": {"text": "After twelve years I am financially fine, but it frustrates me that so many of my cases are older than my career.", "codes": ["c25"]},
-      "Q10": {"text": "I encourage settlement through mediation under section 89A of the Code of Civil Procedure. Many clients are relieved when it works.", "codes": ["c27"]},
-      "Q11": {"text": "Digitisation is coming slowly. Younger lawyers share cause lists in WhatsApp groups, which is useful.", "codes": ["c28"]},
-      "Q12": {"text": "Strict case management: fixed timelines for each stage and a penalty for unnecessary adjournments.", "codes": ["c29"]}
-     }},
-    {"id": "R7", "gender": "Male", "years": 4, "role": "Advocate", "forum": "Labour Court, Dhaka", "area": "Labour / corporate",
-     "answers": {
-      "Q1": {"text": "I work on labour and some corporate matters. Justice means a worker getting their dues on time, and a company getting a predictable decision.", "codes": []},
-      "Q2": {"text": "Labour courts are few and overloaded. Workers cannot wait for years; they need the money now.", "codes": ["c03", "c02", "c18"]},
-      "Q3": {"text": "A simple unpaid-wages case can take three years. Employers' lawyers use every procedural tool to delay.", "codes": ["c01", "c02"]},
-      "Q4": {"text": "Orders are not uploaded on time, so we have to go in person just to find out what happened.", "codes": ["c08", "c09"]},
-      "Q5": {"text": "The evidence is mostly documents, but workers have no appointment letters or payslips, so even proving employment is hard.", "codes": ["c19"]},
-      "Q6": {"text": "Some factory owners are politically connected. Workers fear losing their jobs if they file, and some union leaders compromise.", "codes": ["c14", "c15"]},
-      "Q7": {"text": "Workers cannot leave work for court dates. Every date means losing a day's wage.", "codes": ["c18"]},
-      "Q8": {"text": "The corporate side is more professional, but in the labour court the hierarchy among lawyers is very visible.", "codes": ["c23"]},
-      "Q9": {"text": "I do corporate work to survive financially and labour work for satisfaction.", "codes": ["c22"]},
-      "Q10": {"text": "I try to negotiate settlements through conciliation. Quick money is often better than a slow judgment.", "codes": ["c27"]},
-      "Q11": {"text": "Virtual hearings would help workers a lot, but labour courts never really adopted them.", "codes": ["c28"]},
-      "Q12": {"text": "More labour courts, outside Dhaka and Chattogram too, with time limits.", "codes": ["c29", "c03"]}
-     }},
-    {"id": "R8", "gender": "Male", "years": 7, "role": "Advocate", "forum": "Dhaka Judge Court", "area": "Criminal defence / bail",
-     "answers": {
-      "Q1": {"text": "I do criminal defence. Justice means nobody is punished without proof, and nobody stays in jail unlawfully.", "codes": []},
-      "Q2": {"text": "Pre-trial detention. Thousands of people wait in jail because their trial has not started.", "codes": ["c02", "c01"]},
-      "Q3": {"text": "Framing the charge alone takes years because the police report is late. Courts adjourn because the investigating officer has been transferred.", "codes": ["c11", "c01", "c04"]},
-      "Q4": {"text": "For a bail order to reach the jail you have to follow up at every desk. One day's delay means another night in jail for my client.", "codes": ["c08", "c06"]},
-      "Q5": {"text": "Police sometimes list 'unknown accused' in the FIR and then arrest people to extort money. Investigation is used as a tool.", "codes": ["c10", "c14"]},
-      "Q6": {"text": "During political unrest, mass cases are filed and bail is almost impossible whatever the merits. I have received threats from both sides.", "codes": ["c14", "c15"]},
-      "Q7": {"text": "Clients' families are exploited by touts on the court premises before they even reach a lawyer.", "codes": ["c19", "c18"]},
-      "Q8": {"text": "Some judges are very patient, some are not. Bar politics affects which lawyers get easy access.", "codes": ["c16"]},
-      "Q9": {"text": "Sometimes there is fear. I have been followed after a hearing, and my family worries.", "codes": ["c25", "c15"]},
-      "Q10": {"text": "I document everything, keep copies, and file written applications so the record is clear. I also network with other defence lawyers.", "codes": ["c26"]},
-      "Q11": {"text": "Virtual courts during COVID showed bail could be quick. The 2020 Act is still there, but it is hardly used now.", "codes": ["c28"]},
-      "Q12": {"text": "Separate criminal investigation from regular policing and make it accountable.", "codes": ["c29", "c10"]}
-     }},
-    {"id": "R9", "gender": "Female", "years": 1, "role": "Junior advocate (legal-aid panel)", "forum": "District Legal Aid Office", "area": "Mixed / legal aid",
-     "answers": {
-      "Q1": {"text": "I am in my first year. I work with a legal-aid panel and with a senior. I joined law to help people who cannot speak for themselves.", "codes": []},
-      "Q2": {"text": "Clients do not understand the process, and I do not yet have the experience to move through the system quickly.", "codes": ["c19"]},
-      "Q3": {"text": "Poor clients come again and again just to hear 'next date'. Some simply stop coming.", "codes": ["c01", "c05"]},
-      "Q4": {"text": "As a new female lawyer, the court staff do not take me seriously until my senior calls them.", "codes": ["c24", "c23"]},
-      "Q5": {"text": "Legal-aid cases often have poor investigation files. Nobody prioritises a poor man's case.", "codes": ["c10"]},
-      "Q6": {"text": "I have not faced direct pressure, but I have seen that money talks on the court premises.", "codes": ["c17", "c06"]},
-      "Q7": {"text": "Legal aid exists through the District Legal Aid Office, but people do not know about it. Panel lawyers' fees are very low, so motivation is low.", "codes": ["c21", "c22"]},
-      "Q8": {"text": "Some seniors support you and some exploit you. Some male colleagues comment on my dress or ask why I am not married.", "codes": ["c24", "c23"]},
-      "Q9": {"text": "I am learning, but I feel insecure about income. Many of my female classmates have left practice for jobs.", "codes": ["c22", "c25", "c24"]},
-      "Q10": {"text": "I read case law at night, and I ask questions of many seniors, not just one.", "codes": ["c26"]},
-      "Q11": {"text": "The national legal-aid hotline, 16430, helps clients reach us.", "codes": ["c28", "c21"]},
-      "Q12": {"text": "Pay legal-aid lawyers properly and evaluate their work, so the quality improves.", "codes": ["c29", "c21"]}
-     }},
-    {"id": "R10", "gender": "Male", "years": 10, "role": "Barrister / Advocate", "forum": "High Court Division", "area": "Commercial / civil",
-     "answers": {
-      "Q1": {"text": "I trained abroad and came back. In my practice, justice means certainty: businesses need to know that contracts will be enforced.", "codes": []},
-      "Q2": {"text": "Contract enforcement is slow. Foreign clients find it unbelievable that a money suit takes so long.", "codes": ["c02", "c01"]},
-      "Q3": {"text": "The Artha Rin Adalat have huge backlogs, and defaulters use writ petitions to stay proceedings for years.", "codes": ["c02", "c01"]},
-      "Q4": {"text": "The administrative culture is outdated: physical files, manual stamps, no integrated case-management system.", "codes": ["c09"]},
-      "Q5": {"text": "Digital evidence like emails and electronic transactions is still treated with suspicion, and courts lack technical expertise.", "codes": ["c13"]},
-      "Q6": {"text": "Influential defaulters have connections. You cannot prove it, but the pattern is visible.", "codes": ["c14", "c15"]},
-      "Q7": {"text": "For ordinary people, senior counsel in the High Court is unaffordable. The system effectively prices them out.", "codes": ["c18"]},
-      "Q8": {"text": "There is sometimes friction between barristers and local advocates: an unspoken hierarchy, and some resentment too.", "codes": ["c23", "c16"]},
-      "Q9": {"text": "I am comfortable financially, but the inefficiency frustrates me. It affects your sense of purpose.", "codes": ["c25"]},
-      "Q10": {"text": "I push clients towards arbitration clauses and settlement. The Arbitration Act 2001 is not perfect, but it is faster.", "codes": ["c27"]},
-      "Q11": {"text": "The Supreme Court's digital initiatives are a start, but without integrated e-filing and e-records they are cosmetic.", "codes": ["c28", "c29"]},
-      "Q12": {"text": "Specialised commercial courts with trained judges and a time-bound process.", "codes": ["c29", "c03"]}
-     }}
-  ],
-  "papers": {
-    "nabin": {
-      "author": "Barrister M.A. Khan Nabin",
-      "focus": ["T1", "T2", "T3", "T7"],
-      "paradigm": {
-        "phenomenon": "Protracted, procedurally obstructed litigation: 'justice by date'",
-        "causal": ["Too few judges and courtrooms", "Adjournment culture and time petitions", "Late charge sheets; absent witnesses"],
-        "context": ["Overloaded cause lists", "Paper-based record rooms", "Multiple cases from one land dispute"],
-        "intervening": ["'Speed money' to court staff", "Senior-junior dependency", "Uneven digitisation"],
-        "strategies": ["Persistent follow-up and networks", "Precise drafting for short hearings", "Mediation under s.89A CPC", "Online cause lists, WhatsApp groups"],
-        "consequences": ["Clients lose faith or give up", "Long pre-trial detention", "Lawyers frustrated and burnt out", "Demand for case-management reform"]
-      }
-    },
-    "apon": {
-      "author": "Apon Sikder",
-      "focus": ["T5", "T3", "T1", "T7"],
-      "paradigm": {
-        "phenomenon": "Justice priced and distanced out of ordinary clients' reach",
-        "causal": ["Litigation cost and lost wages", "Low legal literacy", "Distance from courts"],
-        "context": ["Delay multiplies cost", "Touts on court premises", "Gendered social norms"],
-        "intervening": ["Low awareness and pay for legal aid", "Witness intimidation", "Weak investigation in poor clients' cases"],
-        "strategies": ["Explaining the process honestly", "Reconciliation and conciliation", "Referrals to NGOs and crisis centres", "Legal-aid hotline 16430"],
-        "consequences": ["Cases abandoned midway", "Compromise under pressure", "Public trust eroded", "Calls for legal-aid and victim-protection reform"]
-      }
-    },
-    "tanvir": {
-      "author": "Tanvir Ahmed Siddique",
-      "focus": ["T4", "T6", "T2", "T7"],
-      "paradigm": {
-        "phenomenon": "Professional autonomy and integrity constrained by pressure",
-        "causal": ["Political influence on cases", "Pressure from influential parties", "Culture of informal payments"],
-        "context": ["Partisan Bar politics", "Guru-shishya hierarchy", "Male-dominated Bar culture"],
-        "intervening": ["Income insecurity of juniors", "Reliance on a senior's name", "Weak accountability mechanisms"],
-        "strategies": ["Refusing to 'manage' cases", "Documenting everything in writing", "Peer networks of lawyers", "Many mentors, not one"],
-        "consequences": ["Ethical dilemmas; lost clients", "Fear, stress and burnout", "Juniors and women leave practice", "Demand for an independent judicial secretariat"]
-      }
-    }
+ "_note": "ILLUSTRATIVE DATA. These R1-R10 responses are worked-example placeholders, not real interviews. Replace every answer and code with what your real respondents said, then run tools/build.sh. Keep respondents pseudonymised (R1-R10) in the report; record real names only in your private consent log.",
+ "research_question": "What challenges do lawyers face as they strive to pursue justice within legal institutions?",
+ "questions": [
+  {
+   "id": "Q1",
+   "text": "Could you tell me about your journey into the legal profession and what 'pursuing justice' means to you in your everyday work?",
+   "probes": [
+    "What made you choose this area of practice?",
+    "Has your idea of justice changed since you started?"
+   ]
+  },
+  {
+   "id": "Q2",
+   "text": "Thinking about a typical case you handle, what are the biggest obstacles that stand between your client and a just outcome?",
+   "probes": [
+    "Can you give me a recent example?",
+    "Which obstacle do you think matters most?"
+   ]
+  },
+  {
+   "id": "Q3",
+   "text": "How does the pace of the court process (adjournments, backlog, hearing dates) affect your work and your clients?",
+   "probes": [
+    "How many dates does a typical matter take?",
+    "Who or what usually causes the adjournment?"
+   ]
+  },
+  {
+   "id": "Q4",
+   "text": "Can you describe your experience with court administration, such as filing, cause lists, records and court staff?",
+   "probes": [
+    "What happens when a file cannot be found?",
+    "Are there unofficial costs involved?"
+   ]
+  },
+  {
+   "id": "Q5",
+   "text": "How do the quality of investigation and evidence (police reports, witnesses, forensic or documentary evidence) shape your ability to argue a case?",
+   "probes": [
+    "Can you recall a case where evidence failed?",
+    "How do witnesses behave in court?"
+   ]
+  },
+  {
+   "id": "Q6",
+   "text": "Have you ever experienced or witnessed influence, pressure or informal payments (political, administrative or social) affecting a case? How did you respond?",
+   "probes": [
+    "How did it make you feel?",
+    "Did it change how you handle such cases?"
+   ]
+  },
+  {
+   "id": "Q7",
+   "text": "How do your clients' circumstances (income, literacy, gender, location) affect their access to justice, and what role does legal aid play?",
+   "probes": [
+    "What do clients struggle with most?",
+    "Have you referred clients to legal aid?"
+   ]
+  },
+  {
+   "id": "Q8",
+   "text": "How would you describe your professional relationships with judges, opposing counsel and senior members of the Bar?",
+   "probes": [
+    "Is there a hierarchy among lawyers?",
+    "Does gender shape how you are treated?"
+   ]
+  },
+  {
+   "id": "Q9",
+   "text": "How do these challenges affect you personally, for example your income, stress, wellbeing or motivation?",
+   "probes": [
+    "Have you thought about leaving practice?",
+    "How do you switch off?"
+   ]
+  },
+  {
+   "id": "Q10",
+   "text": "What strategies have you developed to cope with or work around these challenges?",
+   "probes": [
+    "Who do you turn to for help?",
+    "Do you use mediation or settlement?"
+   ]
+  },
+  {
+   "id": "Q11",
+   "text": "What has been your experience with digital or recent reforms, such as online cause lists, virtual hearings or e-filing?",
+   "probes": [
+    "What works and what does not?",
+    "Has anything changed since COVID-19?"
+   ]
+  },
+  {
+   "id": "Q12",
+   "text": "If you could change one thing about legal institutions to make justice more achievable, what would it be and why?",
+   "probes": [
+    "Who should be responsible for that change?",
+    "Anything else you would like to add?"
+   ]
   }
+ ],
+ "themes": [
+  {
+   "id": "T1",
+   "name": "Institutional delay and case backlog",
+   "short": "Delay & backlog"
+  },
+  {
+   "id": "T2",
+   "name": "Procedural and administrative bottlenecks",
+   "short": "Admin bottlenecks"
+  },
+  {
+   "id": "T3",
+   "name": "Weak investigation and evidentiary gaps",
+   "short": "Investigation & evidence"
+  },
+  {
+   "id": "T4",
+   "name": "External pressure and integrity dilemmas",
+   "short": "Pressure & integrity"
+  },
+  {
+   "id": "T5",
+   "name": "Access-to-justice barriers for clients",
+   "short": "Client access barriers"
+  },
+  {
+   "id": "T6",
+   "name": "Professional hierarchy, insecurity and wellbeing",
+   "short": "Hierarchy & wellbeing"
+  },
+  {
+   "id": "T7",
+   "name": "Coping strategies and reform aspirations",
+   "short": "Coping & reform"
+  }
+ ],
+ "codes": [
+  {
+   "id": "c01",
+   "theme": "T1",
+   "label": "Frequent adjournments / time petitions"
+  },
+  {
+   "id": "c02",
+   "theme": "T1",
+   "label": "Case backlog and overloaded cause lists"
+  },
+  {
+   "id": "c03",
+   "theme": "T1",
+   "label": "Shortage of judges and courts"
+  },
+  {
+   "id": "c04",
+   "theme": "T1",
+   "label": "Witness non-appearance / summons not served"
+  },
+  {
+   "id": "c05",
+   "theme": "T1",
+   "label": "Clients losing faith because of delay"
+  },
+  {
+   "id": "c06",
+   "theme": "T2",
+   "label": "Informal 'speed money' to court staff"
+  },
+  {
+   "id": "c07",
+   "theme": "T2",
+   "label": "Missing or misplaced case records"
+  },
+  {
+   "id": "c08",
+   "theme": "T2",
+   "label": "Slow certified copies, orders and reports"
+  },
+  {
+   "id": "c09",
+   "theme": "T2",
+   "label": "Manual systems and poor court infrastructure"
+  },
+  {
+   "id": "c10",
+   "theme": "T3",
+   "label": "Weak or biased police investigation"
+  },
+  {
+   "id": "c11",
+   "theme": "T3",
+   "label": "Delayed or flawed charge sheets"
+  },
+  {
+   "id": "c12",
+   "theme": "T3",
+   "label": "Witness intimidation / hostile witnesses"
+  },
+  {
+   "id": "c13",
+   "theme": "T3",
+   "label": "Lack of forensic and digital-evidence support"
+  },
+  {
+   "id": "c14",
+   "theme": "T4",
+   "label": "Political influence on cases"
+  },
+  {
+   "id": "c15",
+   "theme": "T4",
+   "label": "Pressure or threats from influential parties"
+  },
+  {
+   "id": "c16",
+   "theme": "T4",
+   "label": "Bar politics and partisan alignment"
+  },
+  {
+   "id": "c17",
+   "theme": "T4",
+   "label": "Ethical dilemmas over informal payments"
+  },
+  {
+   "id": "c18",
+   "theme": "T5",
+   "label": "Litigation cost and lost income"
+  },
+  {
+   "id": "c19",
+   "theme": "T5",
+   "label": "Low legal literacy and exploitation by touts"
+  },
+  {
+   "id": "c20",
+   "theme": "T5",
+   "label": "Gender and social barriers for women clients"
+  },
+  {
+   "id": "c21",
+   "theme": "T5",
+   "label": "Weak reach and quality of legal aid"
+  },
+  {
+   "id": "c22",
+   "theme": "T6",
+   "label": "Irregular income of junior lawyers"
+  },
+  {
+   "id": "c23",
+   "theme": "T6",
+   "label": "Senior gatekeeping and dependency"
+  },
+  {
+   "id": "c24",
+   "theme": "T6",
+   "label": "Gender discrimination within the Bar"
+  },
+  {
+   "id": "c25",
+   "theme": "T6",
+   "label": "Stress, fear and burnout"
+  },
+  {
+   "id": "c26",
+   "theme": "T7",
+   "label": "Persistent follow-up and personal networks"
+  },
+  {
+   "id": "c27",
+   "theme": "T7",
+   "label": "Mediation, conciliation and arbitration"
+  },
+  {
+   "id": "c28",
+   "theme": "T7",
+   "label": "Digital tools (online cause list, virtual hearing)"
+  },
+  {
+   "id": "c29",
+   "theme": "T7",
+   "label": "Calls for structural reform"
+  }
+ ],
+ "respondents": [
+  {
+   "id": "R1",
+   "gender": "Male",
+   "years": 6,
+   "role": "Advocate",
+   "forum": "Dhaka Judge Court",
+   "area": "Criminal",
+   "answers": {
+    "Q1": {
+     "text": "I joined the Bar because I watched my uncle fight a land case for twenty years. For me justice means a fair hearing within a reasonable time. In criminal practice it also means the accused gets bail when the law allows it, not after months in jail.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "The biggest obstacle is time. A bail matter that should take one week takes two months. Then the witnesses do not come, the police report is weak, and at the end the client blames me.",
+     "codes": [
+      "c01",
+      "c04",
+      "c10",
+      "c05"
+     ]
+    },
+    "Q3": {
+     "text": "I have a murder case running since 2017. Out of maybe forty dates, evidence was taken on six. The rest were adjournments: either the prosecution witness was absent or the court had no time. One judge sometimes has more than a hundred matters on the cause list.",
+     "codes": [
+      "c01",
+      "c02",
+      "c04"
+     ]
+    },
+    "Q4": {
+     "text": "Without giving the peshkar or the clerk something, your file does not move. Nobody calls it a bribe; they call it 'kharcha'. Twice my case records went missing on the hearing date.",
+     "codes": [
+      "c06",
+      "c07"
+     ]
+    },
+    "Q5": {
+     "text": "Police investigation is the weakest link. The charge sheet often just copies the FIR. There is no forensic report, or it comes after two years. As defence I sometimes benefit, but as a citizen I feel justice is lost.",
+     "codes": [
+      "c10",
+      "c11",
+      "c13"
+     ]
+    },
+    "Q6": {
+     "text": "In politically sensitive cases you can feel the pressure. Bail becomes difficult when the accused is from the other side. A senior once told me not to 'push too hard'.",
+     "codes": [
+      "c14",
+      "c15",
+      "c23"
+     ]
+    },
+    "Q7": {
+     "text": "Most of my clients are day labourers' families. They sell a cow or take a loan to pay for the case. Many do not even know legal aid exists.",
+     "codes": [
+      "c18",
+      "c21"
+     ]
+    },
+    "Q8": {
+     "text": "Judges are mostly respectful, but junior lawyers are often ignored at the bench. The senior takes the brief and the junior does the running.",
+     "codes": [
+      "c23"
+     ]
+    },
+    "Q9": {
+     "text": "I sleep less. Some days I have matters in four courts on four floors. Families call me at midnight. There is a moral tiredness when you know the system is the problem but people blame you.",
+     "codes": [
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I keep a personal diary of dates, I keep good relations with court staff, and I file applications for early hearing. Knowing people helps.",
+     "codes": [
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "The online cause list is useful; I check it from home. Virtual bail hearings during COVID were actually faster, but they have mostly stopped.",
+     "codes": [
+      "c28"
+     ]
+    },
+    "Q12": {
+     "text": "More judges. Simply more judges and more courtrooms, and a strict limit on adjournments.",
+     "codes": [
+      "c29",
+      "c03"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R2",
+   "gender": "Female",
+   "years": 3,
+   "role": "Advocate",
+   "forum": "Family Court, Dhaka",
+   "area": "Family",
+   "answers": {
+    "Q1": {
+     "text": "I wanted to work for women because in my own area I saw how women are denied dower and maintenance. Justice for me is when a woman actually gets the money the court ordered, not just a paper decree.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Execution is the problem. We get a maintenance decree but the husband does not pay, and execution takes another year. Women give up halfway.",
+     "codes": [
+      "c01",
+      "c05"
+     ]
+    },
+    "Q3": {
+     "text": "Family courts are supposed to be quick, but the summons is not served properly. The husband avoids it and the case goes date after date.",
+     "codes": [
+      "c04",
+      "c01"
+     ]
+    },
+    "Q4": {
+     "text": "A certified copy of an order can take weeks unless you pay extra. The record room is crowded and everything is on paper.",
+     "codes": [
+      "c08",
+      "c06",
+      "c09"
+     ]
+    },
+    "Q5": {
+     "text": "In dowry or violence cases the medical certificate is late or weak. Police sometimes discourage women from filing and push them towards a 'compromise'.",
+     "codes": [
+      "c10",
+      "c20"
+     ]
+    },
+    "Q6": {
+     "text": "Local influential people sometimes pressure my client to withdraw. Once a union parishad member came to the court premises to threaten her.",
+     "codes": [
+      "c15",
+      "c12"
+     ]
+    },
+    "Q7": {
+     "text": "My clients are mostly women with no income of their own. They come with a brother or father and cannot speak freely. Many think the court is only for rich people.",
+     "codes": [
+      "c18",
+      "c19",
+      "c20"
+     ]
+    },
+    "Q8": {
+     "text": "Some clients ask me, 'Is there no male lawyer?' Some senior colleagues make jokes. As a woman you have to prove twice that you are competent.",
+     "codes": [
+      "c24"
+     ]
+    },
+    "Q9": {
+     "text": "My income is very irregular; some months I barely cover transport. Emotionally the cases are heavy, because I hear stories of abuse every day.",
+     "codes": [
+      "c22",
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I try reconciliation first, because the family court allows it before and after trial. I also connect clients with legal-aid NGOs.",
+     "codes": [
+      "c27",
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "I have not seen much digitisation in the family court. Everything is still on paper.",
+     "codes": [
+      "c09"
+     ]
+    },
+    "Q12": {
+     "text": "Fast execution of maintenance decrees, and a women's help desk in every court.",
+     "codes": [
+      "c29"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R3",
+   "gender": "Male",
+   "years": 9,
+   "role": "Advocate",
+   "forum": "High Court Division",
+   "area": "Writ / constitutional",
+   "answers": {
+    "Q1": {
+     "text": "I practise in the High Court, mainly writ and constitutional matters. For me pursuing justice means holding public authorities accountable to the law.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Listing is the first obstacle. A writ petition may wait months just to be heard because benches change and the cause list is long.",
+     "codes": [
+      "c02",
+      "c01"
+     ]
+    },
+    "Q3": {
+     "text": "After a rule is issued, the final hearing can take five to ten years. Meanwhile the petitioner may have retired or even died. Delay has made the interim order the real remedy.",
+     "codes": [
+      "c02",
+      "c05"
+     ]
+    },
+    "Q4": {
+     "text": "Bench officers have huge power over listing. Getting a matter mentioned without 'arrangements' is hard for a young lawyer.",
+     "codes": [
+      "c06",
+      "c23"
+     ]
+    },
+    "Q5": {
+     "text": "In writ matters government offices do not file their affidavit-in-opposition on time, and the state machinery is slow to produce documents.",
+     "codes": [
+      "c08"
+     ]
+    },
+    "Q6": {
+     "text": "When a case involves powerful interests you sense the hesitation. Bar politics also matters: which panel you belong to can affect which briefs you receive and sometimes how you are treated.",
+     "codes": [
+      "c14",
+      "c16"
+     ]
+    },
+    "Q7": {
+     "text": "Rural petitioners have to come to Dhaka and stay in hotels. A High Court case is beyond most ordinary people's means. Supreme Court legal aid exists, but few people know.",
+     "codes": [
+      "c18",
+      "c21"
+     ]
+    },
+    "Q8": {
+     "text": "The hierarchy is strong. Juniors work for years under a senior for little or no pay. It is a guru-shishya culture.",
+     "codes": [
+      "c23",
+      "c22"
+     ]
+    },
+    "Q9": {
+     "text": "Financially I am stable now, but the first five years were very hard. I saw many talented friends leave the profession.",
+     "codes": [
+      "c22",
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I keep my drafting very precise so the bench can grasp the point in the short time we get. I also rely on my senior's name to get listed.",
+     "codes": [
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "The Supreme Court's online cause list and case-tracking help, but e-filing is still not fully functional.",
+     "codes": [
+      "c28",
+      "c09"
+     ]
+    },
+    "Q12": {
+     "text": "A separate, independent secretariat for the judiciary, and a transparent listing system.",
+     "codes": [
+      "c29"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R4",
+   "gender": "Male",
+   "years": 2,
+   "role": "Junior advocate",
+   "forum": "District Court, Gazipur",
+   "area": "Civil / land",
+   "answers": {
+    "Q1": {
+     "text": "I am new in practice. I joined because law gives social respect, and I want to help people from my village in land disputes.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Land cases depend on records: khatian, porcha, deeds. The land office records are wrong or missing, and the case goes round in circles for years.",
+     "codes": [
+      "c07",
+      "c02"
+     ]
+    },
+    "Q3": {
+     "text": "Civil suits in my district run for ten to fifteen years. Some suits were filed before I was born.",
+     "codes": [
+      "c02",
+      "c01"
+     ]
+    },
+    "Q4": {
+     "text": "Staff ask for money for everything: finding a file, giving a date, even a photocopy. As a junior I feel ashamed telling the client he has to pay this.",
+     "codes": [
+      "c06",
+      "c17"
+     ]
+    },
+    "Q5": {
+     "text": "In land matters the survey and local inspection reports are late; the advocate commissioner's report takes months.",
+     "codes": [
+      "c08"
+     ]
+    },
+    "Q6": {
+     "text": "I have not faced political pressure directly, but I can see the side with local power gets advantages, like witnesses changing their statements.",
+     "codes": [
+      "c15",
+      "c12"
+     ]
+    },
+    "Q7": {
+     "text": "Villagers do not understand legal language. They sign documents without reading them. Many come to me after losing everything to a dalal.",
+     "codes": [
+      "c19",
+      "c18"
+     ]
+    },
+    "Q8": {
+     "text": "I depend fully on my senior and get a small allowance. Without a senior, a new lawyer cannot get clients.",
+     "codes": [
+      "c22",
+      "c23"
+     ]
+    },
+    "Q9": {
+     "text": "The financial pressure is serious. My family asks when I will earn properly. Sometimes I think of taking a job instead.",
+     "codes": [
+      "c22",
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I learn by watching, and I explain the process honestly to clients so they do not have false hopes.",
+     "codes": [
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "Our court's cause list is sometimes online now, but updates are irregular.",
+     "codes": [
+      "c28",
+      "c09"
+     ]
+    },
+    "Q12": {
+     "text": "Digitise land records and connect them to the courts. Half the civil cases would disappear.",
+     "codes": [
+      "c29"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R5",
+   "gender": "Female",
+   "years": 5,
+   "role": "Advocate",
+   "forum": "Nari-o-Shishu Tribunal & CMM Court",
+   "area": "Criminal (survivors)",
+   "answers": {
+    "Q1": {
+     "text": "I mostly represent survivors before the Nari-o-Shishu Nirjatan Daman Tribunal. Justice for me means the survivor is not humiliated by the process.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "The survivor gets exhausted. The law says the trial should finish within 180 days, but in reality it takes years.",
+     "codes": [
+      "c01",
+      "c02",
+      "c05"
+     ]
+    },
+    "Q3": {
+     "text": "The time limit exists only on paper. Prosecutors are overloaded, witnesses are not produced, and the date is shifted again.",
+     "codes": [
+      "c01",
+      "c04"
+     ]
+    },
+    "Q4": {
+     "text": "There is no private waiting space for survivors. They sit right next to the accused's family.",
+     "codes": [
+      "c09",
+      "c20"
+     ]
+    },
+    "Q5": {
+     "text": "The medical examination and DNA reports are delayed. Investigating officers change, and the new one does not know the case.",
+     "codes": [
+      "c10",
+      "c13",
+      "c11"
+     ]
+    },
+    "Q6": {
+     "text": "The pressure to compromise is huge. The accused side offers money or threatens the family. Sometimes the survivor turns hostile in the witness box.",
+     "codes": [
+      "c12",
+      "c15"
+     ]
+    },
+    "Q7": {
+     "text": "Poor families cannot afford to keep travelling, and stigma stops them too. Legal-aid panel lawyers exist, but they are paid little and overloaded.",
+     "codes": [
+      "c18",
+      "c20",
+      "c21"
+     ]
+    },
+    "Q8": {
+     "text": "Some male colleagues think women lawyers are only suited to family matters. In the bar association women's voices are few.",
+     "codes": [
+      "c24",
+      "c16"
+     ]
+    },
+    "Q9": {
+     "text": "I carry the cases home. Secondary trauma is real, but nobody talks about it in our profession.",
+     "codes": [
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I prepare the survivor before testimony and explain cross-examination. I coordinate with the one-stop crisis centres.",
+     "codes": [
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "Virtual testimony could protect survivors, but in practice it is rarely allowed.",
+     "codes": [
+      "c28"
+     ]
+    },
+    "Q12": {
+     "text": "A victim and witness protection law. Without protection there is no evidence, and without evidence there is no justice.",
+     "codes": [
+      "c29",
+      "c12"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R6",
+   "gender": "Male",
+   "years": 12,
+   "role": "Advocate",
+   "forum": "District Court, Narayanganj",
+   "area": "Land / civil",
+   "answers": {
+    "Q1": {
+     "text": "I have practised for twelve years. Justice to me is restoring a person's lawful rights, especially over land, which is the root of most disputes in Bangladesh.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Multiplicity of cases. One land dispute produces civil suits, criminal cases and even false cases filed to harass the other side.",
+     "codes": [
+      "c02",
+      "c15"
+     ]
+    },
+    "Q3": {
+     "text": "Adjournment has become a culture. Lawyers file time petitions too; I will be honest, we are part of the problem. But judges also carry impossible workloads.",
+     "codes": [
+      "c01",
+      "c03"
+     ]
+    },
+    "Q4": {
+     "text": "Our record room is in a very bad state. Files are tied in bundles, sometimes damaged by water. Finding a file depends on the staff's goodwill.",
+     "codes": [
+      "c07",
+      "c09",
+      "c06"
+     ]
+    },
+    "Q5": {
+     "text": "False evidence and false witnesses are common in land cases. Forged documents are hard to detect without proper forensic examination.",
+     "codes": [
+      "c13",
+      "c12"
+     ]
+    },
+    "Q6": {
+     "text": "I have refused cases where clients wanted me to 'manage' things. Clients sometimes leave because another lawyer promises to manage. That is the ethical dilemma.",
+     "codes": [
+      "c17"
+     ]
+    },
+    "Q7": {
+     "text": "Litigation cost is not only fees. It is the cost of coming to court fifty times.",
+     "codes": [
+      "c18"
+     ]
+    },
+    "Q8": {
+     "text": "With experience, relations with the bench become professional. But Bar elections divide lawyers along party lines, and that hurts collegiality.",
+     "codes": [
+      "c16"
+     ]
+    },
+    "Q9": {
+     "text": "After twelve years I am financially fine, but it frustrates me that so many of my cases are older than my career.",
+     "codes": [
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I encourage settlement through mediation under section 89A of the Code of Civil Procedure. Many clients are relieved when it works.",
+     "codes": [
+      "c27"
+     ]
+    },
+    "Q11": {
+     "text": "Digitisation is coming slowly. Younger lawyers share cause lists in WhatsApp groups, which is useful.",
+     "codes": [
+      "c28"
+     ]
+    },
+    "Q12": {
+     "text": "Strict case management: fixed timelines for each stage and a penalty for unnecessary adjournments.",
+     "codes": [
+      "c29"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R7",
+   "gender": "Male",
+   "years": 4,
+   "role": "Advocate",
+   "forum": "Labour Court, Dhaka",
+   "area": "Labour / corporate",
+   "answers": {
+    "Q1": {
+     "text": "I work on labour and some corporate matters. Justice means a worker getting their dues on time, and a company getting a predictable decision.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Labour courts are few and overloaded. Workers cannot wait for years; they need the money now.",
+     "codes": [
+      "c03",
+      "c02",
+      "c18"
+     ]
+    },
+    "Q3": {
+     "text": "A simple unpaid-wages case can take three years. Employers' lawyers use every procedural tool to delay.",
+     "codes": [
+      "c01",
+      "c02"
+     ]
+    },
+    "Q4": {
+     "text": "Orders are not uploaded on time, so we have to go in person just to find out what happened.",
+     "codes": [
+      "c08",
+      "c09"
+     ]
+    },
+    "Q5": {
+     "text": "The evidence is mostly documents, but workers have no appointment letters or payslips, so even proving employment is hard.",
+     "codes": [
+      "c19"
+     ]
+    },
+    "Q6": {
+     "text": "Some factory owners are politically connected. Workers fear losing their jobs if they file, and some union leaders compromise.",
+     "codes": [
+      "c14",
+      "c15"
+     ]
+    },
+    "Q7": {
+     "text": "Workers cannot leave work for court dates. Every date means losing a day's wage.",
+     "codes": [
+      "c18"
+     ]
+    },
+    "Q8": {
+     "text": "The corporate side is more professional, but in the labour court the hierarchy among lawyers is very visible.",
+     "codes": [
+      "c23"
+     ]
+    },
+    "Q9": {
+     "text": "I do corporate work to survive financially and labour work for satisfaction.",
+     "codes": [
+      "c22"
+     ]
+    },
+    "Q10": {
+     "text": "I try to negotiate settlements through conciliation. Quick money is often better than a slow judgment.",
+     "codes": [
+      "c27"
+     ]
+    },
+    "Q11": {
+     "text": "Virtual hearings would help workers a lot, but labour courts never really adopted them.",
+     "codes": [
+      "c28"
+     ]
+    },
+    "Q12": {
+     "text": "More labour courts, outside Dhaka and Chattogram too, with time limits.",
+     "codes": [
+      "c29",
+      "c03"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R8",
+   "gender": "Male",
+   "years": 7,
+   "role": "Advocate",
+   "forum": "Dhaka Judge Court",
+   "area": "Criminal defence / bail",
+   "answers": {
+    "Q1": {
+     "text": "I do criminal defence. Justice means nobody is punished without proof, and nobody stays in jail unlawfully.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Pre-trial detention. Thousands of people wait in jail because their trial has not started.",
+     "codes": [
+      "c02",
+      "c01"
+     ]
+    },
+    "Q3": {
+     "text": "Framing the charge alone takes years because the police report is late. Courts adjourn because the investigating officer has been transferred.",
+     "codes": [
+      "c11",
+      "c01",
+      "c04"
+     ]
+    },
+    "Q4": {
+     "text": "For a bail order to reach the jail you have to follow up at every desk. One day's delay means another night in jail for my client.",
+     "codes": [
+      "c08",
+      "c06"
+     ]
+    },
+    "Q5": {
+     "text": "Police sometimes list 'unknown accused' in the FIR and then arrest people to extort money. Investigation is used as a tool.",
+     "codes": [
+      "c10",
+      "c14"
+     ]
+    },
+    "Q6": {
+     "text": "During political unrest, mass cases are filed and bail is almost impossible whatever the merits. I have received threats from both sides.",
+     "codes": [
+      "c14",
+      "c15"
+     ]
+    },
+    "Q7": {
+     "text": "Clients' families are exploited by touts on the court premises before they even reach a lawyer.",
+     "codes": [
+      "c19",
+      "c18"
+     ]
+    },
+    "Q8": {
+     "text": "Some judges are very patient, some are not. Bar politics affects which lawyers get easy access.",
+     "codes": [
+      "c16"
+     ]
+    },
+    "Q9": {
+     "text": "Sometimes there is fear. I have been followed after a hearing, and my family worries.",
+     "codes": [
+      "c25",
+      "c15"
+     ]
+    },
+    "Q10": {
+     "text": "I document everything, keep copies, and file written applications so the record is clear. I also network with other defence lawyers.",
+     "codes": [
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "Virtual courts during COVID showed bail could be quick. The 2020 Act is still there, but it is hardly used now.",
+     "codes": [
+      "c28"
+     ]
+    },
+    "Q12": {
+     "text": "Separate criminal investigation from regular policing and make it accountable.",
+     "codes": [
+      "c29",
+      "c10"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R9",
+   "gender": "Female",
+   "years": 1,
+   "role": "Junior advocate (legal-aid panel)",
+   "forum": "District Legal Aid Office",
+   "area": "Mixed / legal aid",
+   "answers": {
+    "Q1": {
+     "text": "I am in my first year. I work with a legal-aid panel and with a senior. I joined law to help people who cannot speak for themselves.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Clients do not understand the process, and I do not yet have the experience to move through the system quickly.",
+     "codes": [
+      "c19"
+     ]
+    },
+    "Q3": {
+     "text": "Poor clients come again and again just to hear 'next date'. Some simply stop coming.",
+     "codes": [
+      "c01",
+      "c05"
+     ]
+    },
+    "Q4": {
+     "text": "As a new female lawyer, the court staff do not take me seriously until my senior calls them.",
+     "codes": [
+      "c24",
+      "c23"
+     ]
+    },
+    "Q5": {
+     "text": "Legal-aid cases often have poor investigation files. Nobody prioritises a poor man's case.",
+     "codes": [
+      "c10"
+     ]
+    },
+    "Q6": {
+     "text": "I have not faced direct pressure, but I have seen that money talks on the court premises.",
+     "codes": [
+      "c17",
+      "c06"
+     ]
+    },
+    "Q7": {
+     "text": "Legal aid exists through the District Legal Aid Office, but people do not know about it. Panel lawyers' fees are very low, so motivation is low.",
+     "codes": [
+      "c21",
+      "c22"
+     ]
+    },
+    "Q8": {
+     "text": "Some seniors support you and some exploit you. Some male colleagues comment on my dress or ask why I am not married.",
+     "codes": [
+      "c24",
+      "c23"
+     ]
+    },
+    "Q9": {
+     "text": "I am learning, but I feel insecure about income. Many of my female classmates have left practice for jobs.",
+     "codes": [
+      "c22",
+      "c25",
+      "c24"
+     ]
+    },
+    "Q10": {
+     "text": "I read case law at night, and I ask questions of many seniors, not just one.",
+     "codes": [
+      "c26"
+     ]
+    },
+    "Q11": {
+     "text": "The national legal-aid hotline, 16430, helps clients reach us.",
+     "codes": [
+      "c28",
+      "c21"
+     ]
+    },
+    "Q12": {
+     "text": "Pay legal-aid lawyers properly and evaluate their work, so the quality improves.",
+     "codes": [
+      "c29",
+      "c21"
+     ]
+    }
+   }
+  },
+  {
+   "id": "R10",
+   "gender": "Male",
+   "years": 10,
+   "role": "Barrister / Advocate",
+   "forum": "High Court Division",
+   "area": "Commercial / civil",
+   "answers": {
+    "Q1": {
+     "text": "I trained abroad and came back. In my practice, justice means certainty: businesses need to know that contracts will be enforced.",
+     "codes": []
+    },
+    "Q2": {
+     "text": "Contract enforcement is slow. Foreign clients find it unbelievable that a money suit takes so long.",
+     "codes": [
+      "c02",
+      "c01"
+     ]
+    },
+    "Q3": {
+     "text": "The Artha Rin Adalat have huge backlogs, and defaulters use writ petitions to stay proceedings for years.",
+     "codes": [
+      "c02",
+      "c01"
+     ]
+    },
+    "Q4": {
+     "text": "The administrative culture is outdated: physical files, manual stamps, no integrated case-management system.",
+     "codes": [
+      "c09"
+     ]
+    },
+    "Q5": {
+     "text": "Digital evidence like emails and electronic transactions is still treated with suspicion, and courts lack technical expertise.",
+     "codes": [
+      "c13"
+     ]
+    },
+    "Q6": {
+     "text": "Influential defaulters have connections. You cannot prove it, but the pattern is visible.",
+     "codes": [
+      "c14",
+      "c15"
+     ]
+    },
+    "Q7": {
+     "text": "For ordinary people, senior counsel in the High Court is unaffordable. The system effectively prices them out.",
+     "codes": [
+      "c18"
+     ]
+    },
+    "Q8": {
+     "text": "There is sometimes friction between barristers and local advocates: an unspoken hierarchy, and some resentment too.",
+     "codes": [
+      "c23",
+      "c16"
+     ]
+    },
+    "Q9": {
+     "text": "I am comfortable financially, but the inefficiency frustrates me. It affects your sense of purpose.",
+     "codes": [
+      "c25"
+     ]
+    },
+    "Q10": {
+     "text": "I push clients towards arbitration clauses and settlement. The Arbitration Act 2001 is not perfect, but it is faster.",
+     "codes": [
+      "c27"
+     ]
+    },
+    "Q11": {
+     "text": "The Supreme Court's digital initiatives are a start, but without integrated e-filing and e-records they are cosmetic.",
+     "codes": [
+      "c28",
+      "c29"
+     ]
+    },
+    "Q12": {
+     "text": "Specialised commercial courts with trained judges and a time-bound process.",
+     "codes": [
+      "c29",
+      "c03"
+     ]
+    }
+   }
+  }
+ ],
+ "papers": {
+  "nabin": {
+   "author": "Barrister M.A. Khan Nabin",
+   "focus": [
+    "T1",
+    "T2",
+    "T3",
+    "T7"
+   ],
+   "paradigm": {
+    "phenomenon": "Protracted, procedurally obstructed litigation: 'justice by date'",
+    "causal": [
+     "Too few judges and courtrooms",
+     "Adjournment culture and time petitions",
+     "Late charge sheets; absent witnesses"
+    ],
+    "context": [
+     "Overloaded cause lists",
+     "Paper-based record rooms",
+     "Multiple cases from one land dispute"
+    ],
+    "intervening": [
+     "'Speed money' to court staff",
+     "Senior-junior dependency",
+     "Uneven digitisation"
+    ],
+    "strategies": [
+     "Persistent follow-up and networks",
+     "Precise drafting for short hearings",
+     "Mediation under s.89A CPC",
+     "Online cause lists, WhatsApp groups"
+    ],
+    "consequences": [
+     "Clients lose faith or give up",
+     "Long pre-trial detention",
+     "Lawyers frustrated and burnt out",
+     "Demand for case-management reform"
+    ]
+   },
+   "accent": "1F4E79",
+   "chart": "#2a78d6",
+   "questionnaire": [
+    {
+     "text": "Please tell me briefly about your legal practice: which courts you appear in and what kinds of cases you handle.",
+     "probes": [
+      "How long have you been in practice?",
+      "Why did you choose this area?"
+     ]
+    },
+    {
+     "text": "In your experience, what are the main obstacles that prevent a case from reaching a just and timely conclusion?",
+     "probes": [
+      "Can you give a recent example?"
+     ]
+    },
+    {
+     "text": "How often are your cases adjourned, and what are the usual reasons for adjournment?",
+     "probes": [
+      "Who usually asks for time?",
+      "How many dates does a typical matter take?"
+     ]
+    },
+    {
+     "text": "How do the case backlog and the number of judges in your court affect your daily work?",
+     "probes": [
+      "How long is a typical cause list?"
+     ]
+    },
+    {
+     "text": "Describe your experience with court administration: filing, cause lists, case records, certified copies and court staff.",
+     "probes": [
+      "What happens when a file cannot be found?"
+     ]
+    },
+    {
+     "text": "How do police investigation, charge sheets, witnesses and forensic reports affect the progress of your cases?",
+     "probes": [
+      "Can you recall a case delayed by evidence problems?"
+     ]
+    },
+    {
+     "text": "Have informal payments or unofficial practices in court offices affected how fast your cases move? How do you deal with this?",
+     "probes": [
+      "How do clients react?"
+     ]
+    },
+    {
+     "text": "How does delay affect your clients: their costs, their trust and their willingness to continue?",
+     "probes": [
+      "Have clients abandoned cases?"
+     ]
+    },
+    {
+     "text": "How do delay and procedural problems affect you personally and professionally?",
+     "probes": [
+      "Stress, income, motivation?"
+     ]
+    },
+    {
+     "text": "What strategies do you use to move cases forward or avoid delay, such as follow-up, mediation or settlement?",
+     "probes": [
+      "Which works best?"
+     ]
+    },
+    {
+     "text": "How useful have digital initiatives been, such as online cause lists, virtual hearings and e-filing?",
+     "probes": [
+      "What changed after COVID-19?"
+     ]
+    },
+    {
+     "text": "What reforms would most reduce delay and procedural obstruction in our courts?",
+     "probes": [
+      "Who should lead them?",
+      "Anything else you would like to add?"
+     ]
+    }
+   ]
+  },
+  "apon": {
+   "author": "Apon Sikder",
+   "focus": [
+    "T5",
+    "T3",
+    "T1",
+    "T7"
+   ],
+   "paradigm": {
+    "phenomenon": "Justice priced and distanced out of ordinary clients' reach",
+    "causal": [
+     "Litigation cost and lost wages",
+     "Low legal literacy",
+     "Distance from courts"
+    ],
+    "context": [
+     "Delay multiplies cost",
+     "Touts on court premises",
+     "Gendered social norms"
+    ],
+    "intervening": [
+     "Low awareness and pay for legal aid",
+     "Witness intimidation",
+     "Weak investigation in poor clients' cases"
+    ],
+    "strategies": [
+     "Explaining the process honestly",
+     "Reconciliation and conciliation",
+     "Referrals to NGOs and crisis centres",
+     "Legal-aid hotline 16430"
+    ],
+    "consequences": [
+     "Cases abandoned midway",
+     "Compromise under pressure",
+     "Public trust eroded",
+     "Calls for legal-aid and victim-protection reform"
+    ]
+   },
+   "accent": "0E6B54",
+   "chart": "#1baf7a",
+   "questionnaire": [
+    {
+     "text": "Could you introduce yourself and describe the kinds of clients you usually represent?",
+     "probes": [
+      "Where do most of your clients come from?"
+     ]
+    },
+    {
+     "text": "What are the most common difficulties your clients face before and after they come to court?",
+     "probes": [
+      "Can you give an example?"
+     ]
+    },
+    {
+     "text": "How do the costs of litigation (fees, travel, lost wages) affect your clients' ability to pursue their cases?",
+     "probes": [
+      "Have clients sold assets or borrowed money?"
+     ]
+    },
+    {
+     "text": "How well do your clients understand the legal process, and how does this affect their case?",
+     "probes": [
+      "Have you met clients cheated by touts (dalals)?"
+     ]
+    },
+    {
+     "text": "In your experience, do women, poor or rural clients face particular barriers? Please give an example.",
+     "probes": [
+      "What happens at the police station or in court?"
+     ]
+    },
+    {
+     "text": "How do weak investigation, pressure on witnesses or lack of evidence affect clients who have little power or money?",
+     "probes": [
+      "Have clients been pressured to compromise?"
+     ]
+    },
+    {
+     "text": "How does delay in the court process affect your clients' trust and their decision to continue?",
+     "probes": [
+      "Do clients stop coming?"
+     ]
+    },
+    {
+     "text": "What has been your experience with government legal aid (District Legal Aid Office, NLASO, hotline 16430)?",
+     "probes": [
+      "Do clients know it exists?",
+      "How good is the service?"
+     ]
+    },
+    {
+     "text": "What do you do as a lawyer to help clients overcome these barriers, for example explaining the process, mediation or referrals?",
+     "probes": [
+      "Which NGOs or services do you work with?"
+     ]
+    },
+    {
+     "text": "How does working with disadvantaged clients affect you personally?",
+     "probes": [
+      "How do you cope?"
+     ]
+    },
+    {
+     "text": "What changes would make justice more accessible for ordinary people?",
+     "probes": [
+      "Anything else you would like to add?"
+     ]
+    }
+   ]
+  },
+  "tanvir": {
+   "author": "Tanvir Ahmed Siddique",
+   "focus": [
+    "T4",
+    "T6",
+    "T2",
+    "T7"
+   ],
+   "paradigm": {
+    "phenomenon": "Professional autonomy and integrity constrained by pressure",
+    "causal": [
+     "Political influence on cases",
+     "Pressure from influential parties",
+     "Culture of informal payments"
+    ],
+    "context": [
+     "Partisan Bar politics",
+     "Guru-shishya hierarchy",
+     "Male-dominated Bar culture"
+    ],
+    "intervening": [
+     "Income insecurity of juniors",
+     "Reliance on a senior's name",
+     "Weak accountability mechanisms"
+    ],
+    "strategies": [
+     "Refusing to 'manage' cases",
+     "Documenting everything in writing",
+     "Peer networks of lawyers",
+     "Many mentors, not one"
+    ],
+    "consequences": [
+     "Ethical dilemmas; lost clients",
+     "Fear, stress and burnout",
+     "Juniors and women leave practice",
+     "Demand for an independent judicial secretariat"
+    ]
+   },
+   "accent": "4B3A9E",
+   "chart": "#6250d6",
+   "questionnaire": [
+    {
+     "text": "Please describe your path into the legal profession and what professional integrity means to you.",
+     "probes": [
+      "Has your view changed with experience?"
+     ]
+    },
+    {
+     "text": "Have you experienced or witnessed political or social pressure affecting how a case was handled or decided? How did you respond?",
+     "probes": [
+      "How did it make you feel?"
+     ]
+    },
+    {
+     "text": "How do informal payments or 'arrangements' in court offices affect your work, and what ethical dilemmas do they create?",
+     "probes": [
+      "Have you lost clients by refusing?"
+     ]
+    },
+    {
+     "text": "How would you describe the relationship between junior and senior lawyers? Does this hierarchy affect your independence?",
+     "probes": [
+      "How are juniors paid?"
+     ]
+    },
+    {
+     "text": "How does Bar association politics affect lawyers' work and professional relationships?",
+     "probes": [
+      "Does party alignment affect access or briefs?"
+     ]
+    },
+    {
+     "text": "Does gender shape how lawyers are treated by clients, colleagues, court staff or the bench? Please share an example.",
+     "probes": [
+      "How do women lawyers respond?"
+     ]
+    },
+    {
+     "text": "How do these pressures affect your income, stress, safety or motivation?",
+     "probes": [
+      "Have you ever felt unsafe?"
+     ]
+    },
+    {
+     "text": "What strategies do you use to protect your integrity and your clients' interests?",
+     "probes": [
+      "Who do you turn to for support?"
+     ]
+    },
+    {
+     "text": "Have you ever considered leaving practice, or seen colleagues leave? Why?",
+     "probes": [
+      "Who is most likely to leave?"
+     ]
+    },
+    {
+     "text": "What institutional changes would best protect lawyers' independence and integrity?",
+     "probes": [
+      "Anything else you would like to add?"
+     ]
+    }
+   ]
+  }
+ },
+ "course": {
+  "course": "Research Methodology",
+  "course_code": "[course code]",
+  "programme": "[programme]",
+  "batch": "[batch]",
+  "institution": "[university / department]",
+  "teacher": "Sumaiya Iqbal",
+  "teacher_designation": "[designation]",
+  "submission_date": "[date of submission]"
+ },
+ "people": {
+  "authors": {
+   "nabin": {
+    "name": "Barrister M.A. Khan Nabin",
+    "roll": "[roll]"
+   },
+   "apon": {
+    "name": "Apon Sikder",
+    "roll": "[roll]"
+   },
+   "tanvir": {
+    "name": "Tanvir Ahmed Siddique",
+    "roll": "[roll]"
+   }
+  },
+  "respondents": [
+   {
+    "name": "Mobarak",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Nafiul Haque Kingshuk",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Taj",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Tashfia Ali",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Shohag",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Marzia Rahman",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Imran Mridha",
+    "roll": "[roll]"
+   },
+   {
+    "name": "Mamun",
+    "roll": "2"
+   },
+   {
+    "name": "Akram",
+    "roll": "38"
+   },
+   {
+    "name": "[your name]",
+    "roll": "[roll]"
+   }
+  ]
+ }
 }

@@ -29,7 +29,7 @@ As instructed, respondents were drawn from batchmates. Using **purposive samplin
 
 ### 2.3 Data collection
 
-A guide of **twelve open-ended questions**, each with optional probes, was used (Appendix A). Questions 2, 5, 7 and 10 were especially important for this report because they asked about obstacles in typical cases, evidence, clients' circumstances and legal aid, and coping strategies. Interviews took place between [dates] in [mode], lasted around [duration] minutes, and were conducted in Bangla and/or English. Responses were recorded with permission, or written down in detail where recording was declined, and later transcribed and translated.
+A separate questionnaire of **[[STAT:nq]] open-ended questions**, each with optional probes, was used (Appendix A). It was designed around the client's side of the justice system: Questions 3 to 8 asked about litigation costs, clients' understanding of the process, barriers faced by women, poor and rural clients, evidence and witness pressure, delay, and legal aid. The completed questionnaire for each respondent is attached in Appendix C. Interviews took place between [dates] in [mode], lasted around [duration] minutes, and were conducted in Bangla and/or English. Responses were recorded with permission, or written down in detail where recording was declined, and later transcribed and translated.
 
 ### 2.4 Ethical considerations
 

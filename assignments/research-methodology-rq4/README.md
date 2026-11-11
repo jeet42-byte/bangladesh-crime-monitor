@@ -13,16 +13,25 @@ There are three individual reports, each with its own analytical angle so the th
 
 Each report contains the sections the instructions require: (a) Introduction, (b) Methodology, (c) Findings from thematic analysis with quotations, plus the **coding paradigm** (Strauss & Corbin paradigm model) and a coding framework table, and (d) Research limitations and Conclusion. They also include a respondent profile table, a Braun & Clarke phases table, five figures, references, and appendices (interview guide and full coding framework).
 
-Supporting documents:
+Each student also has a **separate questionnaire document** with its own questions (Nabin 12, Apon 11, Tanvir 10, each built around that report's angle). It contains the consent script, the questions, and one form per respondent with name, roll and batch at the top. The same forms are attached at the end of each report as **Appendix C. Completed questionnaires**.
 
-- `output/RQ4_Fieldwork_Interview_Guide.docx`: printable interview pack with the interview schedule, consent script, profile sheet and the 12 semi-structured questions with probes and answer boxes.
-- `output/RQ4_Interview_Transcripts_and_Coding_Sheet.docx`: every answer with its codes, plus a code key with frequencies. Useful as an annex.
+- `output/RQ4_Questionnaire_<author>.docx`: print it and take it to the interviews.
+- `output/RQ4_Interview_Transcripts_and_Coding_Sheet.docx`: an illustrative example of how answers are coded.
+
+## Filling in names, roll and batch
+
+Everything personal lives in `data/study.json`:
+
+- `course`: institution, programme, batch, course code, teacher's designation, submission date.
+- `people.authors.<key>.roll`: the three authors' rolls.
+- `people.respondents[]`: name and roll for each respondent. Optional fields are `profile` (e.g. "Male, 5 years"), `practice`, `interview` (date, mode and duration) and `consent: true`.
+- `papers.<key>.responses`: the **real** answers, e.g. `"Mamun": ["answer to Q1", "answer to Q2", ...]`. These fill the answer boxes in Appendix C and in the questionnaire document. Boxes with no answer stay blank.
 
 ## Important: the responses are placeholders
 
 The answers for R1–R10 in `data/study.json` are **illustrative worked examples**, not real interviews. Do not attribute them to real classmates. The assignment requires findings from interviews you actually conduct, so:
 
-1. **Interview your batchmates** using the fieldwork pack. Planned respondents: Mobarak, Nafiul Haque Kingshuk, Taj, Tashfia Ali, Shohag, Marzia Rahman, Imran Mridha, Mamun (Roll 2), Akram (Roll 38), and one more. Each author should swap themselves out if they appear on another author's list. Ten interviews of 20–30 minutes each is realistic in two or three days.
+1. **Interview your batchmates** using your own questionnaire document. Planned respondents: Mobarak, Nafiul Haque Kingshuk, Taj, Tashfia Ali, Shohag, Marzia Rahman, Imran Mridha, Mamun (Roll 2), Akram (Roll 38), and one more. Each author should swap themselves out if they appear on another author's list. Ten interviews of 20–30 minutes each is realistic in two or three days.
 2. **Enter the real answers** in `data/study.json`: the respondent profile, the `text` of each answer, and the `codes` you assign. Keep respondents anonymised as R1–R10 in the report.
 3. **Rebuild** (below). All charts, tables, counts, the word count and every quotation are regenerated from the data.
 4. **Revise the prose** in `papers/<author>.md` so it matches what your respondents actually said. Some numbers in the prose are typed by hand (e.g. "mentioned by eight respondents"), so re-check them against `data/stats.json`. Update the paradigm boxes under `papers` in `data/study.json`.

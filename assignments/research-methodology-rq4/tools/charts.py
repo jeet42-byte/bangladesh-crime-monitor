@@ -72,11 +72,20 @@ def save(fig, name):
 
 
 # ---- Figure: respondent profile (years in practice, by gender) -------------
-def profile_chart():
+ACC = SERIES[0]
+
+
+def _dark(hexc, f=0.45):
+    h = hexc.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return "#%02x%02x%02x" % (int(r * f), int(g * f), int(b * f))
+
+
+def profile_chart(key):
     fig, ax = plt.subplots(figsize=(6.6, 2.9))
     ids = [r["id"] for r in resp]
     yrs = [r["years"] for r in resp]
-    cols = [SERIES[0] if r["gender"] == "Male" else SERIES[1] for r in resp]
+    cols = [ACC if r["gender"] == "Male" else SERIES[1] for r in resp]
     bars = ax.bar(ids, yrs, color=cols, width=0.62, edgecolor=SURFACE, linewidth=1)
     for b, y in zip(bars, yrs):
         ax.text(b.get_x() + b.get_width() / 2, y + 0.25, str(y), ha="center",
@@ -89,22 +98,22 @@ def profile_chart():
     from matplotlib.patches import Patch
     n_m = sum(r["gender"] == "Male" for r in resp)
     n_f = len(resp) - n_m
-    ax.legend(handles=[Patch(color=SERIES[0], label=f"Male (n={n_m})"),
+    ax.legend(handles=[Patch(color=ACC, label=f"Male (n={n_m})"),
                        Patch(color=SERIES[1], label=f"Female (n={n_f})")],
               frameon=False, loc="upper left", ncol=2, fontsize=8.5)
     mean = sum(yrs) / len(yrs)
     ax.set_title(f"Respondents' years in practice (mean {mean:.1f}, range {min(yrs)}-{max(yrs)})",
                  loc="left", fontsize=10, color=TEXT)
-    save(fig, "fig_profile.png")
+    save(fig, f"fig_profile_{key}.png")
 
 
 # ---- Figure: coded segments per theme ------------------------------------
-def theme_chart():
+def theme_chart(key):
     order = sorted(themes, key=lambda t: seg_per_theme[t["id"]])
     fig, ax = plt.subplots(figsize=(6.6, 3.1))
     labels = [f'{t["id"]}  {t["short"]}' for t in order]
     vals = [seg_per_theme[t["id"]] for t in order]
-    bars = ax.barh(labels, vals, color=SERIES[0], height=0.6)
+    bars = ax.barh(labels, vals, color=ACC, height=0.6)
     for b, t in zip(bars, order):
         n = len(resp_per_theme[t["id"]])
         ax.text(b.get_width() + 0.4, b.get_y() + b.get_height() / 2,
@@ -117,12 +126,12 @@ def theme_chart():
     ax.tick_params(axis="y", length=0)
     ax.set_title("How often each theme appeared across the ten interviews",
                  loc="left", fontsize=10)
-    save(fig, "fig_theme_segments.png")
+    save(fig, f"fig_theme_segments_{key}.png")
 
 
 # ---- Figure: respondent x theme matrix ------------------------------------
-def matrix_chart():
-    cmap = LinearSegmentedColormap.from_list("seq", ["#f3f7fd", "#9cc1ee", "#2a78d6", "#123f78"])
+def matrix_chart(key):
+    cmap = LinearSegmentedColormap.from_list("seq", ["#f7f7f5", ACC, _dark(ACC)])
     ids = [r["id"] for r in resp]
     data = [[matrix[i][t["id"]] for t in themes] for i in ids]
     vmax = max(max(row) for row in data)
@@ -148,7 +157,7 @@ def matrix_chart():
     cb.set_label("Coded segments", color=TEXT2, fontsize=8)
     ax.set_title("Framework matrix: coded segments per respondent and theme",
                  loc="left", fontsize=10)
-    save(fig, "fig_matrix.png")
+    save(fig, f"fig_matrix_{key}.png")
 
 
 # ---- Figure: focal codes for a paper --------------------------------------
@@ -228,10 +237,11 @@ def paradigm_chart(key, p):
 
 
 if __name__ == "__main__":
-    profile_chart()
-    theme_chart()
-    matrix_chart()
     for key, p in S["papers"].items():
+        ACC = p.get("chart", SERIES[0])
+        profile_chart(key)
+        theme_chart(key)
+        matrix_chart(key)
         codes_chart(key, p["focus"])
         paradigm_chart(key, p["paradigm"])
     # export counts for the document builder
