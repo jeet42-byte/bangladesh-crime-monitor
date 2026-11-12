@@ -1,0 +1,168 @@
+name: Video studio (Bangla YouTube videos)
+
+# Renders ready-to-upload Bangla videos from the archive with
+# backend/run_studio.py and attaches them to the run as an artifact.
+# Nothing is uploaded to YouTube: download the artifact, read script.md,
+# watch the video, then upload it yourself.
+#
+# Needs the BACKEND_URL and GEMINI_API_KEY secrets (both already used by the
+# ingest job). The weekly brief works without Gemini; the other formats use
+# it to write the Bangla script.
+
+on:
+  schedule:
+    # Daily Short at 19:41 Bangladesh time (13:41 UTC).
+    - cron: "41 13 * * *"
+    # Weekly brief, long and Short versions, Friday 10:23 Bangladesh time.
+    - cron: "23 4 * * 5"
+    # Safety explainer Short, Tuesday 18:17 Bangladesh time.
+    - cron: "17 12 * * 2"
+  workflow_dispatch:
+    inputs:
+      format:
+        description: "Which programme"
+        type: choice
+        options: [daily, brief, case, explainer]
+        default: daily
+      aspect:
+        description: "Frame shape (default: brief/case 16:9, daily/explainer 9:16)"
+        type: choice
+        options: [default, "16:9", "9:16"]
+        default: default
+      incident_id:
+        description: "case: incident UUID (blank = best recent case)"
+        required: false
+        default: ""
+      topic:
+        description: "explainer: TTP profile id (blank = rotate)"
+        required: false
+        default: ""
+      voice:
+        description: "Narrator"
+        type: choice
+        options: [male, female]
+        default: male
+
+# Its own group: joining the ingest group would let the next queued ingest
+# cancel a pending render.
+concurrency:
+  group: studio
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      BACKEND_URL: ${{ secrets.BACKEND_URL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      PYTHONUNBUFFERED: "1"
+      PYTHONIOENCODING: "utf-8"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            backend/requirements.txt
+            backend/studio/requirements.txt
+
+      - name: Install ffmpeg and Bangla text shaping
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg libraqm0
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r backend/requirements.txt -r backend/studio/requirements.txt
+          python -c "from PIL import features; assert features.check('raqm'), 'Pillow has no raqm: Bangla would render broken'"
+
+      - name: Check secrets
+        run: |
+          if [ -z "$BACKEND_URL" ]; then echo "::error::Secret BACKEND_URL is not set."; exit 1; fi
+          if [ -z "$GEMINI_API_KEY" ]; then echo "::warning::GEMINI_API_KEY is not set; only the brief will have a real script."; fi
+
+      - name: Wake the backend
+        continue-on-error: true
+        run: |
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -m 60 "$BACKEND_URL/health" || echo 000)
+            [ "$code" = "200" ] && exit 0
+            sleep 10
+          done
+
+      - name: Decide what to render
+        id: plan
+        env:
+          EVENT: ${{ github.event_name }}
+          SCHEDULE: ${{ github.event.schedule }}
+          IN_FORMAT: ${{ github.event.inputs.format }}
+          IN_ASPECT: ${{ github.event.inputs.aspect }}
+        run: |
+          if [ "$EVENT" = "schedule" ]; then
+            case "$SCHEDULE" in
+              "23 4 * * 5")  echo "jobs=brief:16:9 brief:9:16" >> "$GITHUB_OUTPUT" ;;
+              "17 12 * * 2") echo "jobs=explainer:default" >> "$GITHUB_OUTPUT" ;;
+              *)             echo "jobs=daily:default" >> "$GITHUB_OUTPUT" ;;
+            esac
+          else
+            echo "jobs=${IN_FORMAT}:${IN_ASPECT}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Render
+        env:
+          JOBS: ${{ steps.plan.outputs.jobs }}
+          INCIDENT_ID: ${{ github.event.inputs.incident_id }}
+          TOPIC: ${{ github.event.inputs.topic }}
+          VOICE: ${{ github.event.inputs.voice || 'male' }}
+        run: |
+          status=0
+          for job in $JOBS; do
+            format="${job%%:*}"
+            aspect="${job#*:}"
+            args=("$format" --out studio_out --voice "$VOICE")
+            [ "$aspect" != "default" ] && args+=(--aspect "$aspect")
+            [ -n "$INCIDENT_ID" ] && [ "$format" = "case" ] && args+=(--incident-id "$INCIDENT_ID")
+            [ -n "$TOPIC" ] && [ "$format" = "explainer" ] && args+=(--topic "$TOPIC")
+            set +e
+            python backend/run_studio.py "${args[@]}"
+            code=$?
+            set -e
+            if [ $code -eq 3 ]; then
+              echo "::notice::$format: not enough data to render today."
+            elif [ $code -ne 0 ]; then
+              status=$code
+            fi
+          done
+          exit $status
+
+      - name: Summary
+        if: always()
+        run: |
+          shopt -s nullglob
+          for meta in studio_out/*/metadata.json; do
+            python - "$meta" >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          import json, sys
+          m = json.load(open(sys.argv[1], encoding="utf-8"))
+          print(f"### {m['title']}\n")
+          print(f"{m['format']} · {m['aspect']} · {m['duration_seconds']} s · voice: {', '.join(m['voice_engines'])}\n")
+          for w in m["warnings"]:
+              print(f"- ⚠️ {w}")
+          print()
+          EOF
+          done
+
+      - name: Upload videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: studio-${{ github.run_number }}
+          path: studio_out/
+          if-no-files-found: ignore
+          retention-days: 14
