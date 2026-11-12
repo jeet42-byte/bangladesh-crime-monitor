@@ -274,6 +274,18 @@ Power BI → Get Data → PostgreSQL → host from the Neon string, database
 
 ---
 
+## Video studio (Bangla YouTube videos)
+
+`backend/run_studio.py` renders finished Bangla videos from the public API:
+a weekly numbers brief, a daily Short of the top stories, long-form case
+videos and scam/safety explainers. Each comes with narration, animated charts
+and maps, captions, a thumbnail and the YouTube metadata. The
+`studio.yml` workflow renders them on a schedule and attaches them as an
+artifact. Uploading stays manual. See
+[`backend/studio/README.md`](backend/studio/README.md).
+
+---
+
 ## Extraction quality
 
 **Gemini is not optional in practice.** Without `GEMINI_API_KEY` the pipeline

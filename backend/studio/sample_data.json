@@ -1,0 +1,301 @@
+{
+ "sample": true,
+ "note": "SAMPLE DATA for demos and tests. Every record is invented; never upload a video rendered from it.",
+ "summary": {
+  "total_30d": 452,
+  "total_7d": 113,
+  "total_previous_7d": 112,
+  "change_7d_pct": 0.9,
+  "top_category": "Robbery",
+  "top_category_count": 31,
+  "highest_risk_thana": "Mirpur Model",
+  "highest_risk_thana_count": 14,
+  "verified_source_count": 0,
+  "verified_source_ratio": 0,
+  "total_all_time": 2400,
+  "last_ingest_at": "2026-11-12T18:00:00+06:00",
+  "window_days": 30
+ },
+ "trends": {
+  "points": [
+   {
+    "date": "2026-10-30",
+    "count": 19
+   },
+   {
+    "date": "2026-10-31",
+    "count": 13
+   },
+   {
+    "date": "2026-11-01",
+    "count": 21
+   },
+   {
+    "date": "2026-11-02",
+    "count": 10
+   },
+   {
+    "date": "2026-11-03",
+    "count": 11
+   },
+   {
+    "date": "2026-11-04",
+    "count": 26
+   },
+   {
+    "date": "2026-11-05",
+    "count": 12
+   },
+   {
+    "date": "2026-11-06",
+    "count": 20
+   },
+   {
+    "date": "2026-11-07",
+    "count": 10
+   },
+   {
+    "date": "2026-11-08",
+    "count": 25
+   },
+   {
+    "date": "2026-11-09",
+    "count": 15
+   },
+   {
+    "date": "2026-11-10",
+    "count": 10
+   },
+   {
+    "date": "2026-11-11",
+    "count": 11
+   },
+   {
+    "date": "2026-11-12",
+    "count": 22
+   }
+  ],
+  "window_days": 14,
+  "total": 225,
+  "daily_average": 0
+ },
+ "categories": {
+  "categories": [
+   {
+    "category": "Robbery",
+    "count": 31,
+    "share_pct": 28.2
+   },
+   {
+    "category": "Theft",
+    "count": 22,
+    "share_pct": 20.0
+   },
+   {
+    "category": "Narcotics",
+    "count": 17,
+    "share_pct": 15.5
+   },
+   {
+    "category": "Fraud",
+    "count": 14,
+    "share_pct": 12.7
+   },
+   {
+    "category": "Assault",
+    "count": 12,
+    "share_pct": 10.9
+   },
+   {
+    "category": "Homicide",
+    "count": 8,
+    "share_pct": 7.3
+   },
+   {
+    "category": "Cybercrime",
+    "count": 6,
+    "share_pct": 5.5
+   }
+  ],
+  "window_days": 7,
+  "total": 110
+ },
+ "thanas": {
+  "thanas": [
+   {
+    "thana_name": "Mirpur Model",
+    "latitude": 23.8063,
+    "longitude": 90.3682,
+    "count": 14
+   },
+   {
+    "thana_name": "Jatrabari",
+    "latitude": 23.7104,
+    "longitude": 90.4349,
+    "count": 11
+   },
+   {
+    "thana_name": "Mohammadpur",
+    "latitude": 23.766,
+    "longitude": 90.3586,
+    "count": 9
+   },
+   {
+    "thana_name": "Savar",
+    "latitude": 23.8583,
+    "longitude": 90.2667,
+    "count": 8
+   },
+   {
+    "thana_name": "Kotwali",
+    "latitude": 23.7088,
+    "longitude": 90.4074,
+    "count": 7
+   },
+   {
+    "thana_name": "Gazipur Sadar",
+    "latitude": 23.9999,
+    "longitude": 90.4203,
+    "count": 6
+   },
+   {
+    "thana_name": "Narayanganj Sadar",
+    "latitude": 23.6238,
+    "longitude": 90.5,
+    "count": 5
+   },
+   {
+    "thana_name": "Pallabi",
+    "latitude": 23.827,
+    "longitude": 90.364,
+    "count": 5
+   }
+  ],
+  "window_days": 7
+ },
+ "feed": {
+  "items": [
+   {
+    "id": "00000000-0000-4000-8000-000000000001",
+    "title": "Commuters robbed at knifepoint near Mirpur-10 roundabout",
+    "narrative": "Police said a group on motorcycles snatched phones and bags from at least three rickshaw passengers near the Mirpur-10 roundabout late at night. Two suspects were detained after a chase, according to the officer in charge.",
+    "crime_category": "Robbery",
+    "penal_code_tags": [],
+    "incident_date": "2026-11-12T12:00:00+06:00",
+    "thana_name": "Mirpur Model",
+    "district": "Dhaka",
+    "latitude": 23.8063,
+    "longitude": 90.3682,
+    "fir_or_gd": null,
+    "source_platform": "news_portal",
+    "source_url": "https://example.com/sample-news/1",
+    "source_confidence": 80,
+    "source_handle": "Sample News 24",
+    "verification_level": "corroborated",
+    "created_at": "2026-11-12T18:00:00+06:00"
+   },
+   {
+    "id": "00000000-0000-4000-8000-000000000002",
+    "title": "Online seller vanishes after taking advance payments",
+    "narrative": "Several buyers alleged that a Facebook page selling electronics at low prices took advance payments through mobile banking and then stopped responding. Police said a case was filed and the page has been deleted.",
+    "crime_category": "Fraud",
+    "penal_code_tags": [],
+    "incident_date": "2026-11-12T08:00:00+06:00",
+    "thana_name": "Kotwali",
+    "district": "Chattogram",
+    "latitude": 22.3358,
+    "longitude": 91.8317,
+    "fir_or_gd": null,
+    "source_platform": "news_portal",
+    "source_url": "https://example.com/sample-news/2",
+    "source_confidence": 80,
+    "source_handle": "Sample Daily",
+    "verification_level": "corroborated",
+    "created_at": "2026-11-12T18:00:00+06:00"
+   },
+   {
+    "id": "00000000-0000-4000-8000-000000000003",
+    "title": "Yaba pills seized at Teknaf checkpoint",
+    "narrative": "Border Guard Bangladesh said it seized a large consignment of yaba pills from a vehicle at a checkpoint in Teknaf. One person was detained and a case was filed under the Narcotics Control Act.",
+    "crime_category": "Narcotics",
+    "penal_code_tags": [],
+    "incident_date": "2026-11-12T04:00:00+06:00",
+    "thana_name": "Teknaf",
+    "district": "Cox's Bazar",
+    "latitude": 20.864,
+    "longitude": 92.298,
+    "fir_or_gd": null,
+    "source_platform": "news_portal",
+    "source_url": "https://example.com/sample-news/3",
+    "source_confidence": 80,
+    "source_handle": "Sample Observer",
+    "verification_level": "single_source",
+    "created_at": "2026-11-12T18:00:00+06:00"
+   },
+   {
+    "id": "00000000-0000-4000-8000-000000000004",
+    "title": "Motorcycle theft ring busted in Uttara",
+    "narrative": "Detective Branch police said they recovered six stolen motorcycles and detained three alleged members of a theft ring operating in Uttara. Police said the group forged registration papers to resell the vehicles.",
+    "crime_category": "Theft",
+    "penal_code_tags": [],
+    "incident_date": "2026-11-11T22:00:00+06:00",
+    "thana_name": "Uttara West",
+    "district": "Dhaka",
+    "latitude": 23.869,
+    "longitude": 90.389,
+    "fir_or_gd": null,
+    "source_platform": "news_portal",
+    "source_url": "https://example.com/sample-news/4",
+    "source_confidence": 80,
+    "source_handle": "Sample Tribune",
+    "verification_level": "corroborated",
+    "created_at": "2026-11-12T18:00:00+06:00"
+   },
+   {
+    "id": "00000000-0000-4000-8000-000000000005",
+    "title": "Sample excluded story",
+    "narrative": "Excluded from stories by policy.",
+    "crime_category": "Sexual Violence",
+    "penal_code_tags": [],
+    "incident_date": "2026-11-12T10:00:00+06:00",
+    "thana_name": "Savar",
+    "district": "Dhaka",
+    "latitude": 23.8583,
+    "longitude": 90.2667,
+    "fir_or_gd": null,
+    "source_platform": "news_portal",
+    "source_url": "https://example.com/sample-news/5",
+    "source_confidence": 80,
+    "source_handle": "Sample",
+    "verification_level": "corroborated",
+    "created_at": "2026-11-12T18:00:00+06:00"
+   },
+   {
+    "id": "00000000-0000-4000-8000-000000000006",
+    "title": "Traders complain of extortion at Jatrabari bus stand",
+    "narrative": "Transport workers and traders at the Jatrabari bus stand alleged that a group demanded regular payments from them. Police said they were investigating the complaints.",
+    "crime_category": "Extortion",
+    "penal_code_tags": [],
+    "incident_date": "2026-11-11T16:00:00+06:00",
+    "thana_name": "Jatrabari",
+    "district": "Dhaka",
+    "latitude": 23.7104,
+    "longitude": 90.4349,
+    "fir_or_gd": null,
+    "source_platform": "news_portal",
+    "source_url": "https://example.com/sample-news/6",
+    "source_confidence": 80,
+    "source_handle": "Sample News 24",
+    "verification_level": "single_source",
+    "created_at": "2026-11-12T18:00:00+06:00"
+   }
+  ],
+  "total": 6,
+  "limit": 50,
+  "offset": 0,
+  "has_more": false
+ },
+ "ttp": {
+  "profiles": []
+ }
+}

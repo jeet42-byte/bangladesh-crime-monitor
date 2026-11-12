@@ -1,0 +1,4 @@
+# Extra dependencies for the video studio, on top of backend/requirements.txt.
+# System packages: ffmpeg, and libraqm0 so Pillow can shape Bangla text.
+pillow==11.3.0
+edge-tts==7.3.1
