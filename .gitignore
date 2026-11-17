@@ -18,3 +18,7 @@ next-env.d.ts
 .DS_Store
 .idea/
 .vscode/
+
+# Scoping review full texts (copyright)
+research/scoping-review/pdfs/
+research/scoping-review/download_log.csv

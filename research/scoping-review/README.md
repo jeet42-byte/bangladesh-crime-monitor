@@ -84,3 +84,19 @@ methods, report this as rule-assisted screening with human verification.
 | Fraud or harassment is one item in a list; or payment or fintech adoption and trust; or offline scams | Exclude: not cybercrime |
 | News, opinion, idea pitches, posters | Exclude: not research |
 | Rest of South Asia and purely technical | Exclude: wrong field |
+
+## Final title/abstract screening (2026-11-17)
+
+The reviewer checked the suggestions in `screening_check.xlsx` and accepted them
+without changes.
+
+| PRISMA-ScR step | Records |
+|---|---|
+| Identified (OpenAlex: Tier A 603, Tier B 1,604) | 2,207 |
+| Duplicates removed | 106 |
+| Screened (title/abstract) | 2,101 |
+| Excluded at title/abstract stage | 306 (135 by rule, 131 on title, 40 on abstract) |
+| Taken forward | 1,795 (Tier A 341 for full text; Tier B 1,454 charted from abstracts) |
+
+Full texts: `scripts/download_pdfs.py` downloads the open-access PDFs on a local
+machine into `pdfs/`, which is git-ignored for copyright reasons.
