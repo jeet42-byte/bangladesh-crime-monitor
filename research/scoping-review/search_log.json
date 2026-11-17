@@ -1,0 +1,11 @@
+{
+  "date": "2026-11-17",
+  "source": "OpenAlex API",
+  "tierA_found": 603,
+  "tierB_found": 1604,
+  "duplicates_removed": 106,
+  "records_to_screen": 2101,
+  "tierA_only": 568,
+  "tierB_only": 1519,
+  "both": 14
+}
