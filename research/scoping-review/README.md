@@ -46,3 +46,41 @@ from the title. Anything uncertain stays in.
 These are first-pass, single-reviewer exclusions. Report them in the PRISMA-ScR
 flow as "excluded on title". A second reviewer should check a random 10–20%
 sample of them.
+
+## Screening suggestions (2026-11-17)
+
+`scripts/suggest.py` applies the screening rules agreed in the first session
+(see the rules table below) and writes `screening_suggestions.csv`, with
+`suggestion` and `suggestion_reason` columns. It also adds the hand decisions
+from that session and corrections made after checking every suggested exclusion
+by hand.
+
+| Suggestion | Tier A (Bangladesh) | Tier B (rest of South Asia) |
+|---|---|---|
+| Include | 258 | 1,421 |
+| Maybe | 83 | 33 |
+| Exclude | 27 | 13 |
+
+Validation:
+- Against the 37 decisions made by hand, there were no false exclusions.
+- The only disagreements were include vs maybe, which carry no risk because both
+  go forward.
+- A random check of 30 Tier B includes found about 26 clearly in scope.
+
+`to_screen_rayyan_suggested.ris` carries each suggestion as a keyword
+(`SUGGEST_INCLUDE`, `SUGGEST_MAYBE`, `SUGGEST_EXCLUDE`) so the decisions can be
+confirmed in bulk in Rayyan. Final decisions are the reviewer's. In the
+methods, report this as rule-assisted screening with human verification.
+
+### Screening rules
+
+| Paper is about | Decision |
+|---|---|
+| Cybercrime, fraud or scams, hacking, deepfakes, cyberbullying, online harassment, sextortion or image abuse, online child abuse | Include |
+| Bangladesh's cyber laws (DSA, CSA, Ordinance, ICT Act), including their use against speech | Include (tag: speech) |
+| Awareness or protective-behaviour surveys about cyber threats | Include (tag: awareness) |
+| Crime is one of several main factors; or no abstract; or digital evidence, surveillance or shutdowns in general | Maybe |
+| Bangladesh or South Asia is one case among several from other regions | Maybe |
+| Fraud or harassment is one item in a list; or payment or fintech adoption and trust; or offline scams | Exclude: not cybercrime |
+| News, opinion, idea pitches, posters | Exclude: not research |
+| Rest of South Asia and purely technical | Exclude: wrong field |
