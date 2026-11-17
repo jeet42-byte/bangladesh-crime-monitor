@@ -27,3 +27,22 @@ Deviations from the protocol, to report in the paper
   the first run returned mainly fintech-adoption papers.
 - Tier B requires the cybercrime term in the title, to keep screening
   feasible (5,480 records otherwise).
+
+## First-pass title prescreen (2026-11-17)
+
+Exclusion was deliberately conservative: only records that are clearly off-topic
+from the title. Anything uncertain stays in.
+
+| Step | Records |
+|---|---|
+| Records after deduplication | 2,101 |
+| Excluded by rules (non-research items, clearly technical-only, etc.) | 135 |
+| Excluded on title by reviewer (no cybercrime element; offline scams such as Ponzi/chit-fund/2G) | 131 |
+| **Left for title/abstract screening** | **1,835** (Tier A 354, Tier B 1,467, both 14) |
+
+- `screening_prescreened.csv`: every record, with the `prescreen` and `prescreen_reason` columns.
+- `to_screen_rayyan.ris`: the 1,835 records for import into Rayyan.
+
+These are first-pass, single-reviewer exclusions. Report them in the PRISMA-ScR
+flow as "excluded on title". A second reviewer should check a random 10–20%
+sample of them.
