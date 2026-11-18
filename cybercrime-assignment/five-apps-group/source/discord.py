@@ -53,7 +53,7 @@ t = sh(18, 'tag');
 for x in t.text_frame.paragraphs[0].runs: x.text = x.text.replace('INSTAGRAM', 'DISCORD')
 put(sh(18, 'heading'), 'Discord: a good alarm, sent to the wrong inbox')
 put(sh(18, 'story'), 'Fox resets her Discord from Gmail. Discord’s new-login warning goes to the same Gmail, so he approves it himself.')
-for i, (f, c) in enumerate([('shot0', 'The reset link and the login warning go to the hacked Gmail'), ('shot1', 'Fox posts fake “free Nitro” QR codes as her'), ('shot2', 'Friends who scan hand over their own accounts')]):
+for i, (f, c) in enumerate([('shot0', 'Reset link and login warning go to the hacked Gmail'), ('shot1', 'Fox posts fake “free Nitro” QR codes as her'), ('shot2', 'Friends who scan hand over their own accounts')]):
     img(18, f'ashot{i}', D + f + '.png', box=sh(18, f'abox{i}')); put(sh(18, f'acap{i}'), c)
 for i, (ic, c) in enumerate([('si_shield', '2FA with an authenticator app or security key'), ('si_qr', 'Never scan a QR code to “claim” a prize'), ('si_key', 'Its own password, and backup codes saved')]):
     img(18, f'si{i}', D + ic + '.png'); put(sh(18, f'scap{i}'), c)
