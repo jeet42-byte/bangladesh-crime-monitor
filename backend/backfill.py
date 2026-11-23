@@ -316,10 +316,13 @@ async def stage_fetch(args: argparse.Namespace) -> int:
     if args.retry_failed:
         # Keep only verdicts that will not change: off-topic or out of window.
         # Download and parse failures go back in the queue.
+        # Judge each URL by its LATEST verdict: an article that failed once and
+        # was later fetched and found off-topic must not be downloaded again.
+        latest = {str(r.get("url")): str(r.get("reason", "")) for r in rejected_rows}
         retryable = {
-            str(r.get("url"))
-            for r in rejected_rows
-            if str(r.get("reason", "")).startswith(("unretrievable", "unparseable"))
+            url
+            for url, reason in latest.items()
+            if reason.startswith(("unretrievable", "unparseable"))
         }
         logger.info("%d failed downloads returned to the queue", len(retryable))
     else:
