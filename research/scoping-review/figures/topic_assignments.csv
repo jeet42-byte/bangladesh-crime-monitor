@@ -1,0 +1,1415 @@
+record_id,group,year,topic
+R0004,Bangladesh,2026,6
+R0007,Bangladesh,2026,4
+R0008,Bangladesh,2026,5
+R0011,Bangladesh,2026,5
+R0012,Bangladesh,2026,6
+R0013,Bangladesh,2026,6
+R0015,Bangladesh,2026,5
+R0016,Bangladesh,2026,1
+R0022,Bangladesh,2026,7
+R0026,Bangladesh,2026,6
+R0030,Bangladesh,2026,11
+R0034,Bangladesh,2026,11
+R0036,Bangladesh,2026,9
+R0039,Bangladesh,2026,5
+R0043,Bangladesh,2026,8
+R0052,Bangladesh,2026,4
+R0054,Bangladesh,2026,0
+R0055,Bangladesh,2026,11
+R0058,Bangladesh,2026,7
+R0060,Bangladesh,2026,7
+R0061,Bangladesh,2026,9
+R0063,Bangladesh,2026,10
+R0070,Bangladesh,2026,11
+R0071,Bangladesh,2026,6
+R0078,Bangladesh,2026,1
+R0079,Bangladesh,2026,8
+R0081,Bangladesh,2026,11
+R0088,Bangladesh,2026,11
+R0093,Bangladesh,2026,3
+R0096,Bangladesh,2026,3
+R0098,Bangladesh,2026,6
+R0101,Bangladesh,2026,0
+R0105,Bangladesh,2026,11
+R0107,Bangladesh,2026,10
+R0109,Bangladesh,2026,3
+R0113,Bangladesh,2026,9
+R0132,Bangladesh,2026,9
+R0141,Bangladesh,2025,6
+R0142,Bangladesh,2025,6
+R0143,Bangladesh,2025,6
+R0145,Bangladesh,2025,6
+R0152,Bangladesh,2025,5
+R0154,Bangladesh,2025,6
+R0158,Bangladesh,2025,6
+R0159,Bangladesh,2025,3
+R0161,Bangladesh,2025,1
+R0162,Bangladesh,2025,6
+R0164,Bangladesh,2025,1
+R0168,Bangladesh,2025,1
+R0170,Bangladesh,2025,11
+R0172,Bangladesh,2025,6
+R0174,Bangladesh,2025,1
+R0178,Bangladesh,2025,1
+R0179,Bangladesh,2025,6
+R0180,Bangladesh,2025,11
+R0181,Bangladesh,2025,10
+R0183,Bangladesh,2025,3
+R0185,Bangladesh,2025,11
+R0187,Bangladesh,2025,0
+R0188,Bangladesh,2025,8
+R0189,Bangladesh,2025,7
+R0198,Bangladesh,2025,11
+R0200,Bangladesh,2025,7
+R0202,Bangladesh,2025,9
+R0210,Bangladesh,2025,10
+R0212,Bangladesh,2025,0
+R0217,Bangladesh,2025,7
+R0225,Bangladesh,2025,11
+R0229,Bangladesh,2025,8
+R0234,Bangladesh,2025,8
+R0239,Bangladesh,2024,6
+R0241,Bangladesh,2024,2
+R0246,Bangladesh,2024,9
+R0247,Bangladesh,2024,11
+R0248,Bangladesh,2024,11
+R0249,Bangladesh,2024,6
+R0250,Bangladesh,2024,8
+R0251,Bangladesh,2024,10
+R0252,Bangladesh,2024,8
+R0253,Bangladesh,2024,1
+R0255,Bangladesh,2024,1
+R0256,Bangladesh,2024,4
+R0258,Bangladesh,2024,8
+R0259,Bangladesh,2024,0
+R0260,Bangladesh,2024,2
+R0261,Bangladesh,2024,9
+R0263,Bangladesh,2024,6
+R0264,Bangladesh,2024,2
+R0266,Bangladesh,2024,0
+R0267,Bangladesh,2024,11
+R0268,Bangladesh,2024,9
+R0271,Bangladesh,2024,11
+R0276,Bangladesh,2024,5
+R0277,Bangladesh,2024,8
+R0280,Bangladesh,2024,8
+R0281,Bangladesh,2024,9
+R0289,Bangladesh,2024,11
+R0290,Bangladesh,2024,6
+R0296,Bangladesh,2024,9
+R0300,Bangladesh,2024,8
+R0304,Bangladesh,2024,8
+R0309,Bangladesh,2023,0
+R0311,Bangladesh,2023,1
+R0312,Bangladesh,2023,3
+R0314,Bangladesh,2023,10
+R0316,Bangladesh,2023,1
+R0317,Bangladesh,2023,1
+R0318,Bangladesh,2023,0
+R0319,Bangladesh,2023,8
+R0320,Bangladesh,2023,1
+R0322,Bangladesh,2023,11
+R0324,Bangladesh,2023,3
+R0325,Bangladesh,2023,8
+R0327,Bangladesh,2023,0
+R0328,Bangladesh,2023,6
+R0329,Bangladesh,2023,11
+R0330,Bangladesh,2023,8
+R0331,Bangladesh,2023,6
+R0332,Bangladesh,2023,6
+R0333,Bangladesh,2023,9
+R0336,Bangladesh,2023,8
+R0340,Bangladesh,2023,1
+R0348,Bangladesh,2023,6
+R0350,Bangladesh,2023,8
+R0356,Bangladesh,2022,2
+R0359,Bangladesh,2022,4
+R0361,Bangladesh,2022,11
+R0362,Bangladesh,2022,8
+R0363,Bangladesh,2022,6
+R0365,Bangladesh,2022,9
+R0366,Bangladesh,2022,1
+R0367,Bangladesh,2022,8
+R0370,Bangladesh,2022,8
+R0371,Bangladesh,2022,1
+R0372,Bangladesh,2022,0
+R0373,Bangladesh,2022,0
+R0374,Bangladesh,2022,6
+R0379,Bangladesh,2022,6
+R0380,Bangladesh,2022,6
+R0382,Bangladesh,2022,3
+R0388,Bangladesh,2022,10
+R0402,Bangladesh,2021,2
+R0403,Bangladesh,2021,2
+R0404,Bangladesh,2021,0
+R0406,Bangladesh,2021,4
+R0408,Bangladesh,2021,11
+R0412,Bangladesh,2021,11
+R0418,Bangladesh,2021,11
+R0422,Bangladesh,2021,3
+R0423,Bangladesh,2021,1
+R0429,Bangladesh,2021,9
+R0435,Bangladesh,2020,8
+R0436,Bangladesh,2020,11
+R0438,Bangladesh,2020,2
+R0445,Bangladesh,2020,11
+R0448,Bangladesh,2020,8
+R0456,Bangladesh,2019,2
+R0462,Bangladesh,2019,0
+R0465,Bangladesh,2019,11
+R0473,Bangladesh,2019,6
+R0476,Bangladesh,2019,9
+R0481,Bangladesh,2018,2
+R0482,Bangladesh,2018,5
+R0486,Bangladesh,2018,1
+R0487,Bangladesh,2018,9
+R0508,Bangladesh,2017,8
+R0509,Bangladesh,2017,6
+R0510,Bangladesh,2017,0
+R0511,Bangladesh,2017,8
+R0513,Bangladesh,2017,9
+R0515,Bangladesh,2017,0
+R0524,Bangladesh,2016,11
+R0525,Bangladesh,2016,0
+R0527,Bangladesh,2016,10
+R0529,Bangladesh,2016,11
+R0530,Bangladesh,2016,2
+R0536,Bangladesh,2015,3
+R0537,Bangladesh,2015,6
+R0544,Bangladesh,2014,2
+R0551,Bangladesh,2013,0
+R0554,Bangladesh,2012,2
+R0566,Bangladesh,2011,0
+R0570,Bangladesh,2026,4
+R0572,Bangladesh,2026,4
+R0573,Bangladesh,2025,6
+R0574,Bangladesh,2025,11
+R0575,Bangladesh,2025,9
+R0577,Bangladesh,2023,4
+R0578,Bangladesh,2022,8
+R0579,Bangladesh,2022,1
+R0580,Bangladesh,2022,1
+R0581,Bangladesh,2020,9
+R0582,Bangladesh,2017,3
+R0583,Other South Asia,2026,9
+R0584,Other South Asia,2026,6
+R0585,Other South Asia,2026,11
+R0586,Other South Asia,2026,11
+R0587,Other South Asia,2026,2
+R0588,Other South Asia,2026,11
+R0589,Other South Asia,2026,11
+R0590,Other South Asia,2026,11
+R0591,Other South Asia,2026,5
+R0592,Other South Asia,2026,0
+R0593,Other South Asia,2026,11
+R0594,Other South Asia,2026,0
+R0595,Other South Asia,2026,2
+R0596,Other South Asia,2026,5
+R0597,Other South Asia,2026,5
+R0598,Other South Asia,2026,11
+R0599,Other South Asia,2026,11
+R0600,Other South Asia,2026,3
+R0601,Other South Asia,2026,5
+R0602,Other South Asia,2026,11
+R0604,Other South Asia,2026,11
+R0605,Other South Asia,2026,11
+R0607,Other South Asia,2026,11
+R0608,Other South Asia,2026,0
+R0609,Other South Asia,2026,2
+R0610,Other South Asia,2026,5
+R0611,Other South Asia,2026,3
+R0612,Other South Asia,2026,5
+R0613,Other South Asia,2026,2
+R0614,Other South Asia,2026,11
+R0615,Other South Asia,2026,6
+R0616,Other South Asia,2026,4
+R0617,Other South Asia,2026,2
+R0618,Other South Asia,2026,5
+R0619,Other South Asia,2026,5
+R0620,Other South Asia,2026,2
+R0621,Other South Asia,2026,7
+R0622,Other South Asia,2026,11
+R0623,Other South Asia,2026,11
+R0624,Other South Asia,2026,6
+R0625,Other South Asia,2026,7
+R0626,Other South Asia,2026,2
+R0627,Other South Asia,2026,7
+R0628,Other South Asia,2026,11
+R0629,Other South Asia,2026,2
+R0630,Other South Asia,2026,2
+R0631,Other South Asia,2026,6
+R0632,Other South Asia,2026,8
+R0633,Other South Asia,2026,6
+R0634,Other South Asia,2026,0
+R0635,Other South Asia,2026,3
+R0636,Other South Asia,2026,7
+R0637,Other South Asia,2026,5
+R0638,Other South Asia,2026,11
+R0639,Other South Asia,2026,2
+R0640,Other South Asia,2026,2
+R0642,Other South Asia,2026,3
+R0643,Other South Asia,2026,11
+R0644,Other South Asia,2026,3
+R0645,Other South Asia,2026,2
+R0646,Other South Asia,2026,6
+R0647,Other South Asia,2026,11
+R0648,Other South Asia,2026,9
+R0649,Other South Asia,2026,3
+R0650,Other South Asia,2026,6
+R0651,Other South Asia,2026,6
+R0652,Other South Asia,2026,6
+R0653,Other South Asia,2026,7
+R0654,Other South Asia,2026,11
+R0655,Other South Asia,2026,3
+R0656,Other South Asia,2026,5
+R0658,Other South Asia,2026,11
+R0659,Other South Asia,2026,6
+R0660,Other South Asia,2026,6
+R0662,Other South Asia,2026,0
+R0663,Other South Asia,2026,11
+R0664,Other South Asia,2026,11
+R0665,Other South Asia,2026,5
+R0667,Other South Asia,2026,0
+R0668,Other South Asia,2026,9
+R0669,Other South Asia,2026,11
+R0670,Other South Asia,2026,6
+R0671,Other South Asia,2026,9
+R0672,Other South Asia,2026,9
+R0673,Other South Asia,2026,3
+R0677,Other South Asia,2026,11
+R0679,Other South Asia,2026,3
+R0682,Other South Asia,2026,5
+R0683,Other South Asia,2026,2
+R0684,Other South Asia,2026,5
+R0685,Other South Asia,2026,7
+R0686,Other South Asia,2026,11
+R0687,Other South Asia,2026,9
+R0688,Other South Asia,2026,11
+R0690,Other South Asia,2026,5
+R0691,Other South Asia,2026,5
+R0692,Other South Asia,2026,6
+R0693,Other South Asia,2026,11
+R0694,Other South Asia,2026,4
+R0696,Other South Asia,2026,0
+R0697,Other South Asia,2026,3
+R0698,Other South Asia,2026,4
+R0699,Other South Asia,2026,0
+R0700,Other South Asia,2026,1
+R0701,Other South Asia,2026,4
+R0702,Other South Asia,2026,5
+R0703,Other South Asia,2026,6
+R0704,Other South Asia,2026,9
+R0705,Other South Asia,2026,0
+R0706,Other South Asia,2026,7
+R0707,Other South Asia,2026,11
+R0708,Other South Asia,2026,11
+R0709,Other South Asia,2026,4
+R0710,Other South Asia,2026,11
+R0711,Other South Asia,2026,6
+R0712,Other South Asia,2026,5
+R0713,Other South Asia,2026,0
+R0714,Other South Asia,2026,6
+R0715,Other South Asia,2026,11
+R0716,Other South Asia,2026,3
+R0717,Other South Asia,2026,5
+R0718,Other South Asia,2026,4
+R0719,Other South Asia,2026,11
+R0720,Other South Asia,2026,11
+R0722,Other South Asia,2026,11
+R0724,Other South Asia,2026,11
+R0726,Other South Asia,2026,4
+R0727,Other South Asia,2026,6
+R0729,Other South Asia,2026,11
+R0730,Other South Asia,2026,4
+R0731,Other South Asia,2026,6
+R0732,Other South Asia,2026,5
+R0733,Other South Asia,2026,4
+R0734,Other South Asia,2026,6
+R0735,Other South Asia,2026,6
+R0736,Other South Asia,2026,11
+R0737,Other South Asia,2026,3
+R0738,Other South Asia,2026,5
+R0740,Other South Asia,2026,8
+R0741,Other South Asia,2026,7
+R0742,Other South Asia,2026,0
+R0744,Other South Asia,2026,11
+R0746,Other South Asia,2026,1
+R0747,Other South Asia,2026,4
+R0748,Other South Asia,2026,4
+R0750,Other South Asia,2026,11
+R0751,Other South Asia,2026,11
+R0752,Other South Asia,2026,5
+R0753,Other South Asia,2026,11
+R0754,Other South Asia,2026,6
+R0755,Other South Asia,2026,0
+R0756,Other South Asia,2026,4
+R0757,Other South Asia,2026,6
+R0758,Other South Asia,2026,6
+R0759,Other South Asia,2026,4
+R0760,Other South Asia,2026,7
+R0761,Other South Asia,2026,7
+R0763,Other South Asia,2026,0
+R0764,Other South Asia,2026,0
+R0765,Other South Asia,2026,4
+R0766,Other South Asia,2026,2
+R0767,Other South Asia,2026,4
+R0769,Other South Asia,2026,4
+R0771,Other South Asia,2026,11
+R0773,Other South Asia,2026,6
+R0775,Other South Asia,2026,5
+R0776,Other South Asia,2026,11
+R0778,Other South Asia,2026,4
+R0779,Other South Asia,2026,5
+R0780,Other South Asia,2026,0
+R0781,Other South Asia,2026,0
+R0782,Other South Asia,2026,5
+R0783,Other South Asia,2026,11
+R0784,Other South Asia,2026,5
+R0785,Other South Asia,2026,11
+R0787,Other South Asia,2026,4
+R0788,Other South Asia,2026,11
+R0791,Other South Asia,2026,6
+R0792,Other South Asia,2026,9
+R0793,Other South Asia,2026,7
+R0794,Other South Asia,2026,3
+R0795,Other South Asia,2026,6
+R0796,Other South Asia,2026,3
+R0797,Other South Asia,2026,6
+R0798,Other South Asia,2026,6
+R0800,Other South Asia,2026,4
+R0801,Other South Asia,2026,1
+R0802,Other South Asia,2026,0
+R0803,Other South Asia,2026,5
+R0804,Other South Asia,2026,6
+R0806,Other South Asia,2026,11
+R0807,Other South Asia,2026,11
+R0808,Other South Asia,2026,3
+R0809,Other South Asia,2026,4
+R0810,Other South Asia,2026,5
+R0811,Other South Asia,2026,5
+R0812,Other South Asia,2026,4
+R0813,Other South Asia,2026,5
+R0814,Other South Asia,2026,4
+R0815,Other South Asia,2026,6
+R0816,Other South Asia,2026,8
+R0817,Other South Asia,2026,11
+R0818,Other South Asia,2026,2
+R0819,Other South Asia,2026,6
+R0820,Other South Asia,2026,4
+R0821,Other South Asia,2026,11
+R0822,Other South Asia,2026,5
+R0823,Other South Asia,2026,11
+R0824,Other South Asia,2026,3
+R0825,Other South Asia,2026,10
+R0826,Other South Asia,2026,7
+R0827,Other South Asia,2026,5
+R0828,Other South Asia,2026,11
+R0829,Other South Asia,2026,3
+R0830,Other South Asia,2026,11
+R0832,Other South Asia,2026,6
+R0833,Other South Asia,2026,8
+R0834,Other South Asia,2026,0
+R0835,Other South Asia,2026,11
+R0837,Other South Asia,2026,11
+R0838,Other South Asia,2026,7
+R0839,Other South Asia,2026,4
+R0840,Other South Asia,2026,4
+R0841,Other South Asia,2026,0
+R0842,Other South Asia,2026,4
+R0843,Other South Asia,2026,7
+R0845,Other South Asia,2026,8
+R0846,Other South Asia,2026,4
+R0847,Other South Asia,2026,6
+R0849,Other South Asia,2026,6
+R0850,Other South Asia,2026,4
+R0851,Other South Asia,2026,5
+R0852,Other South Asia,2026,11
+R0854,Other South Asia,2026,5
+R0855,Other South Asia,2026,5
+R0856,Other South Asia,2026,11
+R0857,Other South Asia,2026,6
+R0858,Other South Asia,2026,5
+R0859,Other South Asia,2026,3
+R0860,Other South Asia,2026,8
+R0862,Other South Asia,2026,3
+R0863,Other South Asia,2026,4
+R0865,Other South Asia,2026,11
+R0866,Other South Asia,2026,11
+R0867,Other South Asia,2026,5
+R0868,Other South Asia,2026,3
+R0869,Other South Asia,2026,11
+R0870,Other South Asia,2026,6
+R0872,Other South Asia,2026,0
+R0873,Other South Asia,2026,11
+R0874,Other South Asia,2026,11
+R0876,Other South Asia,2026,11
+R0877,Other South Asia,2026,0
+R0878,Other South Asia,2026,7
+R0879,Other South Asia,2026,11
+R0880,Other South Asia,2026,5
+R0881,Other South Asia,2026,4
+R0882,Other South Asia,2026,5
+R0883,Other South Asia,2026,6
+R0884,Other South Asia,2026,0
+R0885,Other South Asia,2026,5
+R0886,Other South Asia,2026,11
+R0888,Other South Asia,2026,11
+R0889,Other South Asia,2026,8
+R0890,Other South Asia,2026,7
+R0891,Other South Asia,2026,5
+R0892,Other South Asia,2026,5
+R0893,Other South Asia,2026,0
+R0894,Other South Asia,2026,11
+R0895,Other South Asia,2026,6
+R0896,Other South Asia,2026,4
+R0897,Other South Asia,2026,0
+R0898,Other South Asia,2026,7
+R0899,Other South Asia,2026,11
+R0901,Other South Asia,2026,6
+R0902,Other South Asia,2026,4
+R0903,Other South Asia,2026,4
+R0904,Other South Asia,2026,1
+R0905,Other South Asia,2026,11
+R0906,Other South Asia,2026,7
+R0907,Other South Asia,2026,7
+R0909,Other South Asia,2026,7
+R0911,Other South Asia,2026,11
+R0913,Other South Asia,2026,11
+R0914,Other South Asia,2026,1
+R0915,Other South Asia,2026,0
+R0916,Other South Asia,2026,11
+R0917,Other South Asia,2026,4
+R0918,Other South Asia,2026,5
+R0919,Other South Asia,2026,0
+R0921,Other South Asia,2026,11
+R0922,Other South Asia,2026,5
+R0924,Other South Asia,2026,7
+R0925,Other South Asia,2026,1
+R0926,Other South Asia,2026,7
+R0927,Other South Asia,2026,8
+R0928,Other South Asia,2026,11
+R0929,Other South Asia,2026,11
+R0930,Other South Asia,2026,5
+R0931,Other South Asia,2026,9
+R0933,Other South Asia,2026,9
+R0934,Other South Asia,2026,11
+R0935,Other South Asia,2026,4
+R0936,Other South Asia,2026,5
+R0937,Other South Asia,2026,11
+R0938,Other South Asia,2026,6
+R0939,Other South Asia,2026,5
+R0940,Other South Asia,2026,11
+R0941,Other South Asia,2026,7
+R0943,Other South Asia,2026,9
+R0944,Other South Asia,2026,9
+R0945,Other South Asia,2026,1
+R0946,Other South Asia,2026,11
+R0947,Other South Asia,2026,6
+R0948,Other South Asia,2026,4
+R0949,Other South Asia,2026,1
+R0950,Other South Asia,2026,11
+R0951,Other South Asia,2026,7
+R0954,Other South Asia,2026,11
+R0957,Other South Asia,2026,5
+R0958,Other South Asia,2026,11
+R0959,Other South Asia,2026,0
+R0960,Other South Asia,2026,8
+R0961,Other South Asia,2026,0
+R0962,Other South Asia,2026,3
+R0963,Other South Asia,2026,0
+R0964,Other South Asia,2026,5
+R0965,Other South Asia,2026,0
+R0967,Other South Asia,2026,5
+R0968,Other South Asia,2026,4
+R0969,Other South Asia,2026,0
+R0970,Other South Asia,2026,7
+R0971,Other South Asia,2026,6
+R0972,Other South Asia,2026,0
+R0974,Other South Asia,2026,11
+R0975,Other South Asia,2026,6
+R0976,Other South Asia,2026,5
+R0977,Other South Asia,2026,7
+R0978,Other South Asia,2026,3
+R0979,Other South Asia,2026,3
+R0980,Other South Asia,2026,1
+R0981,Other South Asia,2026,4
+R0983,Other South Asia,2026,6
+R0984,Other South Asia,2026,1
+R0985,Other South Asia,2026,7
+R0986,Other South Asia,2026,1
+R0988,Other South Asia,2026,7
+R0989,Other South Asia,2026,7
+R0990,Other South Asia,2026,7
+R0991,Other South Asia,2026,6
+R0992,Other South Asia,2026,4
+R0993,Other South Asia,2026,1
+R0994,Other South Asia,2026,11
+R0995,Other South Asia,2026,11
+R0998,Other South Asia,2026,6
+R0999,Other South Asia,2026,11
+R1001,Other South Asia,2026,3
+R1002,Other South Asia,2026,4
+R1003,Other South Asia,2026,4
+R1004,Other South Asia,2026,6
+R1006,Other South Asia,2026,1
+R1007,Other South Asia,2026,1
+R1008,Other South Asia,2026,7
+R1010,Other South Asia,2026,9
+R1011,Other South Asia,2026,3
+R1012,Other South Asia,2026,5
+R1013,Other South Asia,2026,5
+R1014,Other South Asia,2026,11
+R1020,Other South Asia,2026,11
+R1021,Other South Asia,2026,5
+R1022,Other South Asia,2026,1
+R1023,Other South Asia,2026,11
+R1024,Other South Asia,2026,11
+R1025,Other South Asia,2026,11
+R1026,Other South Asia,2026,5
+R1027,Other South Asia,2026,6
+R1028,Other South Asia,2026,4
+R1029,Other South Asia,2026,7
+R1030,Other South Asia,2026,0
+R1031,Other South Asia,2026,6
+R1032,Other South Asia,2026,1
+R1033,Other South Asia,2026,4
+R1034,Other South Asia,2026,8
+R1035,Other South Asia,2026,1
+R1036,Other South Asia,2026,11
+R1037,Other South Asia,2026,9
+R1038,Other South Asia,2026,11
+R1039,Other South Asia,2026,6
+R1040,Other South Asia,2026,5
+R1041,Other South Asia,2026,6
+R1042,Other South Asia,2026,7
+R1043,Other South Asia,2026,3
+R1044,Other South Asia,2026,11
+R1045,Other South Asia,2026,1
+R1046,Other South Asia,2026,1
+R1048,Other South Asia,2026,1
+R1049,Other South Asia,2026,6
+R1050,Other South Asia,2026,5
+R1051,Other South Asia,2026,11
+R1052,Other South Asia,2026,7
+R1053,Other South Asia,2026,3
+R1054,Other South Asia,2026,11
+R1055,Other South Asia,2026,11
+R1056,Other South Asia,2026,1
+R1057,Other South Asia,2026,8
+R1058,Other South Asia,2026,8
+R1059,Other South Asia,2026,11
+R1060,Other South Asia,2026,1
+R1061,Other South Asia,2026,9
+R1063,Other South Asia,2026,1
+R1064,Other South Asia,2026,11
+R1068,Other South Asia,2026,11
+R1069,Other South Asia,2026,6
+R1070,Other South Asia,2026,1
+R1071,Other South Asia,2026,3
+R1072,Other South Asia,2026,3
+R1073,Other South Asia,2026,1
+R1075,Other South Asia,2026,5
+R1076,Other South Asia,2026,9
+R1077,Other South Asia,2026,6
+R1078,Other South Asia,2026,9
+R1079,Other South Asia,2026,7
+R1080,Other South Asia,2026,1
+R1081,Other South Asia,2026,1
+R1082,Other South Asia,2026,1
+R1083,Other South Asia,2026,11
+R1085,Other South Asia,2026,1
+R1086,Other South Asia,2026,1
+R1087,Other South Asia,2026,6
+R1088,Other South Asia,2026,1
+R1089,Other South Asia,2026,1
+R1090,Other South Asia,2026,11
+R1092,Other South Asia,2026,9
+R1093,Other South Asia,2026,1
+R1094,Other South Asia,2026,1
+R1095,Other South Asia,2026,9
+R1096,Other South Asia,2025,2
+R1097,Other South Asia,2025,3
+R1098,Other South Asia,2025,3
+R1099,Other South Asia,2025,0
+R1100,Other South Asia,2025,0
+R1101,Other South Asia,2025,5
+R1102,Other South Asia,2025,0
+R1103,Other South Asia,2025,2
+R1104,Other South Asia,2025,2
+R1105,Other South Asia,2025,7
+R1107,Other South Asia,2025,0
+R1108,Other South Asia,2025,11
+R1109,Other South Asia,2025,4
+R1110,Other South Asia,2025,2
+R1111,Other South Asia,2025,8
+R1112,Other South Asia,2025,2
+R1113,Other South Asia,2025,3
+R1114,Other South Asia,2025,10
+R1115,Other South Asia,2025,8
+R1116,Other South Asia,2025,11
+R1117,Other South Asia,2025,0
+R1118,Other South Asia,2025,2
+R1119,Other South Asia,2025,8
+R1120,Other South Asia,2025,9
+R1121,Other South Asia,2025,6
+R1123,Other South Asia,2025,6
+R1124,Other South Asia,2025,2
+R1125,Other South Asia,2025,9
+R1126,Other South Asia,2025,0
+R1127,Other South Asia,2025,2
+R1128,Other South Asia,2025,3
+R1129,Other South Asia,2025,2
+R1130,Other South Asia,2025,2
+R1131,Other South Asia,2025,4
+R1132,Other South Asia,2025,6
+R1133,Other South Asia,2025,7
+R1134,Other South Asia,2025,2
+R1135,Other South Asia,2025,11
+R1136,Other South Asia,2025,3
+R1138,Other South Asia,2025,9
+R1140,Other South Asia,2025,3
+R1141,Other South Asia,2025,2
+R1142,Other South Asia,2025,1
+R1143,Other South Asia,2025,5
+R1144,Other South Asia,2025,0
+R1145,Other South Asia,2025,6
+R1147,Other South Asia,2025,7
+R1148,Other South Asia,2025,8
+R1149,Other South Asia,2025,6
+R1151,Other South Asia,2025,7
+R1152,Other South Asia,2025,9
+R1153,Other South Asia,2025,4
+R1154,Other South Asia,2025,3
+R1155,Other South Asia,2025,5
+R1156,Other South Asia,2025,11
+R1157,Other South Asia,2025,5
+R1158,Other South Asia,2025,6
+R1159,Other South Asia,2025,7
+R1160,Other South Asia,2025,8
+R1161,Other South Asia,2025,4
+R1162,Other South Asia,2025,6
+R1163,Other South Asia,2025,5
+R1165,Other South Asia,2025,0
+R1166,Other South Asia,2025,5
+R1167,Other South Asia,2025,6
+R1168,Other South Asia,2025,3
+R1170,Other South Asia,2025,3
+R1171,Other South Asia,2025,5
+R1172,Other South Asia,2025,7
+R1177,Other South Asia,2025,4
+R1178,Other South Asia,2025,11
+R1179,Other South Asia,2025,10
+R1180,Other South Asia,2025,2
+R1181,Other South Asia,2025,1
+R1182,Other South Asia,2025,5
+R1183,Other South Asia,2025,11
+R1184,Other South Asia,2025,3
+R1185,Other South Asia,2025,3
+R1186,Other South Asia,2025,11
+R1187,Other South Asia,2025,2
+R1188,Other South Asia,2025,4
+R1189,Other South Asia,2025,9
+R1190,Other South Asia,2025,0
+R1192,Other South Asia,2025,8
+R1193,Other South Asia,2025,4
+R1194,Other South Asia,2025,0
+R1195,Other South Asia,2025,5
+R1197,Other South Asia,2025,11
+R1199,Other South Asia,2025,6
+R1200,Other South Asia,2025,7
+R1201,Other South Asia,2025,6
+R1202,Other South Asia,2025,6
+R1203,Other South Asia,2025,4
+R1204,Other South Asia,2025,0
+R1206,Other South Asia,2025,5
+R1208,Other South Asia,2025,0
+R1209,Other South Asia,2025,11
+R1210,Other South Asia,2025,11
+R1211,Other South Asia,2025,0
+R1212,Other South Asia,2025,0
+R1214,Other South Asia,2025,5
+R1215,Other South Asia,2025,1
+R1216,Other South Asia,2025,3
+R1217,Other South Asia,2025,11
+R1218,Other South Asia,2025,7
+R1219,Other South Asia,2025,0
+R1221,Other South Asia,2025,6
+R1222,Other South Asia,2025,7
+R1223,Other South Asia,2025,0
+R1224,Other South Asia,2025,11
+R1225,Other South Asia,2025,9
+R1226,Other South Asia,2025,7
+R1227,Other South Asia,2025,9
+R1228,Other South Asia,2025,6
+R1229,Other South Asia,2025,11
+R1231,Other South Asia,2025,9
+R1232,Other South Asia,2025,0
+R1233,Other South Asia,2025,0
+R1235,Other South Asia,2025,0
+R1236,Other South Asia,2025,3
+R1237,Other South Asia,2025,4
+R1238,Other South Asia,2025,5
+R1239,Other South Asia,2025,3
+R1240,Other South Asia,2025,6
+R1241,Other South Asia,2025,0
+R1242,Other South Asia,2025,11
+R1243,Other South Asia,2025,4
+R1244,Other South Asia,2025,0
+R1245,Other South Asia,2025,8
+R1246,Other South Asia,2025,11
+R1247,Other South Asia,2025,4
+R1248,Other South Asia,2025,3
+R1249,Other South Asia,2025,4
+R1250,Other South Asia,2025,1
+R1252,Other South Asia,2025,6
+R1253,Other South Asia,2025,0
+R1254,Other South Asia,2025,2
+R1255,Other South Asia,2025,11
+R1256,Other South Asia,2025,0
+R1257,Other South Asia,2025,11
+R1258,Other South Asia,2025,10
+R1260,Other South Asia,2025,11
+R1261,Other South Asia,2025,6
+R1262,Other South Asia,2025,1
+R1263,Other South Asia,2025,11
+R1264,Other South Asia,2025,1
+R1265,Other South Asia,2025,6
+R1266,Other South Asia,2025,8
+R1267,Other South Asia,2025,1
+R1269,Other South Asia,2025,0
+R1270,Other South Asia,2025,11
+R1272,Other South Asia,2025,3
+R1273,Other South Asia,2025,7
+R1274,Other South Asia,2025,8
+R1275,Other South Asia,2025,0
+R1276,Other South Asia,2025,8
+R1277,Other South Asia,2025,11
+R1278,Other South Asia,2025,0
+R1279,Other South Asia,2025,0
+R1281,Other South Asia,2025,0
+R1283,Other South Asia,2025,6
+R1284,Other South Asia,2025,8
+R1285,Other South Asia,2025,4
+R1286,Other South Asia,2025,0
+R1287,Other South Asia,2025,4
+R1288,Other South Asia,2025,4
+R1289,Other South Asia,2025,6
+R1290,Other South Asia,2025,1
+R1291,Other South Asia,2025,6
+R1292,Other South Asia,2025,3
+R1296,Other South Asia,2025,0
+R1297,Other South Asia,2025,0
+R1298,Other South Asia,2025,11
+R1299,Other South Asia,2025,3
+R1300,Other South Asia,2025,7
+R1301,Other South Asia,2025,6
+R1302,Other South Asia,2025,9
+R1304,Other South Asia,2025,6
+R1305,Other South Asia,2025,3
+R1306,Other South Asia,2025,4
+R1307,Other South Asia,2025,1
+R1310,Other South Asia,2025,4
+R1311,Other South Asia,2025,9
+R1312,Other South Asia,2025,9
+R1313,Other South Asia,2025,5
+R1314,Other South Asia,2025,0
+R1315,Other South Asia,2025,3
+R1316,Other South Asia,2025,7
+R1317,Other South Asia,2025,6
+R1318,Other South Asia,2025,2
+R1319,Other South Asia,2025,0
+R1320,Other South Asia,2025,11
+R1321,Other South Asia,2025,5
+R1322,Other South Asia,2025,6
+R1323,Other South Asia,2025,4
+R1324,Other South Asia,2025,3
+R1325,Other South Asia,2025,5
+R1326,Other South Asia,2025,4
+R1327,Other South Asia,2025,6
+R1328,Other South Asia,2025,11
+R1329,Other South Asia,2025,7
+R1330,Other South Asia,2025,3
+R1331,Other South Asia,2025,4
+R1332,Other South Asia,2025,7
+R1333,Other South Asia,2025,8
+R1334,Other South Asia,2025,6
+R1335,Other South Asia,2025,10
+R1336,Other South Asia,2025,4
+R1337,Other South Asia,2025,1
+R1338,Other South Asia,2025,0
+R1339,Other South Asia,2025,6
+R1342,Other South Asia,2025,0
+R1343,Other South Asia,2025,1
+R1344,Other South Asia,2025,6
+R1345,Other South Asia,2025,6
+R1346,Other South Asia,2025,1
+R1349,Other South Asia,2025,6
+R1350,Other South Asia,2025,3
+R1351,Other South Asia,2025,3
+R1352,Other South Asia,2025,5
+R1353,Other South Asia,2025,8
+R1354,Other South Asia,2025,10
+R1356,Other South Asia,2025,3
+R1357,Other South Asia,2025,4
+R1358,Other South Asia,2025,10
+R1359,Other South Asia,2025,9
+R1361,Other South Asia,2025,4
+R1362,Other South Asia,2025,6
+R1363,Other South Asia,2025,1
+R1366,Other South Asia,2025,3
+R1367,Other South Asia,2025,11
+R1368,Other South Asia,2025,1
+R1369,Other South Asia,2025,1
+R1371,Other South Asia,2025,9
+R1372,Other South Asia,2025,1
+R1373,Other South Asia,2025,11
+R1374,Other South Asia,2025,11
+R1375,Other South Asia,2025,9
+R1376,Other South Asia,2025,9
+R1377,Other South Asia,2025,1
+R1378,Other South Asia,2025,1
+R1379,Other South Asia,2025,1
+R1380,Other South Asia,2025,6
+R1381,Other South Asia,2025,1
+R1382,Other South Asia,2025,3
+R1383,Other South Asia,2025,1
+R1384,Other South Asia,2025,9
+R1385,Other South Asia,2025,1
+R1386,Other South Asia,2025,8
+R1388,Other South Asia,2025,1
+R1389,Other South Asia,2025,1
+R1390,Other South Asia,2025,8
+R1391,Other South Asia,2025,8
+R1392,Other South Asia,2025,8
+R1393,Other South Asia,2024,0
+R1394,Other South Asia,2024,10
+R1395,Other South Asia,2024,2
+R1396,Other South Asia,2024,2
+R1397,Other South Asia,2024,6
+R1398,Other South Asia,2024,2
+R1399,Other South Asia,2024,1
+R1400,Other South Asia,2024,2
+R1401,Other South Asia,2024,6
+R1402,Other South Asia,2024,2
+R1403,Other South Asia,2024,6
+R1405,Other South Asia,2024,3
+R1406,Other South Asia,2024,3
+R1407,Other South Asia,2024,2
+R1408,Other South Asia,2024,9
+R1409,Other South Asia,2024,3
+R1410,Other South Asia,2024,9
+R1411,Other South Asia,2024,7
+R1412,Other South Asia,2024,11
+R1413,Other South Asia,2024,2
+R1414,Other South Asia,2024,2
+R1415,Other South Asia,2024,2
+R1416,Other South Asia,2024,7
+R1418,Other South Asia,2024,8
+R1420,Other South Asia,2024,2
+R1421,Other South Asia,2024,4
+R1422,Other South Asia,2024,7
+R1426,Other South Asia,2024,0
+R1427,Other South Asia,2024,7
+R1428,Other South Asia,2024,1
+R1430,Other South Asia,2024,0
+R1431,Other South Asia,2024,0
+R1432,Other South Asia,2024,4
+R1433,Other South Asia,2024,6
+R1434,Other South Asia,2024,4
+R1435,Other South Asia,2024,0
+R1436,Other South Asia,2024,9
+R1438,Other South Asia,2024,0
+R1439,Other South Asia,2024,0
+R1441,Other South Asia,2024,4
+R1442,Other South Asia,2024,0
+R1443,Other South Asia,2024,0
+R1444,Other South Asia,2024,0
+R1446,Other South Asia,2024,4
+R1447,Other South Asia,2024,0
+R1448,Other South Asia,2024,4
+R1449,Other South Asia,2024,4
+R1450,Other South Asia,2024,0
+R1451,Other South Asia,2024,9
+R1452,Other South Asia,2024,0
+R1453,Other South Asia,2024,5
+R1454,Other South Asia,2024,11
+R1456,Other South Asia,2024,1
+R1458,Other South Asia,2024,9
+R1460,Other South Asia,2024,11
+R1461,Other South Asia,2024,3
+R1462,Other South Asia,2024,0
+R1463,Other South Asia,2024,0
+R1464,Other South Asia,2024,6
+R1465,Other South Asia,2024,9
+R1467,Other South Asia,2024,0
+R1468,Other South Asia,2024,4
+R1469,Other South Asia,2024,4
+R1470,Other South Asia,2024,10
+R1471,Other South Asia,2024,0
+R1472,Other South Asia,2024,11
+R1473,Other South Asia,2024,3
+R1475,Other South Asia,2024,9
+R1476,Other South Asia,2024,7
+R1477,Other South Asia,2024,6
+R1478,Other South Asia,2024,6
+R1479,Other South Asia,2024,3
+R1481,Other South Asia,2024,0
+R1482,Other South Asia,2024,6
+R1483,Other South Asia,2024,4
+R1484,Other South Asia,2024,6
+R1485,Other South Asia,2024,11
+R1486,Other South Asia,2024,1
+R1488,Other South Asia,2024,9
+R1490,Other South Asia,2024,3
+R1491,Other South Asia,2024,1
+R1492,Other South Asia,2024,8
+R1493,Other South Asia,2024,0
+R1495,Other South Asia,2024,4
+R1496,Other South Asia,2024,1
+R1497,Other South Asia,2024,11
+R1499,Other South Asia,2024,6
+R1500,Other South Asia,2024,1
+R1501,Other South Asia,2024,11
+R1503,Other South Asia,2024,0
+R1505,Other South Asia,2024,6
+R1506,Other South Asia,2024,9
+R1508,Other South Asia,2024,11
+R1509,Other South Asia,2024,9
+R1510,Other South Asia,2024,10
+R1511,Other South Asia,2024,6
+R1513,Other South Asia,2024,10
+R1514,Other South Asia,2024,9
+R1515,Other South Asia,2024,1
+R1516,Other South Asia,2024,10
+R1517,Other South Asia,2024,6
+R1518,Other South Asia,2024,1
+R1519,Other South Asia,2024,8
+R1520,Other South Asia,2024,9
+R1522,Other South Asia,2024,1
+R1523,Other South Asia,2024,1
+R1524,Other South Asia,2024,3
+R1525,Other South Asia,2024,8
+R1526,Other South Asia,2024,1
+R1527,Other South Asia,2024,1
+R1528,Other South Asia,2024,1
+R1530,Other South Asia,2023,3
+R1531,Other South Asia,2023,3
+R1532,Other South Asia,2023,2
+R1533,Other South Asia,2023,6
+R1534,Other South Asia,2023,2
+R1535,Other South Asia,2023,2
+R1537,Other South Asia,2023,0
+R1539,Other South Asia,2023,8
+R1541,Other South Asia,2023,2
+R1543,Other South Asia,2023,6
+R1545,Other South Asia,2023,2
+R1546,Other South Asia,2023,2
+R1548,Other South Asia,2023,0
+R1549,Other South Asia,2023,3
+R1550,Other South Asia,2023,7
+R1552,Other South Asia,2023,11
+R1553,Other South Asia,2023,5
+R1554,Other South Asia,2023,3
+R1555,Other South Asia,2023,7
+R1556,Other South Asia,2023,0
+R1557,Other South Asia,2023,2
+R1558,Other South Asia,2023,2
+R1559,Other South Asia,2023,2
+R1561,Other South Asia,2023,11
+R1562,Other South Asia,2023,2
+R1563,Other South Asia,2023,0
+R1564,Other South Asia,2023,3
+R1565,Other South Asia,2023,2
+R1567,Other South Asia,2023,1
+R1568,Other South Asia,2023,0
+R1569,Other South Asia,2023,3
+R1570,Other South Asia,2023,10
+R1571,Other South Asia,2023,9
+R1572,Other South Asia,2023,6
+R1573,Other South Asia,2023,8
+R1574,Other South Asia,2023,2
+R1575,Other South Asia,2023,1
+R1576,Other South Asia,2023,0
+R1577,Other South Asia,2023,5
+R1578,Other South Asia,2023,2
+R1579,Other South Asia,2023,0
+R1581,Other South Asia,2023,2
+R1582,Other South Asia,2023,0
+R1583,Other South Asia,2023,0
+R1584,Other South Asia,2023,0
+R1586,Other South Asia,2023,1
+R1587,Other South Asia,2023,0
+R1588,Other South Asia,2023,0
+R1590,Other South Asia,2023,0
+R1591,Other South Asia,2023,8
+R1592,Other South Asia,2023,0
+R1594,Other South Asia,2023,8
+R1595,Other South Asia,2023,2
+R1596,Other South Asia,2023,0
+R1597,Other South Asia,2023,2
+R1598,Other South Asia,2023,3
+R1599,Other South Asia,2023,11
+R1601,Other South Asia,2023,1
+R1602,Other South Asia,2023,11
+R1603,Other South Asia,2023,9
+R1604,Other South Asia,2023,7
+R1605,Other South Asia,2023,0
+R1607,Other South Asia,2023,6
+R1608,Other South Asia,2023,8
+R1609,Other South Asia,2023,3
+R1610,Other South Asia,2023,1
+R1612,Other South Asia,2023,9
+R1613,Other South Asia,2023,4
+R1614,Other South Asia,2023,1
+R1615,Other South Asia,2023,1
+R1616,Other South Asia,2023,1
+R1617,Other South Asia,2023,11
+R1618,Other South Asia,2023,1
+R1619,Other South Asia,2023,6
+R1620,Other South Asia,2023,9
+R1621,Other South Asia,2023,9
+R1622,Other South Asia,2023,6
+R1623,Other South Asia,2023,6
+R1626,Other South Asia,2023,3
+R1627,Other South Asia,2023,6
+R1628,Other South Asia,2023,6
+R1630,Other South Asia,2023,1
+R1631,Other South Asia,2023,1
+R1632,Other South Asia,2023,8
+R1633,Other South Asia,2023,8
+R1634,Other South Asia,2023,1
+R1635,Other South Asia,2023,1
+R1637,Other South Asia,2023,5
+R1638,Other South Asia,2023,1
+R1639,Other South Asia,2023,0
+R1640,Other South Asia,2023,1
+R1641,Other South Asia,2023,1
+R1642,Other South Asia,2023,8
+R1643,Other South Asia,2023,6
+R1644,Other South Asia,2023,1
+R1646,Other South Asia,2022,8
+R1647,Other South Asia,2022,2
+R1648,Other South Asia,2022,3
+R1650,Other South Asia,2022,2
+R1651,Other South Asia,2022,0
+R1652,Other South Asia,2022,2
+R1653,Other South Asia,2022,6
+R1654,Other South Asia,2022,2
+R1655,Other South Asia,2022,2
+R1656,Other South Asia,2022,2
+R1657,Other South Asia,2022,0
+R1659,Other South Asia,2022,3
+R1660,Other South Asia,2022,6
+R1661,Other South Asia,2022,2
+R1662,Other South Asia,2022,0
+R1663,Other South Asia,2022,2
+R1664,Other South Asia,2022,3
+R1665,Other South Asia,2022,3
+R1666,Other South Asia,2022,3
+R1667,Other South Asia,2022,2
+R1668,Other South Asia,2022,3
+R1669,Other South Asia,2022,3
+R1670,Other South Asia,2022,2
+R1671,Other South Asia,2022,2
+R1672,Other South Asia,2022,9
+R1673,Other South Asia,2022,11
+R1674,Other South Asia,2022,2
+R1676,Other South Asia,2022,10
+R1678,Other South Asia,2022,0
+R1679,Other South Asia,2022,9
+R1681,Other South Asia,2022,3
+R1682,Other South Asia,2022,9
+R1683,Other South Asia,2022,1
+R1684,Other South Asia,2022,0
+R1685,Other South Asia,2022,3
+R1687,Other South Asia,2022,10
+R1688,Other South Asia,2022,11
+R1689,Other South Asia,2022,1
+R1690,Other South Asia,2022,4
+R1691,Other South Asia,2022,0
+R1692,Other South Asia,2022,11
+R1693,Other South Asia,2022,10
+R1694,Other South Asia,2022,1
+R1696,Other South Asia,2022,3
+R1697,Other South Asia,2022,11
+R1698,Other South Asia,2022,6
+R1700,Other South Asia,2022,8
+R1701,Other South Asia,2022,9
+R1702,Other South Asia,2022,1
+R1703,Other South Asia,2022,10
+R1705,Other South Asia,2022,1
+R1707,Other South Asia,2022,9
+R1709,Other South Asia,2022,8
+R1711,Other South Asia,2022,8
+R1713,Other South Asia,2022,10
+R1714,Other South Asia,2022,8
+R1715,Other South Asia,2022,1
+R1716,Other South Asia,2022,1
+R1718,Other South Asia,2022,8
+R1719,Other South Asia,2022,1
+R1720,Other South Asia,2021,2
+R1721,Other South Asia,2021,2
+R1723,Other South Asia,2021,2
+R1724,Other South Asia,2021,3
+R1725,Other South Asia,2021,6
+R1726,Other South Asia,2021,2
+R1727,Other South Asia,2021,3
+R1728,Other South Asia,2021,2
+R1730,Other South Asia,2021,2
+R1731,Other South Asia,2021,2
+R1732,Other South Asia,2021,2
+R1733,Other South Asia,2021,6
+R1734,Other South Asia,2021,10
+R1735,Other South Asia,2021,2
+R1736,Other South Asia,2021,2
+R1737,Other South Asia,2021,2
+R1738,Other South Asia,2021,2
+R1739,Other South Asia,2021,2
+R1740,Other South Asia,2021,2
+R1741,Other South Asia,2021,2
+R1742,Other South Asia,2021,2
+R1743,Other South Asia,2021,3
+R1744,Other South Asia,2021,3
+R1746,Other South Asia,2021,8
+R1747,Other South Asia,2021,2
+R1749,Other South Asia,2021,2
+R1750,Other South Asia,2021,0
+R1751,Other South Asia,2021,8
+R1753,Other South Asia,2021,0
+R1754,Other South Asia,2021,6
+R1756,Other South Asia,2021,3
+R1757,Other South Asia,2021,8
+R1758,Other South Asia,2021,0
+R1759,Other South Asia,2021,5
+R1760,Other South Asia,2021,2
+R1761,Other South Asia,2021,6
+R1764,Other South Asia,2021,3
+R1766,Other South Asia,2021,10
+R1767,Other South Asia,2021,10
+R1768,Other South Asia,2021,0
+R1769,Other South Asia,2021,3
+R1770,Other South Asia,2021,11
+R1772,Other South Asia,2021,11
+R1773,Other South Asia,2021,9
+R1775,Other South Asia,2021,1
+R1777,Other South Asia,2021,9
+R1778,Other South Asia,2021,2
+R1779,Other South Asia,2021,1
+R1780,Other South Asia,2021,1
+R1782,Other South Asia,2021,1
+R1783,Other South Asia,2021,1
+R1784,Other South Asia,2021,11
+R1785,Other South Asia,2021,10
+R1786,Other South Asia,2021,8
+R1788,Other South Asia,2021,8
+R1789,Other South Asia,2020,2
+R1790,Other South Asia,2020,2
+R1791,Other South Asia,2020,3
+R1794,Other South Asia,2020,2
+R1796,Other South Asia,2020,2
+R1797,Other South Asia,2020,3
+R1802,Other South Asia,2020,2
+R1804,Other South Asia,2020,2
+R1808,Other South Asia,2020,2
+R1809,Other South Asia,2020,6
+R1810,Other South Asia,2020,3
+R1811,Other South Asia,2020,3
+R1812,Other South Asia,2020,2
+R1813,Other South Asia,2020,3
+R1814,Other South Asia,2020,6
+R1816,Other South Asia,2020,2
+R1817,Other South Asia,2020,0
+R1818,Other South Asia,2020,11
+R1820,Other South Asia,2020,9
+R1822,Other South Asia,2020,2
+R1823,Other South Asia,2020,1
+R1824,Other South Asia,2020,8
+R1825,Other South Asia,2020,2
+R1826,Other South Asia,2020,11
+R1827,Other South Asia,2020,2
+R1830,Other South Asia,2020,2
+R1831,Other South Asia,2020,6
+R1832,Other South Asia,2020,1
+R1833,Other South Asia,2020,2
+R1836,Other South Asia,2020,1
+R1837,Other South Asia,2020,3
+R1839,Other South Asia,2020,8
+R1840,Other South Asia,2020,6
+R1841,Other South Asia,2020,0
+R1842,Other South Asia,2020,5
+R1843,Other South Asia,2020,10
+R1844,Other South Asia,2020,1
+R1845,Other South Asia,2020,1
+R1847,Other South Asia,2020,8
+R1848,Other South Asia,2020,3
+R1849,Other South Asia,2020,1
+R1850,Other South Asia,2020,8
+R1851,Other South Asia,2020,1
+R1852,Other South Asia,2019,2
+R1853,Other South Asia,2019,2
+R1857,Other South Asia,2019,6
+R1858,Other South Asia,2019,2
+R1859,Other South Asia,2019,0
+R1860,Other South Asia,2019,2
+R1861,Other South Asia,2019,2
+R1862,Other South Asia,2019,2
+R1863,Other South Asia,2019,11
+R1864,Other South Asia,2019,2
+R1865,Other South Asia,2019,11
+R1867,Other South Asia,2019,3
+R1868,Other South Asia,2019,8
+R1870,Other South Asia,2019,2
+R1871,Other South Asia,2019,10
+R1872,Other South Asia,2019,3
+R1874,Other South Asia,2019,3
+R1875,Other South Asia,2019,8
+R1876,Other South Asia,2019,2
+R1878,Other South Asia,2019,0
+R1883,Other South Asia,2019,2
+R1884,Other South Asia,2019,2
+R1885,Other South Asia,2019,2
+R1886,Other South Asia,2019,1
+R1887,Other South Asia,2019,8
+R1888,Other South Asia,2019,6
+R1891,Other South Asia,2019,0
+R1892,Other South Asia,2019,0
+R1894,Other South Asia,2019,10
+R1895,Other South Asia,2019,10
+R1896,Other South Asia,2019,7
+R1897,Other South Asia,2019,1
+R1898,Other South Asia,2019,9
+R1899,Other South Asia,2018,2
+R1900,Other South Asia,2018,2
+R1901,Other South Asia,2018,0
+R1902,Other South Asia,2018,2
+R1903,Other South Asia,2018,3
+R1904,Other South Asia,2018,2
+R1905,Other South Asia,2018,2
+R1908,Other South Asia,2018,2
+R1909,Other South Asia,2018,0
+R1910,Other South Asia,2018,2
+R1911,Other South Asia,2018,5
+R1912,Other South Asia,2018,2
+R1913,Other South Asia,2018,2
+R1914,Other South Asia,2018,2
+R1915,Other South Asia,2018,2
+R1916,Other South Asia,2018,3
+R1917,Other South Asia,2018,6
+R1918,Other South Asia,2018,2
+R1921,Other South Asia,2018,2
+R1923,Other South Asia,2018,6
+R1924,Other South Asia,2018,8
+R1925,Other South Asia,2018,2
+R1926,Other South Asia,2018,6
+R1927,Other South Asia,2018,0
+R1929,Other South Asia,2018,1
+R1930,Other South Asia,2018,0
+R1931,Other South Asia,2018,1
+R1933,Other South Asia,2018,10
+R1935,Other South Asia,2018,10
+R1936,Other South Asia,2018,10
+R1937,Other South Asia,2018,1
+R1938,Other South Asia,2018,10
+R1940,Other South Asia,2018,9
+R1941,Other South Asia,2018,1
+R1942,Other South Asia,2018,3
+R1943,Other South Asia,2017,2
+R1948,Other South Asia,2017,0
+R1950,Other South Asia,2017,2
+R1951,Other South Asia,2017,2
+R1952,Other South Asia,2017,2
+R1953,Other South Asia,2017,2
+R1954,Other South Asia,2017,2
+R1955,Other South Asia,2017,0
+R1957,Other South Asia,2017,2
+R1958,Other South Asia,2017,1
+R1959,Other South Asia,2017,3
+R1960,Other South Asia,2017,2
+R1961,Other South Asia,2017,8
+R1962,Other South Asia,2017,0
+R1964,Other South Asia,2017,6
+R1965,Other South Asia,2017,2
+R1966,Other South Asia,2017,0
+R1968,Other South Asia,2017,1
+R1969,Other South Asia,2017,1
+R1970,Other South Asia,2017,6
+R1974,Other South Asia,2017,10
+R1975,Other South Asia,2017,1
+R1976,Other South Asia,2016,2
+R1977,Other South Asia,2016,2
+R1980,Other South Asia,2016,2
+R1982,Other South Asia,2016,2
+R1984,Other South Asia,2016,2
+R1985,Other South Asia,2016,2
+R1987,Other South Asia,2016,2
+R1989,Other South Asia,2016,2
+R1990,Other South Asia,2016,2
+R1993,Other South Asia,2016,2
+R1995,Other South Asia,2016,6
+R1996,Other South Asia,2016,0
+R1997,Other South Asia,2016,6
+R1998,Other South Asia,2016,8
+R1999,Other South Asia,2016,10
+R2000,Other South Asia,2016,2
+R2001,Other South Asia,2016,1
+R2002,Other South Asia,2016,1
+R2003,Other South Asia,2016,6
+R2004,Other South Asia,2016,10
+R2008,Other South Asia,2015,2
+R2009,Other South Asia,2015,2
+R2010,Other South Asia,2015,2
+R2011,Other South Asia,2015,2
+R2012,Other South Asia,2015,2
+R2013,Other South Asia,2015,2
+R2014,Other South Asia,2015,2
+R2015,Other South Asia,2015,2
+R2016,Other South Asia,2015,2
+R2018,Other South Asia,2015,2
+R2019,Other South Asia,2015,2
+R2020,Other South Asia,2015,2
+R2021,Other South Asia,2015,0
+R2023,Other South Asia,2015,0
+R2024,Other South Asia,2015,9
+R2025,Other South Asia,2015,0
+R2027,Other South Asia,2015,10
+R2028,Other South Asia,2015,11
+R2029,Other South Asia,2015,10
+R2034,Other South Asia,2014,2
+R2036,Other South Asia,2014,10
+R2038,Other South Asia,2014,8
+R2040,Other South Asia,2014,2
+R2041,Other South Asia,2014,2
+R2043,Other South Asia,2014,3
+R2046,Other South Asia,2014,6
+R2048,Other South Asia,2013,2
+R2050,Other South Asia,2013,2
+R2052,Other South Asia,2013,2
+R2053,Other South Asia,2013,2
+R2054,Other South Asia,2013,2
+R2055,Other South Asia,2013,2
+R2056,Other South Asia,2013,2
+R2060,Other South Asia,2013,3
+R2061,Other South Asia,2013,3
+R2062,Other South Asia,2013,0
+R2064,Other South Asia,2013,2
+R2066,Other South Asia,2013,0
+R2068,Other South Asia,2013,3
+R2069,Other South Asia,2013,6
+R2071,Other South Asia,2013,11
+R2072,Other South Asia,2012,2
+R2073,Other South Asia,2012,2
+R2075,Other South Asia,2012,2
+R2077,Other South Asia,2012,6
+R2078,Other South Asia,2012,2
+R2080,Other South Asia,2012,2
+R2084,Other South Asia,2011,2
+R2086,Other South Asia,2011,2
+R2087,Other South Asia,2011,2
+R2089,Other South Asia,2011,9
+R2091,Other South Asia,2011,6
+R2095,Other South Asia,2010,11
+R2096,Other South Asia,2010,11
+R2098,Other South Asia,2010,2
+R2100,Other South Asia,2010,0
+R2101,Other South Asia,2010,0
