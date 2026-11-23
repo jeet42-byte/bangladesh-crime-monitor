@@ -25,7 +25,8 @@ codes = pd.read_csv("charting_abstracts.csv", encoding="utf-8-sig", dtype=str).f
 
 incA = [k for k, v in chartA.items() if v["final_decision"] == "include"]
 tierB = rec[(rec.tier.str.startswith("B") | (rec.tier == "A+B")) & rec.suggestion.isin(["include", "maybe"])].record_id
-tierB = [r for r in tierB if r not in chartA]
+fulltextA = set(pd.read_csv("fulltext_tierA.csv", encoding="utf-8-sig", dtype=str).record_id)   # all Tier A records taken forward
+tierB = [r for r in tierB if r not in fulltextA]
 corpus = rec[rec.record_id.isin(set(incA) | set(tierB))].copy()
 corpus["group"] = np.where(corpus.record_id.isin(incA), "Bangladesh", "Other South Asia")
 corpus["year"] = pd.to_numeric(corpus.year, errors="coerce")
