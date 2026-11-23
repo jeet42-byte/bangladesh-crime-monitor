@@ -97,3 +97,47 @@ def test_discover_uses_topic_gate_and_extra_prefixes():
     found = asyncio.run(run())
     assert queried == ["example.com/news/*", "example.com/tech/*"]
     assert [f["url"] for f in found] == ["https://example.com/tech/hackers-breach-bank-server"]
+
+
+def test_id_dater_interpolates_and_refuses_wide_gaps():
+    from datetime import datetime, timezone
+
+    import backfill
+
+    rows = [
+        {"outlet": "Dhaka Post", "url": "https://www.dhakapost.com/country/1000",
+         "published": "2022-03-01T00:00:00+00:00"},
+        {"outlet": "Dhaka Post", "url": "https://www.dhakapost.com/country/2000",
+         "published": "2022-03-11T00:00:00+00:00"},
+        {"outlet": "Dhaka Post", "url": "https://www.dhakapost.com/country/3000",
+         "published": "2022-09-01T00:00:00+00:00"},
+    ]
+    dater = backfill._IdDater(rows)
+    mid = dater.estimate("Dhaka Post", "https://www.dhakapost.com/country/1500%0A")
+    assert mid == datetime(2022, 3, 6, tzinfo=timezone.utc)
+    assert dater.estimate("Dhaka Post", "https://www.dhakapost.com/country/2500") is None  # gap > 60 days
+    assert dater.estimate("Dhaka Post", "https://www.dhakapost.com/country/900") is None   # no extrapolation
+    assert dater.estimate("Dhaka Post", "https://www.dhakapost.com/country") is None
+
+
+def test_gate_dates_partial_page_by_id():
+    from datetime import datetime, timezone
+
+    import backfill
+
+    backfill._use_topic("cyber")
+    dater = backfill._IdDater([
+        {"outlet": "Dhaka Post", "url": "https://www.dhakapost.com/country/1000",
+         "published": "2022-03-01T00:00:00+00:00"},
+        {"outlet": "Dhaka Post", "url": "https://www.dhakapost.com/country/2000",
+         "published": "2022-03-11T00:00:00+00:00"},
+    ])
+    url = "https://www.dhakapost.com/country/1500"
+    partial = {"url": url, "outlet": "Dhaka Post", "title": "ফেসবুক হ্যাক করে প্রতারণা, গ্রেপ্তার ১",
+               "body": "ফেসবুক আইডি হ্যাক করে টাকা দাবির অভিযোগ। " * 10}
+    kept, rejected = backfill._gate_fetched(
+        [{"url": url}], [{"error": "unparseable: no date", "partial": partial}],
+        datetime(2018, 1, 1, tzinfo=timezone.utc), datetime(2026, 12, 31, tzinfo=timezone.utc), dater,
+    )
+    assert not rejected and kept[0]["date_source"] == "id_interpolated"
+    assert kept[0]["published"].startswith("2022-03-06")

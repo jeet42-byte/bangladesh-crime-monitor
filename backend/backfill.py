@@ -56,6 +56,7 @@ than three months on a broad one.
 from __future__ import annotations
 
 import argparse
+import bisect
 import asyncio
 import json
 import logging
@@ -346,6 +347,7 @@ async def stage_fetch(args: argparse.Namespace) -> int:
 
     floor = datetime.strptime(args.from_date, "%Y%m%d").replace(tzinfo=timezone.utc)
     ceiling = datetime.now(timezone.utc)
+    dater = _IdDater(_read_jsonl(ARTICLES_PATH))
 
     kept_total = 0
     reasons: Dict[str, int] = {}
@@ -367,7 +369,7 @@ async def stage_fetch(args: argparse.Namespace) -> int:
                 ),
                 return_exceptions=True,
             )
-            kept, rejected = _gate_fetched(chunk, results, floor, ceiling)
+            kept, rejected = _gate_fetched(chunk, results, floor, ceiling, dater)
             _append_jsonl(ARTICLES_PATH, kept)
             _append_jsonl(STATE_DIR / "fetch_rejected.jsonl", rejected)
 
@@ -395,11 +397,60 @@ async def stage_fetch(args: argparse.Namespace) -> int:
     return 0
 
 
+class _IdDater:
+    """Publication dates for undated pages of outlets that number articles in
+    publication order, interpolated between the nearest dated articles.
+
+    Used only when a page's own metadata has no date. Never extrapolates, and
+    refuses when the bracketing dated articles are more than
+    ``MAX_GAP_DAYS`` apart, so the estimate is at worst a few weeks off and
+    usually within a day. Records dated this way carry
+    ``date_source = "id_interpolated"`` so the analysis can drop them.
+    """
+
+    MAX_GAP_DAYS = 60
+
+    def __init__(self, articles: List[Dict[str, object]]) -> None:
+        from app.scrapers.archive_harvester import article_id
+
+        self._article_id = article_id
+        self._anchors: Dict[str, List["tuple[int, datetime]"]] = {}
+        for row in articles:
+            if row.get("date_source", "page") != "page":
+                continue
+            self.add(str(row["outlet"]), str(row["url"]),
+                     datetime.fromisoformat(str(row["published"])))
+
+    def add(self, outlet: str, url: str, published: datetime) -> None:
+        number = self._article_id(url)
+        if number is None:
+            return
+        anchors = self._anchors.setdefault(outlet, [])
+        bisect.insort(anchors, (number, published))
+
+    def estimate(self, outlet: str, url: str) -> Optional[datetime]:
+        number = self._article_id(url)
+        anchors = self._anchors.get(outlet, [])
+        if number is None or len(anchors) < 2:
+            return None
+        index = bisect.bisect_left(anchors, (number, datetime.min.replace(tzinfo=timezone.utc)))
+        if index == 0 or index >= len(anchors):
+            return None
+        (low_id, low_date), (high_id, high_date) = anchors[index - 1], anchors[index]
+        if high_date < low_date or (high_date - low_date).days > self.MAX_GAP_DAYS:
+            return None
+        if high_id == low_id:
+            return low_date
+        share = (number - low_id) / (high_id - low_id)
+        return low_date + (high_date - low_date) * share
+
+
 def _gate_fetched(
     chunk: List[Dict[str, object]],
     results: List[object],
     floor: datetime,
     ceiling: datetime,
+    dater: Optional[_IdDater] = None,
 ) -> "tuple[List[Dict[str, object]], List[Dict[str, object]]]":
     kept: List[Dict[str, object]] = []
     rejected: List[Dict[str, object]] = []
@@ -408,12 +459,22 @@ def _gate_fetched(
         if isinstance(result, BaseException) or result is None:
             rejected.append({"url": url, "reason": "unretrievable: exception"})
             continue
+        date_source = "page"
+        if "error" in result and "partial" in result and dater is not None:
+            partial = result["partial"]
+            assert isinstance(partial, dict)
+            estimated = dater.estimate(str(partial["outlet"]), url)
+            if estimated is not None:
+                result = {**partial, "published": estimated}
+                date_source = "id_interpolated"
         if "error" in result:
             rejected.append({"url": url, "reason": str(result["error"])})
             continue
 
         published = result["published"]
         assert isinstance(published, datetime)
+        if dater is not None and date_source == "page":
+            dater.add(str(result["outlet"]), url, published)
 
         # The capture date is not the publication date. Sampled captures from
         # inside the requested window returned articles from 2007-2009, two of
@@ -443,6 +504,7 @@ def _gate_fetched(
                 "title": result["title"],
                 "body": str(result["body"])[:6000],
                 "published": published.isoformat(),
+                "date_source": date_source,
             }
         )
     return kept, rejected
@@ -592,6 +654,7 @@ async def stage_code(args: argparse.Namespace) -> int:
                     "outlet": article["outlet"],
                     "language": language.get(str(article["outlet"]), "unknown"),
                     "published": article["published"],
+                    "date_source": article.get("date_source", "page"),
                     "title": article["title"],
                     "body": article["body"],
                     **record,
@@ -734,30 +797,48 @@ async def stage_probe(args: argparse.Namespace) -> int:
     be fixed from evidence rather than guessed."""
     from app.scrapers.archive_harvester import (
         SNAPSHOT_URL,
+        extract_script_body,
         extract_body,
         extract_published,
         extract_title,
     )
 
-    failed = [
-        r for r in _read_jsonl(STATE_DIR / "fetch_rejected.jsonl")
-        if str(r.get("reason", "")).startswith(("unretrievable", "unparseable"))
-    ]
-    failed_urls = {str(r["url"]) for r in failed}
+    from app.scrapers.archive_harvester import article_id
+
+    # Latest verdict per URL; parse failures first (download failures are
+    # usually the archive throttling, not a page-shape problem), and only
+    # pages with an article id, so section index pages are not sampled.
+    latest = {
+        str(r.get("url")): str(r.get("reason", ""))
+        for r in _read_jsonl(STATE_DIR / "fetch_rejected.jsonl")
+    }
     by_outlet: Dict[str, List[Dict[str, object]]] = {}
     for candidate in _read_jsonl(CANDIDATES_PATH):
-        if candidate["url"] in failed_urls:
-            by_outlet.setdefault(str(candidate["outlet"]), []).append(candidate)
+        reason = latest.get(str(candidate["url"]), "")
+        if reason.startswith(("unretrievable", "unparseable")):
+            by_outlet.setdefault(str(candidate["outlet"]), []).append(
+                {**candidate, "_reason": reason}
+            )
+    for outlet, items in by_outlet.items():
+        with_id = [i for i in items if article_id(str(i["url"])) is not None] or items
+        with_id.sort(key=lambda i: not str(i["_reason"]).startswith("unparseable"))
+        parse_fail = [i for i in with_id if str(i["_reason"]).startswith("unparseable")] or with_id
+        step = max(1, len(parse_fail) // max(1, args.probe_count))
+        by_outlet[outlet] = parse_fail[::step]
 
     sources = {source.outlet: source for source in ARCHIVE_SOURCES}
+    dater = _IdDater(_read_jsonl(ARTICLES_PATH))
+    if args.outlets:
+        wanted = {s.outlet for s in _select_sources(args.outlets)}
+        by_outlet = {k: v for k, v in by_outlet.items() if k in wanted}
     async with httpx.AsyncClient(
         timeout=SNAPSHOT_TIMEOUT, headers={"User-Agent": USER_AGENT}, follow_redirects=True
     ) as client:
         for outlet, items in sorted(by_outlet.items()):
-            print(f"\n=== {outlet}: {len(items)} failed ===")
+            print(f"\n=== {outlet}: sampled {min(len(items), args.probe_count)} failed pages ===")
             for item in items[: args.probe_count]:
                 url = SNAPSHOT_URL.format(timestamp=item["timestamp"], url=item["url"])
-                print(f"- {item['url']}")
+                print(f"- {item['url']}  [{item['_reason']}]")
                 try:
                     response = await client.get(url)
                 except httpx.HTTPError as exc:
@@ -768,13 +849,19 @@ async def stage_probe(args: argparse.Namespace) -> int:
                     continue
                 soup = BeautifulSoup(response.text, "html.parser")
                 published = extract_published(soup)
+                script_body = extract_script_body(soup)
+                next_data = bool(soup.find("script", id="__NEXT_DATA__"))
+                next_f = sum("__next_f" in (t.string or "") for t in soup.find_all("script"))
                 for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
                     tag.decompose()
                 title = extract_title(soup)
                 body = extract_body(soup, sources[outlet].body_selectors)
                 print(f"    title: {title[:70]!r}")
-                print(f"    body via selectors: {len(body)} chars")
-                print(f"    date: {published}")
+                print(f"    body via selectors: {len(body)} chars: {body[:90]!r}")
+                print(f"    body via data script: {len(script_body)} chars: {script_body[:90]!r}"
+                      f"  (__NEXT_DATA__={next_data}, __next_f scripts={next_f})")
+                print(f"    date: {published}  |  estimated from article id: "
+                      f"{dater.estimate(outlet, str(item['url'])) if published is None else '-'}")
                 dates = [
                     f"{m.get('property') or m.get('name') or m.get('itemprop')}={str(m.get('content'))[:25]}"
                     for m in soup.find_all("meta")

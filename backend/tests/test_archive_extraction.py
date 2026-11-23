@@ -3,6 +3,7 @@
 Run from backend/:  python -m pytest tests
 """
 
+import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -66,3 +67,38 @@ def test_jsonld_article_body():
         + '"}</script>'
     )
     assert extract_jsonld_body(soup).startswith("Police arrested")
+
+
+def test_next_data_body_beats_related_headline_strip():
+    from app.scrapers.archive_harvester import extract_script_body
+
+    article = "<p>" + "চাঁপাইনবাবগঞ্জে ফেসবুকে প্রতারণার অভিযোগে একজনকে গ্রেপ্তার করেছে পুলিশ। " * 8 + "</p>"
+    payload = json.dumps({"props": {"pageProps": {"news": {"title": "শিরোনাম", "details": article,
+                                                           "image": "https://x/y.jpg"}}}})
+    soup = _soup(f'<script id="__NEXT_DATA__" type="application/json">{payload}</script>'
+                 '<div>related headline one</div>')
+    text = extract_script_body(soup)
+    assert text.startswith("চাঁপাইনবাবগঞ্জে") and "<p>" not in text and len(text) > 300
+
+
+def test_next_f_stream_body():
+    from app.scrapers.archive_harvester import extract_script_body
+
+    html = "<p>" + "ঢাকায় অনলাইন জুয়ার চক্রের পাঁচ সদস্যকে আটক করেছে র‍্যাব। " * 8 + "</p>"
+    rsc = '5:["$","div",null,{"dangerouslySetInnerHTML":{"__html":' + json.dumps(html) + '}}]'
+    soup = _soup("<script>self.__next_f.push([1," + json.dumps(rsc) + "])</script>")
+    assert "র‍্যাব" in extract_script_body(soup)
+
+
+def test_script_body_ignores_code_and_urls():
+    from app.scrapers.archive_harvester import extract_script_body
+
+    junk = json.dumps({"a": "https://cdn.example.com/" + "x/" * 200, "css": ".a{b:c}" * 80})
+    assert extract_script_body(_soup(f'<script id="__NEXT_DATA__">{junk}</script>')) == ""
+
+
+def test_article_id():
+    from app.scrapers.archive_harvester import article_id
+
+    assert article_id("https://www.dhakapost.com/country/107546%0A") == 107546
+    assert article_id("https://www.dhakapost.com/country") is None

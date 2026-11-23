@@ -34,6 +34,7 @@ import asyncio
 import json
 import logging
 import re
+import unicodedata
 from datetime import datetime, timezone
 from typing import Callable, Dict, Iterable, List, Optional, Sequence
 
@@ -83,6 +84,7 @@ class ArchiveSource:
         body_selectors: Sequence[str] = (),
         path_prefixes: Sequence[str] = ("*",),
         slug_filterable: bool = True,
+        id_dated: bool = False,
     ) -> None:
         self.outlet = outlet
         self.host = host
@@ -100,6 +102,11 @@ class ArchiveSource:
         # made the first run fetch hundreds of 2007-2009 "news-detail-100003"
         # pages that no slug rule could have distinguished.
         self.slug_filterable = slug_filterable
+        # True when article ids are issued in publication order, so a page
+        # whose own metadata carries no date can be dated from the dated
+        # articles either side of it (see backfill._IdDater). Checked on
+        # Dhaka Post: 272 dated articles, ids strictly increasing with date.
+        self.id_dated = id_dated
 
     def __repr__(self) -> str:  # pragma: no cover
         return f"<ArchiveSource {self.outlet}>"
@@ -155,6 +162,7 @@ ARCHIVE_SOURCES: List[ArchiveSource] = [
         slug_filterable=False,
         path_prefixes=("country/*", "national/*", "law-courts/*", "economy/*"),
         body_selectors=("div.news-details", "article"),
+        id_dated=True,
     ),
     ArchiveSource(
         "Risingbd",
@@ -414,6 +422,85 @@ def extract_jsonld_body(soup: BeautifulSoup) -> str:
     return ""
 
 
+_ARTICLE_ID_RE = re.compile(r"/(\d{4,})(?:%0A|%0D|%20)*/?$", re.IGNORECASE)
+
+
+def article_id(url: str) -> Optional[int]:
+    """Trailing numeric article id of a URL, if it has one."""
+    match = _ARTICLE_ID_RE.search(url.split("?")[0])
+    return int(match.group(1)) if match else None
+
+
+_NEXT_F_RE = re.compile(r'self\.__next_f\.push\(\[1,\s*"((?:[^"\\]|\\.)*)"\]\)')
+_LONG_JSON_STRING_RE = re.compile(r'"((?:[^"\\]|\\.){300,})"')
+
+
+def _prose(value: str) -> str:
+    """Plain text of a string if it reads like article prose, else ''."""
+    if "<" in value and ">" in value:
+        value = BeautifulSoup(value, "html.parser").get_text(" ")
+    value = re.sub(r"\s+", " ", value).strip()
+    if len(value) < 300 or value.startswith(("http", "data:", "{", "[")):
+        return ""
+    # Letters, spaces and combining marks: Bangla vowel signs (া ি ্ ...) are
+    # category M, not alphabetic, and are a third of a Bangla sentence.
+    wordy = sum(
+        1 for ch in value
+        if ch.isalpha() or ch.isspace() or unicodedata.category(ch)[0] == "M"
+    )
+    # Code, CSS, base64 and URL lists score well below this; prose ~0.9.
+    return value if wordy / len(value) > 0.8 and value.count(" ") > 40 else ""
+
+
+def extract_script_body(soup: BeautifulSoup) -> str:
+    """Article text from framework data scripts, for client-rendered pages.
+
+    Newer Dhaka Post pages are built with Next.js: the HTML holds only the
+    headline and related-story furniture, and the article itself travels in
+    ``__NEXT_DATA__`` or the ``self.__next_f`` stream. Returns the longest
+    prose string found there, or ''.
+    """
+    strings: List[str] = []
+    node = soup.find("script", id="__NEXT_DATA__")
+    if node and node.string:
+        try:
+            stack: List[object] = [json.loads(node.string)]
+        except json.JSONDecodeError:
+            stack = []
+        while stack:
+            value = stack.pop()
+            if isinstance(value, dict):
+                stack.extend(value.values())
+            elif isinstance(value, list):
+                stack.extend(value)
+            elif isinstance(value, str) and len(value) >= 300:
+                strings.append(value)
+
+    stream = []
+    for script in soup.find_all("script"):
+        text = script.string or ""
+        if "__next_f" not in text:
+            continue
+        for match in _NEXT_F_RE.finditer(text):
+            try:
+                stream.append(json.loads('"' + match.group(1) + '"'))
+            except json.JSONDecodeError:
+                continue
+    joined = "".join(stream)
+    for match in _LONG_JSON_STRING_RE.finditer(joined):
+        try:
+            strings.append(json.loads('"' + match.group(1) + '"'))
+        except json.JSONDecodeError:
+            strings.append(match.group(1))
+
+    best = ""
+    for value in strings:
+        text = _prose(value)
+        if len(text) > len(best):
+            best = text
+    return best
+
+
 _BN_DIGITS = str.maketrans("০১২৩৪৫৬৭৮৯", "0123456789")
 _MONTHS_BY_NAME = {
     "জানুয়ারি": 1, "ফেব্রুয়ারি": 2, "মার্চ": 3, "এপ্রিল": 4, "মে": 5, "জুন": 6,
@@ -580,6 +667,7 @@ async def fetch_snapshot(
     # most of 75,000 pages.
     published = extract_published(soup)
     ld_body = extract_jsonld_body(soup)
+    script_body = extract_script_body(soup)
     for tag in soup(["script", "style", "nav", "footer", "header", "aside"]):
         tag.decompose()
 
@@ -587,6 +675,11 @@ async def fetch_snapshot(
     body = extract_body(soup, source.body_selectors)
     if len(body) < 200 and ld_body:
         body = ld_body
+    # On client-rendered pages the HTML "body" is a strip of related
+    # headlines (29 of the first 272 Dhaka Post articles); the real text is
+    # in the data script and is much longer.
+    if script_body and len(script_body) > 1.5 * len(body):
+        body = script_body
 
     missing = [
         name
@@ -594,7 +687,16 @@ async def fetch_snapshot(
         if not ok
     ]
     if missing:
-        return {"error": "unparseable: no " + "/".join(missing)}
+        failure: Dict[str, object] = {"error": "unparseable: no " + "/".join(missing)}
+        if missing == ["date"] and source.id_dated:
+            # Only the date is missing: the caller may date it by article id.
+            failure["partial"] = {
+                "url": candidate["url"],
+                "title": title,
+                "body": body,
+                "outlet": source.outlet,
+            }
+        return failure
 
     return {
         "url": candidate["url"],
