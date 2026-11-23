@@ -1,0 +1,21 @@
+record_id,stratum,first
+R0455,clear exclude,exclude
+R0537,clear include,include
+R0418,clear include,include
+R0232,borderline,include
+R0783,clear include,include
+R0087,borderline,exclude
+R1439,clear include,include
+R1525,clear include,include
+R0472,clear exclude,exclude
+R0100,clear exclude,exclude
+R2016,clear include,include
+R0082,clear exclude,exclude
+R1745,borderline,exclude
+R0392,borderline,include
+R0231,clear exclude,exclude
+R1315,clear include,include
+R0327,clear include,include
+R1912,clear include,include
+R0619,clear include,include
+R0051,clear exclude,exclude
