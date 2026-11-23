@@ -65,6 +65,23 @@ for line in [
 ]:
     ins.append([line])
 ins.column_dimensions["A"].width = 140
+for line in ["", "WHEN FINISHED: fill in the 'Declaration' sheet, save the file as second_reviewer_check_<YourName>_<date>.xlsx",
+             "and email it back. Do not change any answers after sending."]:
+    ins.append([line])
+
+dec = wb.create_sheet("Declaration")
+dec.append(["SECOND-REVIEWER DECLARATION"]); dec["A1"].font = Font(bold=True)
+for lab in ["Full name", "Affiliation / institution", "Highest degree / field", "Email", "Date started", "Date completed"]:
+    dec.append([lab, ""]); dec.cell(dec.max_row, 2).fill = YF
+dec.append([])
+dec.append(["Please confirm each statement (type YES):"])
+for st in ["I made all screening decisions in sheet 1 independently, without seeing the first reviewer's decisions.",
+           "I did not open the hidden 'key' sheet before completing sheet 1.",
+           "I checked the codes in sheets 2 and 3 against the paper / abstract myself.",
+           "I did not receive any instruction about which answers to give.",
+           "I agree that this completed file may be archived publicly (OSF) as supplementary material."]:
+    dec.append([st, ""]); dec.cell(dec.max_row, 2).fill = YF
+dec.column_dimensions["A"].width = 100; dec.column_dimensions["B"].width = 35
 
 dv_ie = DataValidation(type="list", formula1='"include,exclude"', allow_blank=True)
 dv_yn = DataValidation(type="list", formula1='"Y,N"', allow_blank=True)
