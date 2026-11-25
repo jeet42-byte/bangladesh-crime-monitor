@@ -141,3 +141,23 @@ def test_gate_dates_partial_page_by_id():
     )
     assert not rejected and kept[0]["date_source"] == "id_interpolated"
     assert kept[0]["published"].startswith("2022-03-06")
+
+
+def test_off_topic_dated_page_becomes_anchor():
+    from datetime import datetime, timezone
+
+    import backfill
+
+    backfill._use_topic("cyber")
+    dater = backfill._IdDater([])
+    url = "https://www.dhakapost.com/country/1200"
+    page = {"url": url, "outlet": "Dhaka Post", "title": "ফেরি চলাচল বন্ধ থাকবে দিনের বেলায়",
+            "body": "করোনা বিস্তার রোধে ফেরি চলাচল সীমিত করা হয়েছে। " * 10,
+            "published": datetime(2021, 5, 7, tzinfo=timezone.utc)}
+    kept, rejected = backfill._gate_fetched(
+        [{"url": url}], [page],
+        datetime(2018, 1, 1, tzinfo=timezone.utc), datetime(2026, 12, 31, tzinfo=timezone.utc), dater,
+    )
+    assert not kept and rejected[0]["reason"] == "not cyber-relevant"
+    assert dater.pop_new() == [{"outlet": "Dhaka Post", "url": url, "published": "2021-05-07T00:00:00+00:00"}]
+    assert dater.pop_new() == []

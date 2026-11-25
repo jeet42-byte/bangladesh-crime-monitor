@@ -347,7 +347,7 @@ async def stage_fetch(args: argparse.Namespace) -> int:
 
     floor = datetime.strptime(args.from_date, "%Y%m%d").replace(tzinfo=timezone.utc)
     ceiling = datetime.now(timezone.utc)
-    dater = _IdDater(_read_jsonl(ARTICLES_PATH))
+    dater = _IdDater(_read_jsonl(ARTICLES_PATH) + _read_jsonl(STATE_DIR / ANCHORS_FILE))
 
     kept_total = 0
     reasons: Dict[str, int] = {}
@@ -372,6 +372,9 @@ async def stage_fetch(args: argparse.Namespace) -> int:
             kept, rejected = _gate_fetched(chunk, results, floor, ceiling, dater)
             _append_jsonl(ARTICLES_PATH, kept)
             _append_jsonl(STATE_DIR / "fetch_rejected.jsonl", rejected)
+            # Every dated page is an anchor for id dating, including the
+            # off-topic ones that are otherwise discarded.
+            _append_jsonl(STATE_DIR / ANCHORS_FILE, dater.pop_new())
 
             kept_total += len(kept)
             # Group by kind, not by the individual date - otherwise every
@@ -397,6 +400,10 @@ async def stage_fetch(args: argparse.Namespace) -> int:
     return 0
 
 
+#: Dated (outlet, url) pairs seen during fetch, kept for id-based dating.
+ANCHORS_FILE = "dated_ids.jsonl"
+
+
 class _IdDater:
     """Publication dates for undated pages of outlets that number articles in
     publication order, interpolated between the nearest dated articles.
@@ -415,18 +422,26 @@ class _IdDater:
 
         self._article_id = article_id
         self._anchors: Dict[str, List["tuple[int, datetime]"]] = {}
+        #: Anchors learnt this run, for the caller to persist (ANCHORS_PATH).
+        self.new: List[Dict[str, object]] = []
         for row in articles:
             if row.get("date_source", "page") != "page":
                 continue
             self.add(str(row["outlet"]), str(row["url"]),
-                     datetime.fromisoformat(str(row["published"])))
+                     datetime.fromisoformat(str(row["published"])), record=False)
 
-    def add(self, outlet: str, url: str, published: datetime) -> None:
+    def add(self, outlet: str, url: str, published: datetime, record: bool = True) -> None:
         number = self._article_id(url)
         if number is None:
             return
         anchors = self._anchors.setdefault(outlet, [])
         bisect.insort(anchors, (number, published))
+        if record:
+            self.new.append({"outlet": outlet, "url": url, "published": published.isoformat()})
+
+    def pop_new(self) -> List[Dict[str, object]]:
+        rows, self.new = self.new, []
+        return rows
 
     def estimate(self, outlet: str, url: str) -> Optional[datetime]:
         number = self._article_id(url)
@@ -827,7 +842,7 @@ async def stage_probe(args: argparse.Namespace) -> int:
         by_outlet[outlet] = parse_fail[::step]
 
     sources = {source.outlet: source for source in ARCHIVE_SOURCES}
-    dater = _IdDater(_read_jsonl(ARTICLES_PATH))
+    dater = _IdDater(_read_jsonl(ARTICLES_PATH) + _read_jsonl(STATE_DIR / ANCHORS_FILE))
     if args.outlets:
         wanted = {s.outlet for s in _select_sources(args.outlets)}
         by_outlet = {k: v for k, v in by_outlet.items() if k in wanted}
