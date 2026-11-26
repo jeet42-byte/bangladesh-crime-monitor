@@ -1,0 +1,76 @@
+institution,sector,subtype,ownership,candidate_domain,notes
+Bangladesh Bank,FIN-BANK,central bank,public,bb.org.bd,
+Sonali Bank PLC,FIN-BANK,state-owned commercial,public,sonalibank.com.bd,
+Janata Bank PLC,FIN-BANK,state-owned commercial,public,jb.com.bd,
+Agrani Bank PLC,FIN-BANK,state-owned commercial,public,agranibank.org,
+Rupali Bank PLC,FIN-BANK,state-owned commercial,public,rupalibank.com.bd,
+BASIC Bank Limited,FIN-BANK,state-owned commercial,public,basicbanklimited.com,
+Bangladesh Development Bank PLC,FIN-BANK,state-owned commercial,public,bdbl.com.bd,
+Bangladesh Krishi Bank,FIN-BANK,specialised,public,krishibank.org.bd,
+Rajshahi Krishi Unnayan Bank,FIN-BANK,specialised,public,rakub.org.bd,
+Probashi Kallyan Bank,FIN-BANK,specialised,public,pkb.gov.bd,
+AB Bank PLC,FIN-BANK,private commercial,private,abbl.com,
+Bangladesh Commerce Bank,FIN-BANK,private commercial,private,bcblbd.com,
+Bank Asia PLC,FIN-BANK,private commercial,private,bankasia-bd.com,
+Bengal Commercial Bank PLC,FIN-BANK,private commercial,private,bcb.com.bd,domain uncertain
+BRAC Bank PLC,FIN-BANK,private commercial,private,bracbank.com,
+Citizens Bank PLC,FIN-BANK,private commercial,private,citizensbankbd.com,domain uncertain
+The City Bank PLC,FIN-BANK,private commercial,private,thecitybank.com,
+Community Bank Bangladesh PLC,FIN-BANK,private commercial,private,communitybankbd.com,
+Dhaka Bank PLC,FIN-BANK,private commercial,private,dhakabankltd.com,
+Dutch-Bangla Bank PLC,FIN-BANK,private commercial,private,dutchbanglabank.com,
+Eastern Bank PLC,FIN-BANK,private commercial,private,ebl.com.bd,
+IFIC Bank PLC,FIN-BANK,private commercial,private,ificbank.com.bd,
+Jamuna Bank PLC,FIN-BANK,private commercial,private,jamunabankbd.com,
+Meghna Bank PLC,FIN-BANK,private commercial,private,meghnabank.com.bd,
+Mercantile Bank PLC,FIN-BANK,private commercial,private,mblbd.com,
+Midland Bank PLC,FIN-BANK,private commercial,private,midlandbankbd.net,
+Modhumoti Bank PLC,FIN-BANK,private commercial,private,modhumotibank.com,
+Mutual Trust Bank PLC,FIN-BANK,private commercial,private,mutualtrustbank.com,
+National Bank PLC,FIN-BANK,private commercial,private,nblbd.com,
+NCC Bank PLC,FIN-BANK,private commercial,private,nccbank.com.bd,
+NRB Bank PLC,FIN-BANK,private commercial,private,nrbbankbd.com,
+NRBC Bank PLC,FIN-BANK,private commercial,private,nrbcommercialbank.com,
+One Bank PLC,FIN-BANK,private commercial,private,onebank.com.bd,
+Padma Bank PLC,FIN-BANK,private commercial,private,padmabankbd.com,
+The Premier Bank PLC,FIN-BANK,private commercial,private,premierbankltd.com,
+Prime Bank PLC,FIN-BANK,private commercial,private,primebank.com.bd,
+Pubali Bank PLC,FIN-BANK,private commercial,private,pubalibangla.com,
+Shimanto Bank PLC,FIN-BANK,private commercial,private,shimantobank.com,
+Southeast Bank PLC,FIN-BANK,private commercial,private,southeastbank.com.bd,
+Trust Bank PLC,FIN-BANK,private commercial,private,tblbd.com,
+United Commercial Bank PLC,FIN-BANK,private commercial,private,ucb.com.bd,
+Uttara Bank PLC,FIN-BANK,private commercial,private,uttarabank-bd.com,
+Islami Bank Bangladesh PLC,FIN-BANK,Islamic,private,islamibankbd.com,
+Al-Arafah Islami Bank PLC,FIN-BANK,Islamic,private,al-arafahbank.com,
+EXIM Bank PLC,FIN-BANK,Islamic,private,eximbankbd.com,CHECK 2025 merger into consolidated Islamic bank
+First Security Islami Bank PLC,FIN-BANK,Islamic,private,fsiblbd.com,CHECK 2025 merger
+Global Islami Bank PLC,FIN-BANK,Islamic,private,globalislamibankbd.com,CHECK 2025 merger
+Social Islami Bank PLC,FIN-BANK,Islamic,private,siblbd.com,CHECK 2025 merger
+Union Bank PLC,FIN-BANK,Islamic,private,unionbank.com.bd,CHECK 2025 merger
+ICB Islamic Bank PLC,FIN-BANK,Islamic,private,icbislamic-bank.com,
+Shahjalal Islami Bank PLC,FIN-BANK,Islamic,private,sjiblbd.com,
+Standard Bank PLC,FIN-BANK,Islamic,private,standardbankbd.com,
+Bank Alfalah (Bangladesh),FIN-BANK,foreign,foreign,bankalfalah.com,global domain; check for a BD-specific domain
+Citibank N.A. (Bangladesh),FIN-BANK,foreign,foreign,citibank.com,global domain
+Commercial Bank of Ceylon (Bangladesh),FIN-BANK,foreign,foreign,combank.net.bd,
+Habib Bank Limited (Bangladesh),FIN-BANK,foreign,foreign,hbl.com,global domain
+HSBC Bangladesh,FIN-BANK,foreign,foreign,hsbc.com.bd,
+National Bank of Pakistan (Bangladesh),FIN-BANK,foreign,foreign,nbp.com.pk,global domain
+Standard Chartered Bangladesh,FIN-BANK,foreign,foreign,sc.com,global domain (sc.com/bd)
+State Bank of India (Bangladesh),FIN-BANK,foreign,foreign,sbi.co.in,global domain; check BD domain
+Woori Bank (Bangladesh),FIN-BANK,foreign,foreign,wooribank.com,global domain
+bKash Limited,FIN-MFS,MFS,private,bkash.com,
+Nagad,FIN-MFS,MFS,public-private,nagad.com.bd,ownership under review (Bangladesh Post / administrator); CHECK
+Rocket (Dutch-Bangla Bank),FIN-MFS,MFS,private,dutchbanglabank.com,shares bank domain; counted once
+Upay (UCB Fintech),FIN-MFS,MFS,private,upaybd.com,
+mCash (Islami Bank),FIN-MFS,MFS,private,islamibankbd.com,shares bank domain; counted once
+SureCash,FIN-MFS,MFS/PSP,private,surecash.net,
+Tap (Trust Axiata Pay),FIN-MFS,MFS,private,tap.com.bd,domain uncertain
+OK Wallet (ONE Bank),FIN-MFS,MFS,private,okwallet.com.bd,domain uncertain
+MYCash (Mercantile Bank),FIN-MFS,MFS,private,mycash.com.bd,domain uncertain
+SSLCOMMERZ,FIN-MFS,PSP,private,sslcommerz.com,
+aamarPay,FIN-MFS,PSP,private,aamarpay.com,
+ShurjoPay,FIN-MFS,PSP,private,shurjopay.com.bd,
+Pathao Pay,FIN-MFS,PSP,private,pathao.com,shares platform domain
+Portwallet,FIN-MFS,PSP,private,portwallet.com,domain uncertain
