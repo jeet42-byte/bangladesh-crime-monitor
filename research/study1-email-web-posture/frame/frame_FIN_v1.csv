@@ -1,0 +1,76 @@
+institution,sector,subtype,ownership,candidate_domain,notes,verification,verification_note,analysis_group
+Bangladesh Bank,FIN-BANK,central bank,public,bb.org.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Sonali Bank PLC,FIN-BANK,state-owned commercial,public,sonalibank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Janata Bank PLC,FIN-BANK,state-owned commercial,public,jb.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Agrani Bank PLC,FIN-BANK,state-owned commercial,public,agranibank.org,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Rupali Bank PLC,FIN-BANK,state-owned commercial,public,rupalibank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+BASIC Bank Limited,FIN-BANK,state-owned commercial,public,basicbanklimited.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Bangladesh Development Bank PLC,FIN-BANK,state-owned commercial,public,bdbl.com.bd,,browser-checked 2026-11-26,browser: opens over http only; https fails,domestic
+Bangladesh Krishi Bank,FIN-BANK,specialised,public,krishibank.gov.bd,,browser-checked 2026-11-26,corrected; old krishibank.org.bd still answers with 503 (legacy domain),domestic
+Rajshahi Krishi Unnayan Bank,FIN-BANK,specialised,public,rakub.org.bd,,browser-checked 2026-11-26,"browser: opens (https, www); script failure was transient",domestic
+Probashi Kallyan Bank,FIN-BANK,specialised,public,pkb.gov.bd,,browser-checked 2026-11-26,browser: opens at https://pkb.gov.bd; www. has invalid certificate,domestic
+AB Bank PLC,FIN-BANK,private commercial,private,abbl.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Bangladesh Commerce Bank,FIN-BANK,private commercial,private,bcblbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Bank Asia PLC,FIN-BANK,private commercial,private,bankasia-bd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Bengal Commercial Bank PLC,FIN-BANK,private commercial,private,bgcb.com.bd,domain uncertain,browser-checked 2026-11-26,corrected; site behind F5 firewall (403 to scripts),domestic
+BRAC Bank PLC,FIN-BANK,private commercial,private,bracbank.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Citizens Bank PLC,FIN-BANK,private commercial,private,citizensbankbd.com,domain uncertain,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+The City Bank PLC,FIN-BANK,private commercial,private,thecitybank.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Community Bank Bangladesh PLC,FIN-BANK,private commercial,private,communitybankbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Dhaka Bank PLC,FIN-BANK,private commercial,private,dhakabankltd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Dutch-Bangla Bank PLC,FIN-BANK,private commercial,private,dutchbanglabank.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Eastern Bank PLC,FIN-BANK,private commercial,private,ebl.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+IFIC Bank PLC,FIN-BANK,private commercial,private,ificbank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Jamuna Bank PLC,FIN-BANK,private commercial,private,jamunabankbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Meghna Bank PLC,FIN-BANK,private commercial,private,meghnabank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Mercantile Bank PLC,FIN-BANK,private commercial,private,mblbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Midland Bank PLC,FIN-BANK,private commercial,private,midlandbankbd.net,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Modhumoti Bank PLC,FIN-BANK,private commercial,private,modhumotibankplc.com,,browser-checked 2026-11-26,"corrected; OLD DOMAIN modhumotibank.com IS LISTED FOR SALE (lapsed-domain risk, case observation)",domestic
+Mutual Trust Bank PLC,FIN-BANK,private commercial,private,mutualtrustbank.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+National Bank PLC,FIN-BANK,private commercial,private,nblbd.com,,browser-checked 2026-11-26,browser: opens; script timeout was transient,domestic
+NCC Bank PLC,FIN-BANK,private commercial,private,nccbank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+NRB Bank PLC,FIN-BANK,private commercial,private,nrbbankbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+NRBC Bank PLC,FIN-BANK,private commercial,private,nrbcommercialbank.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+One Bank PLC,FIN-BANK,private commercial,private,onebank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Padma Bank PLC,FIN-BANK,private commercial,private,padmabankbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+The Premier Bank PLC,FIN-BANK,private commercial,private,premierbankltd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Prime Bank PLC,FIN-BANK,private commercial,private,primebank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Pubali Bank PLC,FIN-BANK,private commercial,private,pubalibangla.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Shimanto Bank PLC,FIN-BANK,private commercial,private,shimantobank.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Southeast Bank PLC,FIN-BANK,private commercial,private,southeastbank.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Trust Bank PLC,FIN-BANK,private commercial,private,tblbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+United Commercial Bank PLC,FIN-BANK,private commercial,private,ucb.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Uttara Bank PLC,FIN-BANK,private commercial,private,uttarabank-bd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Islami Bank Bangladesh PLC,FIN-BANK,Islamic,private,islamibankbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Al-Arafah Islami Bank PLC,FIN-BANK,Islamic,private,aibl.com.bd,,browser-checked 2026-11-26,corrected (old domain no longer serves),domestic
+EXIM Bank PLC,FIN-BANK,Islamic,private,eximbankbd.com,CHECK 2025 merger into consolidated Islamic bank,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+First Security Islami Bank PLC,FIN-BANK,Islamic,private,fsiblbd.com,CHECK 2025 merger,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Global Islami Bank PLC,FIN-BANK,Islamic,private,globalislamibankbd.com,CHECK 2025 merger,browser-checked 2026-11-26,browser: opens only after certificate warning (invalid cert),domestic
+Social Islami Bank PLC,FIN-BANK,Islamic,private,siblbd.com,CHECK 2025 merger,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Union Bank PLC,FIN-BANK,Islamic,private,unionbank.com.bd,CHECK 2025 merger,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+ICB Islamic Bank PLC,FIN-BANK,Islamic,private,icbislamic-bd.com,,browser-checked 2026-11-26,corrected,domestic
+Shahjalal Islami Bank PLC,FIN-BANK,Islamic,private,sjiblbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Standard Bank PLC,FIN-BANK,Islamic,private,standardbankbd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Bank Alfalah (Bangladesh),FIN-BANK,foreign,foreign,bankalfalah.com,global domain; check for a BD-specific domain,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+Citibank N.A. (Bangladesh),FIN-BANK,foreign,foreign,citibank.com,global domain,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+Commercial Bank of Ceylon (Bangladesh),FIN-BANK,foreign,foreign,combank.net.bd,,browser-checked 2026-11-26,browser: opens; page has no title,foreign (separate group; global HQ domain unless BD domain exists)
+Habib Bank Limited (Bangladesh),FIN-BANK,foreign,foreign,hbl.com,global domain,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+HSBC Bangladesh,FIN-BANK,foreign,foreign,hsbc.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+National Bank of Pakistan (Bangladesh),FIN-BANK,foreign,foreign,nbp.com.pk,global domain,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+Standard Chartered Bangladesh,FIN-BANK,foreign,foreign,sc.com,global domain (sc.com/bd),script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+State Bank of India (Bangladesh),FIN-BANK,foreign,foreign,sbi.co.in,global domain; check BD domain,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+Woori Bank (Bangladesh),FIN-BANK,foreign,foreign,wooribank.com,global domain,script-checked 2026-11-26 (title matched or bot-check page),,foreign (separate group; global HQ domain unless BD domain exists)
+bKash Limited,FIN-MFS,MFS,private,bkash.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Nagad,FIN-MFS,MFS,public-private,nagad.com.bd,ownership under review (Bangladesh Post / administrator); CHECK,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Rocket (Dutch-Bangla Bank),FIN-MFS,MFS,private,dutchbanglabank.com,shares bank domain; counted once,script-checked 2026-11-26 (title matched or bot-check page),,duplicate of parent domain; counted once
+Upay (UCB Fintech),FIN-MFS,MFS,private,upaybd.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+mCash (Islami Bank),FIN-MFS,MFS,private,islamibankbd.com,shares bank domain; counted once,script-checked 2026-11-26 (title matched or bot-check page),,duplicate of parent domain; counted once
+SureCash,FIN-MFS,MFS/PSP,private,surecash.net,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Tap (Trust Axiata Pay),FIN-MFS,MFS,private,tapbd.com,domain uncertain,browser-checked 2026-11-26,corrected,domestic
+OK Wallet (ONE Bank),FIN-MFS,MFS,private,okwallet.com.bd,domain uncertain,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+MYCash (Mercantile Bank),FIN-MFS,MFS,private,mycashmbl.com,domain uncertain,browser-checked 2026-11-26,corrected,domestic
+SSLCOMMERZ,FIN-MFS,PSP,private,sslcommerz.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+aamarPay,FIN-MFS,PSP,private,aamarpay.com,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+ShurjoPay,FIN-MFS,PSP,private,shurjopay.com.bd,,script-checked 2026-11-26 (title matched or bot-check page),,domestic
+Pathao Pay,FIN-MFS,PSP,private,pathao.com,shares platform domain,script-checked 2026-11-26 (title matched or bot-check page),,duplicate of parent domain; counted once
+Portwallet,FIN-MFS,PSP,private,portwallet.com,domain uncertain,script-checked 2026-11-26 (title matched or bot-check page),,domestic
