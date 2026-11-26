@@ -1,0 +1,89 @@
+institution,sector,subtype,ownership,candidate_domain,notes,verification,verification_note,web_host,analysis_group
+National portal (bangladesh.gov.bd),GOV-MIN,portal,public,bangladesh.gov.bd,,script-checked 2026-11-26,,bangladesh.gov.bd,domestic
+President's Office (Bangabhaban),GOV-MIN,office,public,bangabhaban.gov.bd,,script-checked 2026-11-26,,bangabhaban.gov.bd,domestic
+Prime Minister's / Chief Adviser's Office,GOV-MIN,office,public,pmo.gov.bd,CHECK current name/domain under interim government,script-checked 2026-11-26,,pmo.gov.bd,domestic
+Cabinet Division,GOV-MIN,division,public,cabinet.gov.bd,,script-checked 2026-11-26,,cabinet.gov.bd,domestic
+Bangladesh Parliament Secretariat,GOV-MIN,office,public,parliament.gov.bd,,script-checked 2026-11-26,"script DNS failure on first run was transient; title ""Bangladesh Parliament""",parliament.gov.bd,domestic
+Finance Division,GOV-MIN,division,public,mof.gov.bd,,script-checked 2026-11-26,,mof.gov.bd,domestic
+Internal Resources Division,GOV-MIN,division,public,ird.gov.bd,,script-checked 2026-11-26,,ird.gov.bd,domestic
+Economic Relations Division,GOV-MIN,division,public,erd.gov.bd,,script-checked 2026-11-26,,erd.gov.bd,domestic
+Financial Institutions Division,GOV-MIN,division,public,fid.gov.bd,,script-checked 2026-11-26,,fid.gov.bd,domestic
+Ministry of Foreign Affairs,GOV-MIN,ministry,public,mofa.gov.bd,,script-checked 2026-11-26,,mofa.gov.bd,domestic
+Public Security Division (Home),GOV-MIN,division,public,mhapsd.gov.bd,,script-checked 2026-11-26,,mhapsd.gov.bd,domestic
+Security Services Division (Home),GOV-MIN,division,public,ssd.gov.bd,,script-checked 2026-11-26,,ssd.gov.bd,domestic
+Law and Justice Division,GOV-MIN,division,public,lawjusticediv.gov.bd,,script-checked 2026-11-26,,lawjusticediv.gov.bd,domestic
+Legislative and Parliamentary Affairs Division,GOV-MIN,division,public,legislativediv.gov.bd,,script-checked 2026-11-26,,legislativediv.gov.bd,domestic
+Planning Division,GOV-MIN,division,public,plandiv.gov.bd,,script-checked 2026-11-26,,plandiv.gov.bd,domestic
+Implementation Monitoring and Evaluation Division,GOV-MIN,division,public,imed.gov.bd,,script-checked 2026-11-26,,imed.gov.bd,domestic
+Statistics and Informatics Division,GOV-MIN,division,public,sid.gov.bd,,script-checked 2026-11-26,,sid.gov.bd,domestic
+Posts and Telecommunications Division,GOV-MIN,division,public,ptd.gov.bd,,script-checked 2026-11-26,,ptd.gov.bd,domestic
+ICT Division,GOV-MIN,division,public,ictd.gov.bd,,script-checked 2026-11-26,,ictd.gov.bd,domestic
+Secondary and Higher Education Division,GOV-MIN,division,public,shed.gov.bd,,script-checked 2026-11-26,,shed.gov.bd,domestic
+Technical and Madrasah Education Division,GOV-MIN,division,public,tmed.gov.bd,,script-checked 2026-11-26,,tmed.gov.bd,domestic
+Ministry of Primary and Mass Education,GOV-MIN,ministry,public,mopme.gov.bd,,script-checked 2026-11-26,,mopme.gov.bd,domestic
+Health Services Division,GOV-MIN,division,public,hsd.gov.bd,,script-checked 2026-11-26,,hsd.gov.bd,domestic
+Medical Education and Family Welfare Division,GOV-MIN,division,public,mefwd.gov.bd,,script-checked 2026-11-26,,mefwd.gov.bd,domestic
+Ministry of Commerce,GOV-MIN,ministry,public,mincom.gov.bd,,script-checked 2026-11-26,,mincom.gov.bd,domestic
+Ministry of Industries,GOV-MIN,ministry,public,moind.gov.bd,,script-checked 2026-11-26,,moind.gov.bd,domestic
+Ministry of Agriculture,GOV-MIN,ministry,public,moa.gov.bd,,script-checked 2026-11-26,,moa.gov.bd,domestic
+Ministry of Fisheries and Livestock,GOV-MIN,ministry,public,mofl.gov.bd,,script-checked 2026-11-26,,mofl.gov.bd,domestic
+Ministry of Food,GOV-MIN,ministry,public,mofood.gov.bd,,script-checked 2026-11-26,,mofood.gov.bd,domestic
+Ministry of Disaster Management and Relief,GOV-MIN,ministry,public,modmr.gov.bd,,script-checked 2026-11-26,,modmr.gov.bd,domestic
+"Ministry of Environment, Forest and Climate Change",GOV-MIN,ministry,public,moef.gov.bd,,script-checked 2026-11-26,,moef.gov.bd,domestic
+Ministry of Water Resources,GOV-MIN,ministry,public,mowr.gov.bd,,script-checked 2026-11-26,,mowr.gov.bd,domestic
+Ministry of Land,GOV-MIN,ministry,public,minland.gov.bd,,script-checked 2026-11-26,,minland.gov.bd,domestic
+Local Government Division,GOV-MIN,division,public,lgd.gov.bd,,script-checked 2026-11-26,,lgd.gov.bd,domestic
+Rural Development and Cooperatives Division,GOV-MIN,division,public,rdcd.gov.bd,,script-checked 2026-11-26,,rdcd.gov.bd,domestic
+Power Division,GOV-MIN,division,public,powerdivision.gov.bd,,script-checked 2026-11-26,,powerdivision.gov.bd,domestic
+Energy and Mineral Resources Division,GOV-MIN,division,public,emrd.gov.bd,,script-checked 2026-11-26,,emrd.gov.bd,domestic
+Road Transport and Highways Division,GOV-MIN,division,public,rthd.gov.bd,,script-checked 2026-11-26,,rthd.gov.bd,domestic
+Bridges Division,GOV-MIN,division,public,bridgesdivision.gov.bd,,script-checked 2026-11-26,,bridgesdivision.gov.bd,domestic
+Ministry of Railways,GOV-MIN,ministry,public,mor.gov.bd,,script-checked 2026-11-26,,mor.gov.bd,domestic
+Ministry of Shipping,GOV-MIN,ministry,public,mos.gov.bd,,script-checked 2026-11-26,,mos.gov.bd,domestic
+Ministry of Civil Aviation and Tourism,GOV-MIN,ministry,public,mocat.gov.bd,,script-checked 2026-11-26,,mocat.gov.bd,domestic
+Ministry of Housing and Public Works,GOV-MIN,ministry,public,mohpw.gov.bd,,script-checked 2026-11-26,,mohpw.gov.bd,domestic
+Ministry of Public Administration,GOV-MIN,ministry,public,mopa.gov.bd,,script-checked 2026-11-26,,mopa.gov.bd,domestic
+Ministry of Labour and Employment,GOV-MIN,ministry,public,mole.gov.bd,,script-checked 2026-11-26,,mole.gov.bd,domestic
+Ministry of Expatriates' Welfare and Overseas Employment,GOV-MIN,ministry,public,probashi.gov.bd,,script-checked 2026-11-26,,probashi.gov.bd,domestic
+Ministry of Social Welfare,GOV-MIN,ministry,public,msw.gov.bd,,script-checked 2026-11-26,,msw.gov.bd,domestic
+Ministry of Women and Children Affairs,GOV-MIN,ministry,public,mowca.gov.bd,,script-checked 2026-11-26,,mowca.gov.bd,domestic
+Ministry of Youth and Sports,GOV-MIN,ministry,public,moysports.gov.bd,,script-checked 2026-11-26,,moysports.gov.bd,domestic
+Ministry of Cultural Affairs,GOV-MIN,ministry,public,moca.gov.bd,,script-checked 2026-11-26,,moca.gov.bd,domestic
+Ministry of Information and Broadcasting,GOV-MIN,ministry,public,moi.gov.bd,,script-checked 2026-11-26,,moi.gov.bd,domestic
+Ministry of Religious Affairs,GOV-MIN,ministry,public,mora.gov.bd,,script-checked 2026-11-26,,mora.gov.bd,domestic
+Ministry of Defence,GOV-MIN,ministry,public,mod.gov.bd,,script-checked 2026-11-26,,mod.gov.bd,domestic
+Armed Forces Division,GOV-MIN,division,public,afd.gov.bd,,script-checked 2026-11-26 + browser,"WEBSITE UNREACHABLE (Cloudflare 522 origin down) in script and browser, 2026-11-26; domain kept, DNS still measurable",afd.gov.bd,domestic
+Ministry of Liberation War Affairs,GOV-MIN,ministry,public,molwa.gov.bd,,script-checked 2026-11-26,,molwa.gov.bd,domestic
+Ministry of Chittagong Hill Tracts Affairs,GOV-MIN,ministry,public,mochta.gov.bd,,script-checked 2026-11-26,,mochta.gov.bd,domestic
+Ministry of Science and Technology,GOV-MIN,ministry,public,most.gov.bd,,script-checked 2026-11-26,,most.gov.bd,domestic
+Ministry of Textiles and Jute,GOV-MIN,ministry,public,motj.gov.bd,,script-checked 2026-11-26,,motj.gov.bd,domestic
+Bangladesh Police,GOV-AGY,law enforcement,public,police.gov.bd,,script-checked 2026-11-26,,police.gov.bd,domestic
+Criminal Investigation Department (CID),GOV-AGY,law enforcement,public,cid.gov.bd,,script-checked 2026-11-26,,cid.gov.bd,domestic
+Rapid Action Battalion (RAB),GOV-AGY,law enforcement,public,rab.gov.bd,,script-checked 2026-11-26,"CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title); page title now ""Special Response Battalion"" - CHECK official renaming of RAB",rab.gov.bd,domestic
+Bangladesh Telecommunication Regulatory Commission,GOV-AGY,regulator,public,btrc.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),btrc.gov.bd,domestic
+National Board of Revenue,GOV-AGY,revenue,public,nbr.gov.bd,,script-checked 2026-11-26,,nbr.gov.bd,domestic
+Bangladesh Election Commission,GOV-AGY,election,public,ecs.gov.bd,,script-checked 2026-11-26,bot-check page (403); domain live,ecs.gov.bd,domestic
+Department of Immigration and Passports,GOV-AGY,identity,public,dip.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),dip.gov.bd,domestic
+NID Registration Wing (Election Commission),GOV-AGY,identity,public,nidw.gov.bd,,script-checked 2026-11-26 + browser,apex does not serve a website; public site is services.nidw.gov.bd (use as web host); email measured on nidw.gov.bd,services.nidw.gov.bd,domestic
+Bangladesh Computer Council,GOV-AGY,ICT,public,bcc.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),bcc.gov.bd,domestic
+BGD e-GOV CIRT,GOV-AGY,ICT/CERT,public,cirt.gov.bd,,script-checked 2026-11-26,,cirt.gov.bd,domestic
+Aspire to Innovate (a2i),GOV-AGY,ICT,public,a2i.gov.bd,,script-checked 2026-11-26,,a2i.gov.bd,domestic
+Directorate General of Health Services,GOV-AGY,health,public,dghs.gov.bd,,script-checked 2026-11-26,,dghs.gov.bd,domestic
+Directorate of Secondary and Higher Education,GOV-AGY,education,public,dshe.gov.bd,,script-checked 2026-11-26,,dshe.gov.bd,domestic
+Directorate of Primary Education,GOV-AGY,education,public,dpe.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),dpe.gov.bd,domestic
+Bangladesh Securities and Exchange Commission,GOV-AGY,regulator,public,sec.gov.bd,,script-checked 2026-11-26,,sec.gov.bd,domestic
+Dhaka Stock Exchange,GOV-AGY,market,mixed,dsebd.org,demutualised exchange; ownership mixed,script-checked 2026-11-26,,dsebd.org,domestic
+Chittagong Stock Exchange,GOV-AGY,market,mixed,cse.com.bd,demutualised exchange; ownership mixed,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),cse.com.bd,domestic
+Bangladesh Bureau of Statistics,GOV-AGY,statistics,public,bbs.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),bbs.gov.bd,domestic
+Bangladesh Investment Development Authority,GOV-AGY,investment,public,bida.gov.bd,,script-checked 2026-11-26 + browser,"WEBSITE UNREACHABLE (Cloudflare DNS resolution error) in script, browser and via Google, 2026-11-26; domain kept, DNS still measurable",bida.gov.bd,domestic
+Supreme Court of Bangladesh,GOV-AGY,judiciary,public,supremecourt.gov.bd,,script-checked 2026-11-26,,supremecourt.gov.bd,domestic
+Anti-Corruption Commission,GOV-AGY,anti-corruption,public,acc.org.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),acc.org.bd,domestic
+Bangladesh Post Office,GOV-AGY,postal,public,bdpost.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),bdpost.gov.bd,domestic
+Dhaka North City Corporation,GOV-AGY,local government,public,dncc.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),dncc.gov.bd,domestic
+Dhaka South City Corporation,GOV-AGY,local government,public,dscc.gov.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),dscc.gov.bd,domestic
+Bangladesh Railway,GOV-AGY,transport,public,railway.gov.bd,,script-checked 2026-11-26,,railway.gov.bd,domestic
+Biman Bangladesh Airlines,GOV-AGY,transport (SOE),state-owned enterprise,biman-airlines.com,,script-checked 2026-11-26,bot-check page (403); domain live,biman-airlines.com,domestic
+Titas Gas Transmission and Distribution,GOV-AGY,utility (SOE),state-owned enterprise,titasgas.org.bd,,script-checked 2026-11-26,script DNS failure on first run was transient; title matches,titasgas.org.bd,domestic
+Dhaka Electric Supply Company (DESCO),GOV-AGY,utility (SOE),state-owned enterprise,desco.gov.bd,domain uncertain,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),desco.gov.bd,domestic
+Dhaka Power Distribution Company (DPDC),GOV-AGY,utility (SOE),state-owned enterprise,dpdc.gov.bd,domain uncertain,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),dpdc.gov.bd,domestic
+Dhaka WASA,GOV-AGY,utility,public,dwasa.org.bd,,script-checked 2026-11-26,CERTIFICATE VERIFY FAILED in standard client (identity confirmed via page title),dwasa.org.bd,domestic
