@@ -6,7 +6,8 @@
 - OpenAlex: 16 queries.
 - Google Scholar: 4 queries, first page each (run by the author).
 - **Revision 2:** Scholar found a 2026 study that **already measures DMARC on Bangladeshi government domains** (Cesar, Holz & Jonker, NOMS 2026), plus two older Bangladesh TLS studies. G1 and G2 below are narrowed accordingly.
-- **[CHECK]** Read Cesar et al. in full. Repeat the searches in IEEE Xplore and BanglaJOL.
+- **Revision 3:** Cesar et al. read in full. They cover government only and DMARC only, and report Bangladesh only on *where* reports are sent. The gap stands, as described below.
+- **[CHECK]** Repeat the searches in IEEE Xplore and BanglaJOL.
 
 ---
 
@@ -37,7 +38,7 @@
 | Khalil & Alamori (2026), Research Square, doi:10.21203/rs.3.rs-11563211/v1 | Iraq, all 103 higher-education domains | Passive DNS only. SPF/DKIM/DMARC/DNSSEC. 90.3% spoofable. One sector, no regression. **Closest design model** |
 | Waheed & Alazab (2026), *Future Internet*, doi:10.3390/fi18060313 | Maldives, 51 government and listed-company websites | HTTP security headers, benchmark comparison, Mann–Whitney U, effect sizes |
 | Maroofi, Korczyński et al. (2021), *IEEE TNSM*, doi:10.1109/tnsm.2021.3065422 | Global: 236 m domains plus high-profile domains of 139 countries | SPF/DMARC adoption and misconfiguration. Country-level only, no sectors |
-| **Cesar, Holz & Jonker (2026), *IEEE/IFIP NOMS*** | ccTLDs, longitudinal, including government domains per country | **Covers Bangladesh.** The Scholar snippet reads "278 instances (34.6%) of Bangladesh's governmental domains…", so about 800 `.gov.bd` domains were measured. **Closest prior work: read in full.** [CHECK] what the 34.6% refers to (no DMARC? `p=none`? enforced?), the date range, and whether SPF/DKIM or other sectors are covered |
+| **Cesar, Holz & Jonker (2026), *IEEE/IFIP NOMS*** (read in full) | 301 ccTLDs. OpenINTEL DNS data, Feb 2024 – Oct 2025. Government domains found by name patterns and directories | **DMARC only** (adoption, policy strictness, where reports are sent). **No SPF, no DKIM, no sectors other than government, no predictors at organisation level.** Bangladesh appears once, in Table Vb (top countries for DMARC *reporting* among government domains): **719 `.gov.bd` domains with DMARC reporting**. The "278 (34.6%)" figure means these domains **send their failure reports to a US processor** (`ruf.dmp.cisco.com`, Agari infrastructure). That's a data-sovereignty finding, **not a spoofability rate**. Bangladesh is not in the top-10 government adoption table |
 | Karopoulos, Kouliaridis et al. (2022, 2023), EU JRC reports JRC128819 and JRC133313 | EU states plus comparison countries | Email-security standards uptake. **Bangladesh (`.bd`) appears** in the comparison (snippet: "bd, which scores 77%…"). Country-level only |
 | Akula (2025), SSRN, doi:10.2139/ssrn.5297306 | India | DMARC adoption and threats (preprint) |
 | Others | Italy (2026), Brazil municipal (2026), Canada government (2026), US non-federal government (2023), Finland (2020) | Same family of national passive measurements |
@@ -48,7 +49,7 @@
 
 | # | Gap | Evidence |
 |---|---|---|
-| **G1 (narrowed)** | **Email authentication is measured only for Bangladeshi *government* domains, and only DMARC.** | Cesar et al. (2026) report DMARC for about 800 `.gov.bd` domains inside a global ccTLD study, and the EU JRC reports give a `.bd`-wide score. **No study measures banks, MFS/fintech, universities, hospitals, telecoms or media**, which are the brands that phishers impersonate (Paper 2). None checks SPF quality (`+all`, `~all`, too many DNS lookups) or DKIM. |
+| **G1 (narrowed)** | **Email authentication is measured only for Bangladeshi *government* domains, and only DMARC reporting.** | Cesar et al. (2026) report only that 719 `.gov.bd` domains publish DMARC reporting, a third of them to a US processor. They give no spoofability rate, no SPF, no DKIM. The EU JRC reports give a single `.bd`-wide score. **No study measures banks, MFS/fintech, universities, hospitals, telecoms or media**, which are the brands that phishers impersonate (Paper 2). None checks SPF quality (`+all`, `~all`, too many DNS lookups) or DKIM. |
 | **G2** | **Bangladeshi web studies use active scanning on small samples** (≈20–40 sites), and the TLS figures are dated. | Active scanning without permission raises legal and ethical questions under the CSA 2023/2026. It can't be repeated freely, and results depend on the tool. TLS problems were reported at 56% (2019) and 72% (2024) on convenience samples. A **passive census** gives a clean, repeatable baseline. **Web transport is now a secondary outcome**; email is the main contribution. |
 | **G3** | **No multi-sector comparison.** | Studies cover government, finance or universities separately. Nobody compares banks, MFS/fintech, government, universities, hospitals, telecoms, media and e-commerce in one standardised measurement. |
 | **G4** | **No statistical modelling.** | Bangladeshi studies report counts of alerts. None tests what *predicts* weak security: sector, public vs private ownership, domain type (`.gov.bd` / `.com.bd` / `.com`), hosting (government data centre, local host or global cloud), or mail provider (Google/Microsoft vs self-hosted). |
@@ -62,6 +63,7 @@
 - Their work is a global, longitudinal, government-only DMARC study, and Bangladesh is one of many ccTLDs.
 - Ours is a single-country, multi-sector, multi-protocol study with organisational predictors and a link to fraud.
 - We **cite them as the closest prior work** and compare our government-sector figure with theirs as a validity check. If both measurements agree, that strengthens both papers.
+- **We borrow one variable from them:** where each domain's DMARC reports go (in-country, US, other). That lets us test their sovereignty finding for banks and MFS, not just government. For a bank, sending reports abroad also raises a question under Bangladesh Bank rules on data location **[CHECK the guideline]**.
 
 A reviewer could object that "DMARC measurement is not new". The answer is that the method is established, which is a strength, and the evidence for Bangladeshi sectors beyond government is new, with predictor models and a link to crime that other studies did not do.
 
