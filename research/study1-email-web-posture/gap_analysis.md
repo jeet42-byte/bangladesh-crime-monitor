@@ -2,7 +2,11 @@
 
 **Working title:** *Can anyone send email as a Bangladeshi bank? A passive, multi-sector census of email-authentication and web-transport security in Bangladesh*
 
-**Status:** gap check, 26 Nov 2026. The search was run in OpenAlex only (16 queries, 25 results each). **[CHECK]** Repeat the key searches in Google Scholar, IEEE Xplore and BanglaJOL before writing the introduction. Bangladeshi conference papers (ICCIT, ICCA, ICEEICT) are often missing from OpenAlex.
+**Status:** gap check, 26 Nov 2026, revision 2.
+- OpenAlex: 16 queries.
+- Google Scholar: 4 queries, first page each (run by the author).
+- **Revision 2:** Scholar found a 2026 study that **already measures DMARC on Bangladeshi government domains** (Cesar, Holz & Jonker, NOMS 2026), plus two older Bangladesh TLS studies. G1 and G2 below are narrowed accordingly.
+- **[CHECK]** Read Cesar et al. in full. Repeat the searches in IEEE Xplore and BanglaJOL.
 
 ---
 
@@ -20,6 +24,10 @@
 | Chowdhury, Chowdhury & Ferdous (2020), *ICCIT*, doi:10.1109/iccit51783.2020.9392745 | 36 government websites | Manual heuristics | Password policies |
 | Tanjin et al. (2021), LNICST, doi:10.1007/978-3-030-90016-8_3 | Government vs private, BD vs USA | Comparison | Privacy and security factors |
 | Zaman (2018), *IJCSDF*, doi:10.17781/p002432 | BD web platform | Heartbleed test | One TLS vulnerability |
+| Moniruzzaman, Chowdhury et al. (2019), IEEE ECCE, ieeexplore 8679426 (cited 25) | Bangladeshi websites | Scanning | **56% had insecure TLS/SSL** (untrusted certificates) |
+| Dolon, Ridowan & Mouri (2024), ACM conf., doi:10.1145/3723178.3723203 | Private-sector websites | Active vulnerability assessment | **72% SSL problems** |
+| Chowdhury, Rahman & Rahman (2024), *IJECE* | Educational websites | Script-based scanning | Headers, SSL/TLS, SQLi |
+| Shaolin et al. (2026), BRAC University thesis | Bangladeshi web apps | Neural-network classifier | Uses security headers and TLS settings as *features* to predict vulnerability |
 | Remus, Akter & Ferdous (2023), *EJCSIT* | Banks | **Survey** of staff | PAM, PCI DSS, SIEM adoption |
 
 ### 1b. Other countries: passive census studies (the design we follow)
@@ -29,7 +37,8 @@
 | Khalil & Alamori (2026), Research Square, doi:10.21203/rs.3.rs-11563211/v1 | Iraq, all 103 higher-education domains | Passive DNS only. SPF/DKIM/DMARC/DNSSEC. 90.3% spoofable. One sector, no regression. **Closest design model** |
 | Waheed & Alazab (2026), *Future Internet*, doi:10.3390/fi18060313 | Maldives, 51 government and listed-company websites | HTTP security headers, benchmark comparison, Mann–Whitney U, effect sizes |
 | Maroofi, Korczyński et al. (2021), *IEEE TNSM*, doi:10.1109/tnsm.2021.3065422 | Global: 236 m domains plus high-profile domains of 139 countries | SPF/DMARC adoption and misconfiguration. Country-level only, no sectors |
-| Cesar, Holz & Jonker (2026), *IEEE/IFIP NOMS* | ccTLDs, longitudinal | DMARC over time per ccTLD. **[CHECK]** whether `.bd` is included and at what depth |
+| **Cesar, Holz & Jonker (2026), *IEEE/IFIP NOMS*** | ccTLDs, longitudinal, including government domains per country | **Covers Bangladesh.** The Scholar snippet reads "278 instances (34.6%) of Bangladesh's governmental domains…", so about 800 `.gov.bd` domains were measured. **Closest prior work: read in full.** [CHECK] what the 34.6% refers to (no DMARC? `p=none`? enforced?), the date range, and whether SPF/DKIM or other sectors are covered |
+| Karopoulos, Kouliaridis et al. (2022, 2023), EU JRC reports JRC128819 and JRC133313 | EU states plus comparison countries | Email-security standards uptake. **Bangladesh (`.bd`) appears** in the comparison (snippet: "bd, which scores 77%…"). Country-level only |
 | Akula (2025), SSRN, doi:10.2139/ssrn.5297306 | India | DMARC adoption and threats (preprint) |
 | Others | Italy (2026), Brazil municipal (2026), Canada government (2026), US non-federal government (2023), Finland (2020) | Same family of national passive measurements |
 
@@ -39,17 +48,22 @@
 
 | # | Gap | Evidence |
 |---|---|---|
-| **G1** | **No measurement of email authentication (SPF, DKIM, DMARC) for any Bangladeshi sector.** | None of the Bangladeshi studies above measures it. In this search, global studies report Bangladesh only as one country among 139, with no sectors. Email spoofing is the entry point for bank and MFS phishing, which Paper 2 shows in the news. |
-| **G2** | **Bangladeshi studies use active scanning on small samples** (≈20–40 sites). | Active scanning without permission raises legal and ethical questions under the CSA 2023/2026. It can't be repeated freely, and results depend on the tool. A **passive census** (public DNS records and one normal page load) avoids all three problems. |
+| **G1 (narrowed)** | **Email authentication is measured only for Bangladeshi *government* domains, and only DMARC.** | Cesar et al. (2026) report DMARC for about 800 `.gov.bd` domains inside a global ccTLD study, and the EU JRC reports give a `.bd`-wide score. **No study measures banks, MFS/fintech, universities, hospitals, telecoms or media**, which are the brands that phishers impersonate (Paper 2). None checks SPF quality (`+all`, `~all`, too many DNS lookups) or DKIM. |
+| **G2** | **Bangladeshi web studies use active scanning on small samples** (≈20–40 sites), and the TLS figures are dated. | Active scanning without permission raises legal and ethical questions under the CSA 2023/2026. It can't be repeated freely, and results depend on the tool. TLS problems were reported at 56% (2019) and 72% (2024) on convenience samples. A **passive census** gives a clean, repeatable baseline. **Web transport is now a secondary outcome**; email is the main contribution. |
 | **G3** | **No multi-sector comparison.** | Studies cover government, finance or universities separately. Nobody compares banks, MFS/fintech, government, universities, hospitals, telecoms, media and e-commerce in one standardised measurement. |
 | **G4** | **No statistical modelling.** | Bangladeshi studies report counts of alerts. None tests what *predicts* weak security: sector, public vs private ownership, domain type (`.gov.bd` / `.com.bd` / `.com`), hosting (government data centre, local host or global cloud), or mail provider (Google/Microsoft vs self-hosted). |
 | **G5** | **No regional benchmark.** | Single-country studies exist for Iraq, the Maldives, India and others, but there's no like-for-like comparison of Bangladesh with India, Pakistan, Sri Lanka and Nepal on the same sectors and method. |
 | **G6** | **No link between technical posture and crime.** | No study connects how spoofable a bank's domain is with phishing or fraud reported against it. Paper 2's incident data makes this possible as an exploratory analysis. |
 | **G7** | **No check against regulation.** | Bangladesh Bank's ICT Security Guideline and BGD e-GOV CIRT advisories recommend email and web hardening **[CHECK exact clauses]**. Nobody has measured compliance. |
 
-**Contribution in one sentence:** the first passive, census-scale, multi-sector measurement of email-authentication, transport-security and DNS-security posture in Bangladesh, with statistical models of its predictors and a South Asian benchmark.
+**Contribution in one sentence (revised):** the first passive, multi-sector census of email authentication (SPF, DKIM, DMARC) in Bangladesh. It goes beyond government to the banks, MFS providers and other institutions that phishers impersonate, and models what predicts weak protection, with a South Asian benchmark. Web transport and DNSSEC are secondary outcomes.
 
-The novelty mainly comes from **G1 + G3 + G4** together. A reviewer could object that "DMARC measurement is not new". The answer is that the method is established, which is a strength, and the evidence for Bangladesh is new, with sector modelling that single-country studies like Iraq's and the Maldives' did not do.
+**How we position against Cesar et al. (2026):**
+- Their work is a global, longitudinal, government-only DMARC study, and Bangladesh is one of many ccTLDs.
+- Ours is a single-country, multi-sector, multi-protocol study with organisational predictors and a link to fraud.
+- We **cite them as the closest prior work** and compare our government-sector figure with theirs as a validity check. If both measurements agree, that strengthens both papers.
+
+A reviewer could object that "DMARC measurement is not new". The answer is that the method is established, which is a strength, and the evidence for Bangladeshi sectors beyond government is new, with predictor models and a link to crime that other studies did not do.
 
 ---
 
