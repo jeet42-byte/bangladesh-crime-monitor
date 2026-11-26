@@ -25,6 +25,7 @@ import socket
 import ssl
 import sys
 import time
+import warnings
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -34,6 +35,10 @@ import dns.query
 import dns.rdatatype
 import dns.resolver
 import httpx
+
+# TLS 1.0/1.1 are deprecated in Python; testing whether servers still accept
+# them is the point of the check, so the warning is silenced.
+warnings.filterwarnings("ignore", category=DeprecationWarning, module=__name__)
 
 RESOLVERS = {"cloudflare": "1.1.1.1", "google": "8.8.8.8"}
 DKIM_SELECTORS = (
@@ -259,9 +264,12 @@ def main() -> None:
                "python": sys.version.split()[0], "openssl": ssl.OPENSSL_VERSION}
         path.write_text(json.dumps(rec, ensure_ascii=False, indent=1), encoding="utf-8")
         d = rec["dns"]["by_resolver"]["cloudflare"]
+        w = rec["web"]
+        web = (str(w["https"]["status"]) if "status" in w.get("https", {}) else
+               f"{w['https_noverify']['status']}(bad cert)" if "status" in w.get("https_noverify", {}) else
+               "http-only" if "status" in w.get("http", {}) else "unreachable")
         print(f"{i:4}/{len(rows)} {dom:28} DMARC={'y' if d['DMARC']['answers'] else 'n'} "
-              f"MX={len(d['MX']['answers'])} https={rec['web'].get('https', {}).get('status', 'x')} "
-              f"({time.time() - t0:.0f}s)")
+              f"MX={len(d['MX']['answers'])} web={web} ({time.time() - t0:.0f}s)")
         time.sleep(PAUSE_BETWEEN_DOMAINS)
 
 
