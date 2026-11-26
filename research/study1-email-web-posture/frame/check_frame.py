@@ -30,7 +30,7 @@ import httpx
 UA = "Mozilla/5.0 (research frame check; passive; one visit per site)"
 EMAIL_RE = re.compile(r"[A-Za-z0-9._%+-]+@([A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+)")
 TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.I | re.S)
-CONTACT_RE = re.compile(r'href=["\']([^"\']*contact[^"\']*)["\']', re.I)
+CONTACT_RE = re.compile(r'href=["\'](?!mailto:)([^"\'@\s]*contact[^"\'@\s]*)["\']', re.I)
 SKIP_MAIL = ("example.com", "sentry.io", "wixpress.com", "domain.com", "email.com")
 
 
@@ -42,9 +42,13 @@ def resolves(domain: str) -> str:
 
 
 def fetch(client: httpx.Client, url: str):
+    # Any failure (network, TLS, a malformed link on the page) is recorded
+    # for that institution and the run moves on.
+    if urlparse(url).scheme not in ("http", "https"):
+        return ValueError("not a web link")
     try:
         return client.get(url)
-    except httpx.HTTPError as exc:
+    except Exception as exc:  # noqa: BLE001
         return exc
 
 
@@ -64,12 +68,20 @@ def main(seed: str) -> None:
         "resolves_ip", "final_url", "http_status", "page_title",
         "redirects_off_domain", "mail_domains_seen", "check_error",
     ]
+    # Resume: keep rows already checked in an earlier, interrupted run.
+    done = set()
+    if out_path.exists():
+        done = {r["candidate_domain"] for r in csv.DictReader(open(out_path, encoding="utf-8-sig"))}
+    mode = "a" if done else "w"
     with httpx.Client(timeout=25, follow_redirects=True, headers={"User-Agent": UA},
-                      verify=True) as client, open(out_path, "w", newline="", encoding="utf-8-sig") as fh:
+                      verify=True) as client, open(out_path, mode, newline="", encoding="utf-8-sig") as fh:
         writer = csv.DictWriter(fh, fieldnames=fields)
-        writer.writeheader()
+        if not done:
+            writer.writeheader()
         for i, row in enumerate(rows, 1):
             dom = row["candidate_domain"].strip().lower()
+            if row["candidate_domain"] in done:
+                continue
             rec = dict(row, resolves_ip=resolves(dom) or resolves("www." + dom))
             resp = None
             for url in (f"https://{dom}/", f"https://www.{dom}/", f"http://{dom}/"):
@@ -95,7 +107,7 @@ def main(seed: str) -> None:
                     mail_domains_seen=";".join(sorted(mails)),
                 )
             else:
-                rec["check_error"] = type(resp).__name__ if resp is not None else "no attempt"
+                rec["check_error"] = (type(resp).__name__ + ": " + str(resp)[:80]) if resp is not None else "no attempt"
             writer.writerow(rec)
             fh.flush()
             print(f"{i:3}/{len(rows)} {dom:28} {rec.get('http_status','-')!s:4} "
