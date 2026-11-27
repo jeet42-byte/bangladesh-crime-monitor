@@ -1,0 +1,19 @@
+web_domain,mail_domain,decision,reason
+jb.com.bd,janatabank-bd.com,accept,same institution name
+bcblbd.com,bcbl.com.bd,accept,institution acronym
+premierbankltd.com,thepremierbankplc.com,accept,same institution name
+siblbd.com,sibl-bd.com,accept,institution acronym
+dsebd.org,dse.com.bd,accept,institution acronym
+portwallet.com,portpos.com,accept,rebrand of the same service
+okwallet.com.bd,onebank.com.bd,accept,parent bank domain
+cid.gov.bd,police.gov.bd,accept,CID is a unit of Bangladesh Police
+shimantobank.com,onebank.com.bd,reject,another bank linked on the page
+mofa.gov.bd,a2i.gov.bd,reject,site-builder / portal credit
+dip.gov.bd,moha.gov.bd,reject,parent ministry linked on the page
+bankalfalah.com,bankingmohtasib.gov.pk,reject,Pakistani ombudsman
+bankalfalah.com,pri.gov.pk,reject,Pakistani government
+bankalfalah.com,sbp.org.pk,reject,Pakistani central bank
+hbl.com,ombusdsman.gov.pk,reject,Pakistani ombudsman
+hbl.com,sbp.org.pk,reject,Pakistani central bank
+nbp.com.pk,ibp.org.pk,reject,Pakistani banking institute
+dghs.gov.bd,ld.dghs.gov.com,reject,TYPO on the site (gov.com instead of gov.bd) - recorded as an observation

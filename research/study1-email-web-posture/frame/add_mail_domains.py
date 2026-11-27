@@ -52,18 +52,37 @@ def related(a: str, b: str) -> bool:
     return shorter >= 5 and (sa in sb or sb in sa or sa[:6] == sb[:6])
 
 
+def looks_like_domain(d: str) -> bool:
+    """Drops version numbers picked up from script URLs (jquery@1.11.3 -> '1.11.3')."""
+    return bool(re.fullmatch(r"[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}", d))
+
+
+def load_decisions() -> dict:
+    try:
+        rows = csv.DictReader(open("mail_domain_decisions.csv", encoding="utf-8-sig"))
+    except FileNotFoundError:
+        return {}
+    return {(r["web_domain"], r["mail_domain"]): r["decision"] for r in rows}
+
+
 def main(code: str) -> None:
+    decisions = load_decisions()
     frame = list(csv.DictReader(open(f"frame_{code}_v1.csv", encoding="utf-8-sig")))
     checked = {r["candidate_domain"]: r for r in csv.DictReader(open(f"checked_{code}.csv", encoding="utf-8-sig"))}
     out = []
     print(f"{'institution':40} {'web domain':26} -> mail domain(s) / notes")
     for r in frame:
         web = r["candidate_domain"].strip().lower()
-        seen = [d for d in (checked.get(web, {}).get("mail_domains_seen") or "").split(";") if d]
+        seen = [d for d in (checked.get(web, {}).get("mail_domains_seen") or "").split(";")
+                if d and looks_like_domain(d)]
         free = sorted(d for d in seen if d in FREE_MAIL)
         own = [d for d in seen if d not in FREE_MAIL and not d.endswith(THIRD_PARTY_HINTS)
                and d != web and not d.endswith("." + web) and related(d, web)]
         other = [d for d in seen if d not in FREE_MAIL and d != web and not d.endswith("." + web) and d not in own]
+        # Manual decisions (mail_domain_decisions.csv) override the automatic rule.
+        own += [d for d in other if decisions.get((web, d)) == "accept"]
+        own = [d for d in own if decisions.get((web, d)) != "reject"]
+        other = [d for d in other if (web, d) not in decisions]
         r["mail_domains"] = ";".join(sorted(set(own)))
         r["contact_uses_free_mail"] = "yes" if free else ""
         r["mail_domains_unmatched"] = ";".join(sorted(set(other)))
