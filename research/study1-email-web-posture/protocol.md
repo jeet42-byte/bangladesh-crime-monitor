@@ -201,6 +201,15 @@ Every other domain is **spoofable**: no DMARC, `p=none`, `pct` below 100, or an 
 - **Measurement check:** for a random 30 domains, results are re-checked by hand with `dig` and a browser.
 - **Code:** unit tests for SPF / DMARC parsing against RFC examples and known edge cases (multiple records, `pct=50`, `+all`, more than 10 lookups).
 
+## 10a. Pilot (before registration)
+
+- **27 Nov 2026:** pilot on the first 10 financial-sector domains, from the author's laptop in Bangladesh.
+- **Purpose:** test the scripts only. Pilot results are **not** part of the analysis and are not reported except as a pilot.
+- **Changes the pilot led to, made before registration:**
+  1. Separate mail domains are measured, with a documented manual decision list (§4.3). Two pilot banks publish no MX record on their website domain.
+  2. Clearer reporting of web reachability (verified HTTPS / HTTPS with an invalid certificate / HTTP only / unreachable).
+  3. Version numbers from script URLs are filtered out of the scraped contact domains.
+
 ## 11. Deviations log
 
 | Date | Change | Reason |
