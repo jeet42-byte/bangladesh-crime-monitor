@@ -28,3 +28,15 @@ cd "E:\crime auto\bangladesh-crime-monitor\research\study1-email-web-posture\mea
 ..\..\..\backend\.venv\Scripts\python.exe outcomes.py raw\1
 ```
 That takes about 30–60 seconds per domain, so about 2 hours for 160 domains. It resumes if stopped.
+
+## Final run (after OSF registration)
+
+**Round 1** covers the 322 Bangladeshi institutions; the **benchmark** covers 104 institutions in India, Pakistan, Sri Lanka and Nepal. Both run in the same week.
+```
+cd "E:\crime auto\bangladesh-crime-monitor\research\study1-email-web-posture\measure"
+..\..\..\backend\.venv\Scripts\python.exe measure.py ..\frame\frame_FIN_v2.csv ..\frame\frame_GOV_v2.csv ..\frame\frame_EDU_v2.csv --round 1
+..\..\..\backend\.venv\Scripts\python.exe measure.py ..\frame\frame_BENCH_v2.csv --round benchmark
+..\..\..\backend\.venv\Scripts\python.exe outcomes.py raw\1
+..\..\..\backend\.venv\Scripts\python.exe outcomes.py raw\benchmark
+```
+**Round 2** runs 14–28 days later with `--round 2`, and the same frames.

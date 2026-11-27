@@ -72,7 +72,7 @@ University of Peradeniya,BENCH-EDU,top-10 university,public,pdn.ac.lk,,LK,script
 University of Moratuwa,BENCH-EDU,top-10 university,public,mrt.ac.lk,,LK,script-checked 2026-11-28,,benchmark
 University of Sri Jayewardenepura,BENCH-EDU,top-10 university,public,sjp.ac.lk,,LK,script-checked 2026-11-28,,benchmark
 University of Kelaniya,BENCH-EDU,top-10 university,public,kln.ac.lk,,LK,script-checked 2026-11-28,,benchmark
-University of Ruhuna,BENCH-EDU,top-10 university,public,ruh.ac.lk,,LK,script-checked 2026-11-28,"PENDING: homepage title ""The Tudors"" - check for defacement/template",benchmark
+University of Ruhuna,BENCH-EDU,top-10 university,public,ruh.ac.lk,,LK,script-checked 2026-11-28,"browser: shows University of Ruhuna; homepage <title> reads ""The Tudors"" (template leftover) - observation",benchmark
 University of Jaffna,BENCH-EDU,top-10 university,public,jfn.ac.lk,,LK,script-checked 2026-11-28,,benchmark
 Open University of Sri Lanka,BENCH-EDU,top-10 university,public,ou.ac.lk,,LK,script-checked 2026-11-28,,benchmark
 Rajarata University of Sri Lanka,BENCH-EDU,top-10 university,public,rjt.ac.lk,,LK,script-checked 2026-11-28,,benchmark
