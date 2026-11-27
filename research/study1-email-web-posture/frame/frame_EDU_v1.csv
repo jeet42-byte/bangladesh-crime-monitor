@@ -47,7 +47,7 @@ Bangladesh University of Professionals,EDU-PUB,professional,public,bup.edu.bd,,s
 Bangladesh Maritime University,EDU-PUB,professional,public,bsmrmu.edu.bd,renamed 2025; CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Aviation and Aerospace University Bangladesh,EDU-PUB,professional,public,aaub.edu.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 University of Frontier Technology Bangladesh (formerly Digital University Bangladesh),EDU-PUB,professional,public,bdu.ac.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Army University of Engineering and Technology,EDU-PUB,engineering,public,bauet.ac.bd,army-run; CHECK UGC category,script-checked 2026-11-27 (title matched or bot-check page),,domestic
+Bangladesh Army University of Engineering and Technology,EDU-PRV,engineering,private,bauet.ac.bd,UGC lists as private (army-run trust),script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Military Institute of Science and Technology,EDU-PUB,engineering,public,mist.ac.bd,institute affiliated with BUP; CHECK whether UGC lists it,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 North South University,EDU-PRV,private,private,northsouth.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 BRAC University,EDU-PRV,private,private,bracu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
@@ -75,14 +75,14 @@ World University of Bangladesh,EDU-PRV,private,private,wub.edu.bd,,script-checke
 Bangladesh University,EDU-PRV,private,private,bu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Prime University,EDU-PRV,private,private,primeuniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Dhaka International University,EDU-PRV,private,private,diu.ac,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,,script-checked 2026-11-27 + browser,WEBSITE DOWN: 503 in script and browser (also on the page Google lists); domain confirmed via Google; DNS still measurable,domestic
+Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,UGC flag * (unapproved campus),script-checked 2026-11-27 + browser,WEBSITE DOWN: 503 in script and browser (also on the page Google lists); domain confirmed via Google; DNS still measurable,domestic
 Canadian University of Bangladesh,EDU-PRV,private,private,cub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Central Women's University,EDU-PRV,private,private,cwu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Presidency University,EDU-PRV,private,private,pu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Royal University of Dhaka,EDU-PRV,private,private,royal.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Sonargaon University,EDU-PRV,private,private,su.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Shanto-Mariam University of Creative Technology,EDU-PRV,private,private,smuct.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-European University of Bangladesh,EDU-PRV,private,private,eub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
+European University of Bangladesh,EDU-PRV,private,private,eub.edu.bd,UGC flag ***,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Fareast International University,EDU-PRV,private,private,fiu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 IUBAT,EDU-PRV,private,private,iubat.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Atish Dipankar University of Science and Technology,EDU-PRV,private,private,adust.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
