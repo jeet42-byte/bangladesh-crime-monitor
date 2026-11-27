@@ -81,6 +81,8 @@ def main(code: str) -> None:
         other = [d for d in seen if d not in FREE_MAIL and d != web and not d.endswith("." + web) and d not in own]
         # Manual decisions (mail_domain_decisions.csv) override the automatic rule.
         own += [d for d in other if decisions.get((web, d)) == "accept"]
+        # Accepted mail domains that the homepage does not show (found by hand).
+        own += [m for (w, m), dec in decisions.items() if w == web and dec == "accept" and m not in own]
         own = [d for d in own if decisions.get((web, d)) != "reject"]
         other = [d for d in other if (web, d) not in decisions]
         r["mail_domains"] = ";".join(sorted(set(own)))

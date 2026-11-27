@@ -17,3 +17,4 @@ hbl.com,ombusdsman.gov.pk,reject,Pakistani ombudsman
 hbl.com,sbp.org.pk,reject,Pakistani central bank
 nbp.com.pk,ibp.org.pk,reject,Pakistani banking institute
 dghs.gov.bd,ld.dghs.gov.com,reject,TYPO on the site (gov.com instead of gov.bd) - recorded as an observation
+iub.ac.bd,iub.edu.bd,accept,old domain still the Google Workspace mail domain (redirects to Google sign-in)

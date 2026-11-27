@@ -51,7 +51,7 @@ Bangladesh Army University of Engineering and Technology,EDU-PUB,engineering,pub
 Military Institute of Science and Technology,EDU-PUB,engineering,public,mist.ac.bd,institute affiliated with BUP; CHECK whether UGC lists it,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 North South University,EDU-PRV,private,private,northsouth.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 BRAC University,EDU-PRV,private,private,bracu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Independent University Bangladesh,EDU-PRV,private,private,iub.edu.bd,,script-checked 2026-11-27 + browser,PENDING: script landed on a Google sign-in page; awaiting browser check,domestic
+Independent University Bangladesh,EDU-PRV,private,private,iub.ac.bd,,script-checked 2026-11-27 + browser,"corrected: website moved to iub.ac.bd (Google); old iub.edu.bd redirects to a Google sign-in page, i.e. still the Google Workspace MAIL domain",domestic
 East West University,EDU-PRV,private,private,ewubd.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 American International University-Bangladesh,EDU-PRV,private,private,aiub.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 United International University,EDU-PRV,private,private,uiu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
