@@ -182,30 +182,50 @@ def web_score(v: dict) -> int:
 
 
 # ---------------------------------------------------------------------------
-def domain_row(rec: dict) -> dict:
-    dom = rec["domain"]
-    cf = rec["dns"]["by_resolver"]["cloudflare"]
-    gg = rec["dns"]["by_resolver"]["google"]
-    v: dict = {"domain": dom}
-    f = rec["frame_row"]
-    for k in ("institution", "sector", "subtype", "ownership", "analysis_group"):
-        v[k] = f.get(k, "")
-    v["resolvers_agree_dmarc"] = sorted(cf["DMARC"]["answers"]) == sorted(gg["DMARC"]["answers"])
+def email_vars(dns_rec: dict, domain: str) -> dict:
+    """All email/DNS variables for one measured domain."""
+    cf = dns_rec["by_resolver"]["cloudflare"]
+    gg = dns_rec["by_resolver"]["google"]
+    v: dict = {"resolvers_agree_dmarc": sorted(cf["DMARC"]["answers"]) == sorted(gg["DMARC"]["answers"])}
     v.update(parse_dmarc(cf["DMARC"]["answers"]))
     v.update(parse_spf(cf["TXT_apex"]["answers"], cf.get("SPF_tree")))
     v["spoofable"] = spoofable(v)
     v["spoofable_strict"] = spoofable(v, "strict")
     v["spoofable_lenient"] = spoofable(v, "lenient")
-    v["dkim_found"] = bool(rec["dns"].get("DKIM_found"))
-    v["mail_provider"] = mail_provider(cf["MX"]["answers"], dom)
+    v["dkim_found"] = bool(dns_rec.get("DKIM_found"))
+    v["has_mx"] = bool(cf["MX"]["answers"])
+    v["mail_provider"] = mail_provider(cf["MX"]["answers"], domain)
     v["dnssec_signed"] = bool(cf["DS"]["answers"])
     v["dnssec_valid"] = bool(cf["AD"].get("ad")) and v["dnssec_signed"]
     v["has_caa"] = bool(cf["CAA"]["answers"])
     v["has_mta_sts"] = any("v=stsv1" in x.lower() for x in cf["MTA_STS"]["answers"])
     v["has_tls_rpt"] = any("v=tlsrptv1" in x.lower() for x in cf["TLS_RPT"]["answers"])
-    dests = sorted({report_country(u, dom) for u in v["rua"] + v["ruf"]})
+    dests = sorted({report_country(u, domain) for u in v["rua"] + v["ruf"]})
     v["report_destinations"] = ";".join(dests)
     v["reports_leave_bd"] = any(d not in ("BD", "own_domain", "unparseable") for d in dests)
+    return v
+
+
+def domain_row(rec: dict) -> dict:
+    """One row per institution. Email outcomes use the mail domain when the
+    institution publishes a separate one (protocol 4.3), preferring one with MX;
+    the website domain's spoofability is kept as a secondary variable."""
+    dom = rec["domain"]
+    f = rec["frame_row"]
+    v: dict = {"domain": dom}
+    for k in ("institution", "sector", "subtype", "ownership", "analysis_group", "contact_uses_free_mail"):
+        v[k] = f.get(k, "")
+    web_email = email_vars(rec["dns"], dom)
+    mail = rec.get("mail_dns") or {}
+    candidates = [(m, email_vars(d, m)) for m, d in sorted(mail.items())]
+    with_mx = [c for c in candidates if c[1]["has_mx"]]
+    chosen_domain, chosen = (with_mx or candidates or [(dom, web_email)])[0]
+    if not with_mx and web_email["has_mx"]:
+        chosen_domain, chosen = dom, web_email
+    v["email_domain"] = chosen_domain
+    v.update(chosen)
+    v["spoofable_web_domain"] = web_email["spoofable"]
+    v["any_domain_spoofable"] = web_email["spoofable"] or any(c[1]["spoofable"] for c in candidates)
     v.update(web_vars(rec["web"]))
     v["email_score"] = email_score(v)
     v["web_score"] = web_score(v)

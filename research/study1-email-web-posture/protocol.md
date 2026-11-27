@@ -68,7 +68,11 @@ That's about 26 domains per country, about 104 in total. Bangladesh's matched gr
 ### 4.3 Which domain counts
 
 1. **Primary domain:** the domain of the institution's official website as listed by the regulator, or found from the regulator's link. For example, `bracbank.com`, `du.ac.bd`, `mof.gov.bd`.
-2. **Mail domain:** if the official contact email on the website uses a different domain, measure that domain too, and treat **the mail domain as primary for email outcomes**.
+2. **Mail domain:** if the official contact email on the website uses a different organisational domain, measure that domain too, and treat **the mail domain as primary for email outcomes**.
+   - If there are several, prefer one with an MX record.
+   - The website domain's spoofability is kept as a secondary variable (`spoofable_web_domain`), and so is `any_domain_spoofable`, because an attacker can impersonate either.
+   - Free webmail addresses (gmail.com, yahoo.com, …) in official contact details are not organisational domains; their use is recorded as a separate indicator (`contact_uses_free_mail`).
+   - Mail domains are taken from the homepage and one contact page (`frame/add_mail_domains.py`). Domains not clearly belonging to the institution are listed for a manual decision, not used automatically.
 3. **Exclusions** (each logged with its reason):
    - the domain doesn't resolve on two measurement days
    - a parked or for-sale page

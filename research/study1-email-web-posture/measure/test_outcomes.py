@@ -73,3 +73,22 @@ def test_report_country():
     assert report_country("mailto:dmarc@x.gov.bd", "x.gov.bd") == "own_domain"
     assert report_country("mailto:r@cirt.gov.bd", "x.gov.bd") == "BD"
     assert report_country("mailto:r@example.co.uk", "x.com") == "UK"
+
+
+def _dns(mx, dmarc):
+    blk = lambda a: {"status": "ok" if a else "noanswer", "answers": a}
+    res = {"A": blk(["1.2.3.4"]), "MX": blk(mx), "TXT_apex": blk(["v=spf1 -all"]), "DMARC": blk(dmarc),
+           "DS": blk([]), "CAA": blk([]), "MTA_STS": blk([]), "TLS_RPT": blk([]), "AD": {"ad": False},
+           "SPF_tree": {"lookups": 0}}
+    return {"by_resolver": {"cloudflare": res, "google": res}, "DKIM_found": {}}
+
+
+def test_separate_mail_domain_is_primary_for_email():
+    from outcomes import domain_row
+    web = {"https": {"status": 200, "headers": {}}, "http": {}, "cert": {"valid": True}}
+    rec = {"domain": "bank.com", "frame_row": {}, "dns": _dns([], []), "web": web,
+           "mail_dns": {"bank.com.bd": _dns(["10 mx.bank.com.bd."], ["v=DMARC1; p=reject"])}}
+    r = domain_row(rec)
+    assert r["email_domain"] == "bank.com.bd" and not r["spoofable"]
+    assert r["spoofable_web_domain"] and r["any_domain_spoofable"]
+    assert domain_row(dict(rec, mail_dns={}))["email_domain"] == "bank.com"
