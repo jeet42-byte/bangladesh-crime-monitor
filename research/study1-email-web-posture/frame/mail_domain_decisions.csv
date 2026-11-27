@@ -18,3 +18,19 @@ hbl.com,sbp.org.pk,reject,Pakistani central bank
 nbp.com.pk,ibp.org.pk,reject,Pakistani banking institute
 dghs.gov.bd,ld.dghs.gov.com,reject,TYPO on the site (gov.com instead of gov.bd) - recorded as an observation
 iub.ac.bd,iub.edu.bd,accept,old domain still the Google Workspace mail domain (redirects to Google sign-in)
+bsmrau.edu.bd,gau.edu.bd,accept,new-name domain after 2025 renaming (Gazipur Agricultural University)
+bsmmu.ac.bd,bmu.ac.bd,accept,new-name domain after 2025 renaming (Bangladesh Medical University)
+bsmrmu.edu.bd,bmu.edu.bd,accept,new-name domain after 2025 renaming (Bangladesh Maritime University)
+bdu.ac.bd,uftb.ac.bd,accept,new-name domain after renaming (University of Frontier Technology Bangladesh)
+ru.ac.bd,rajit.net,reject,web developer credit
+bu.ac.bd,peoplentech.net,reject,web developer credit
+aiub.edu,wevolvebd.org,reject,web developer credit
+hstu.ac.bd,ru.ac.bd,reject,another university
+sau.edu.bd,iaasworld.org,reject,student association
+cvasu.ac.bd,my.jcu.edu.au,reject,foreign partner university
+bgctub.ac.bd,bgctrustbd.org,reject,parent business group
+tuca.edu.bd,tuca.edu.bdhotline,reject,parsing artefact
+butex.edu.bd,yoursite.come,reject,TEMPLATE PLACEHOLDER left on official site - observation
+siu.edu.bd,abc.xyz,reject,TEMPLATE PLACEHOLDER left on official site - observation
+aaub.edu.bd,vaticanhilltours.com,reject,UNRELATED third-party domain on official site (possible injected link) - observation to verify
+neub.edu.bd,ytcvn.com,reject,UNRELATED third-party domain on official site (possible injected link) - observation to verify
