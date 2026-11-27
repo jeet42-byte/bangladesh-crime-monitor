@@ -1,114 +1,163 @@
-institution,sector,subtype,ownership,candidate_domain,notes,verification,verification_note,analysis_group
-University of Dhaka,EDU-PUB,general,public,du.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Rajshahi,EDU-PUB,general,public,ru.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Chittagong,EDU-PUB,general,public,cu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Jahangirnagar University,EDU-PUB,general,public,juniv.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Islamic University Kushtia,EDU-PUB,general,public,iu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Jagannath University,EDU-PUB,general,public,jnu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Comilla University,EDU-PUB,general,public,cou.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Jatiya Kabi Kazi Nazrul Islam University,EDU-PUB,general,public,jkkniu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Begum Rokeya University Rangpur,EDU-PUB,general,public,brur.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Barishal,EDU-PUB,general,public,bu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Khulna University,EDU-PUB,general,public,ku.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Rabindra University Bangladesh,EDU-PUB,general,public,rub.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-National University,EDU-PUB,affiliating,public,nu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Open University,EDU-PUB,open,public,bou.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Islamic Arabic University,EDU-PUB,affiliating,public,iau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh University of Engineering and Technology,EDU-PUB,engineering,public,buet.ac.bd,,script-checked 2026-11-27 + browser,browser: opens; script error was a malformed response header (illegal header line),domestic
-Chittagong University of Engineering and Technology,EDU-PUB,engineering,public,cuet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Rajshahi University of Engineering and Technology,EDU-PUB,engineering,public,ruet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Khulna University of Engineering and Technology,EDU-PUB,engineering,public,kuet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Dhaka University of Engineering and Technology,EDU-PUB,engineering,public,duet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh University of Textiles,EDU-PUB,engineering,public,butex.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Shahjalal University of Science and Technology,EDU-PUB,science & technology,public,sust.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Hajee Mohammad Danesh Science and Technology University,EDU-PUB,science & technology,public,hstu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Mawlana Bhashani Science and Technology University,EDU-PUB,science & technology,public,mbstu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Patuakhali Science and Technology University,EDU-PUB,science & technology,public,pstu.ac.bd,,script-checked 2026-11-27 + browser,"WEBSITE MISCONFIGURED: empty directory listing (""Index of /"") in script and browser, with and without www; Google confirms domain; DNS still measurable",domestic
-Noakhali Science and Technology University,EDU-PUB,science & technology,public,nstu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Jashore University of Science and Technology,EDU-PUB,science & technology,public,just.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Pabna University of Science and Technology,EDU-PUB,science & technology,public,pust.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Gopalganj Science and Technology University,EDU-PUB,science & technology,public,gstu.edu.bd,renamed 2025 (formerly Bangabandhu Sheikh Mujibur Rahman STU); CHECK new domain,script-checked 2026-11-27 + browser,corrected after 2025 renaming (Gopalganj STU); OLD DOMAIN bsmrstu.edu.bd NO LONGER RESOLVES (legacy-domain risk),domestic
-Rangamati Science and Technology University,EDU-PUB,science & technology,public,rmstu.ac.bd,domain uncertain,script-checked 2026-11-27 + browser,corrected (.ac.bd),domestic
-Chandpur Science and Technology University,EDU-PUB,science & technology,public,cstu.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Jamalpur Science and Technology University,EDU-PUB,science & technology,public,jstu.ac.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Sunamganj Science and Technology University,EDU-PUB,science & technology,public,sstu.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Agricultural University,EDU-PUB,agriculture,public,bau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Gazipur Agricultural University,EDU-PUB,agriculture,public,bsmrau.edu.bd,renamed 2025 (formerly BSMRAU); CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Sher-e-Bangla Agricultural University,EDU-PUB,agriculture,public,sau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Sylhet Agricultural University,EDU-PUB,agriculture,public,sau.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Chittagong Veterinary and Animal Sciences University,EDU-PUB,agriculture,public,cvasu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Khulna Agricultural University,EDU-PUB,agriculture,public,kau.ac.bd,domain uncertain,script-checked 2026-11-27 + browser,corrected (.ac.bd),domestic
-Habiganj Agricultural University,EDU-PUB,agriculture,public,hau.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Medical University,EDU-PUB,medical,public,bsmmu.ac.bd,renamed 2025 (formerly BSMMU); CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Rajshahi Medical University,EDU-PUB,medical,public,rmu.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Chittagong Medical University,EDU-PUB,medical,public,cmu.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Sylhet Medical University,EDU-PUB,medical,public,smu.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh University of Professionals,EDU-PUB,professional,public,bup.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Maritime University,EDU-PUB,professional,public,bsmrmu.edu.bd,renamed 2025; CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Aviation and Aerospace University Bangladesh,EDU-PUB,professional,public,aaub.edu.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Frontier Technology Bangladesh (formerly Digital University Bangladesh),EDU-PUB,professional,public,bdu.ac.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Army University of Engineering and Technology,EDU-PRV,engineering,private,bauet.ac.bd,UGC lists as private (army-run trust),script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Military Institute of Science and Technology,EDU-PUB,engineering,public,mist.ac.bd,institute affiliated with BUP; CHECK whether UGC lists it,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-North South University,EDU-PRV,private,private,northsouth.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-BRAC University,EDU-PRV,private,private,bracu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Independent University Bangladesh,EDU-PRV,private,private,iub.ac.bd,,script-checked 2026-11-27 + browser,"corrected: website moved to iub.ac.bd (Google); old iub.edu.bd redirects to a Google sign-in page, i.e. still the Google Workspace MAIL domain",domestic
-East West University,EDU-PRV,private,private,ewubd.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-American International University-Bangladesh,EDU-PRV,private,private,aiub.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-United International University,EDU-PRV,private,private,uiu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Daffodil International University,EDU-PRV,private,private,daffodilvarsity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Ahsanullah University of Science and Technology,EDU-PRV,private,private,aust.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Liberal Arts Bangladesh,EDU-PRV,private,private,ulab.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Asian University of Bangladesh,EDU-PRV,private,private,aub.edu.bd,name/domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Asia Pacific,EDU-PRV,private,private,uap-bd.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Stamford University Bangladesh,EDU-PRV,private,private,stamforduniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-State University of Bangladesh,EDU-PRV,private,private,sub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Southeast University,EDU-PRV,private,private,seu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Green University of Bangladesh,EDU-PRV,private,private,green.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh University of Business and Technology,EDU-PRV,private,private,bubt.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Eastern University,EDU-PRV,private,private,easternuni.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Manarat International University,EDU-PRV,private,private,manarat.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Uttara University,EDU-PRV,private,private,uttarauniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Information Technology and Sciences,EDU-PRV,private,private,uits.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Northern University Bangladesh,EDU-PRV,private,private,nub.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Primeasia University,EDU-PRV,private,private,primeasia.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-World University of Bangladesh,EDU-PRV,private,private,wub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh University,EDU-PRV,private,private,bu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Prime University,EDU-PRV,private,private,primeuniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Dhaka International University,EDU-PRV,private,private,diu.ac,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,UGC flag * (unapproved campus),script-checked 2026-11-27 + browser,WEBSITE DOWN: 503 in script and browser (also on the page Google lists); domain confirmed via Google; DNS still measurable,domestic
-Canadian University of Bangladesh,EDU-PRV,private,private,cub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Central Women's University,EDU-PRV,private,private,cwu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Presidency University,EDU-PRV,private,private,pu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Royal University of Dhaka,EDU-PRV,private,private,royal.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Sonargaon University,EDU-PRV,private,private,su.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Shanto-Mariam University of Creative Technology,EDU-PRV,private,private,smuct.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-European University of Bangladesh,EDU-PRV,private,private,eub.edu.bd,UGC flag ***,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Fareast International University,EDU-PRV,private,private,fiu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-IUBAT,EDU-PRV,private,private,iubat.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Atish Dipankar University of Science and Technology,EDU-PRV,private,private,adust.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Bangladesh Islami University,EDU-PRV,private,private,biu.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-City University,EDU-PRV,private,private,cityuniversity.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Gono Bishwabidyalay,EDU-PRV,private,private,gonouniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Leading University,EDU-PRV,private,private,lus.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Metropolitan University,EDU-PRV,private,private,metrouni.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-North East University Bangladesh,EDU-PRV,private,private,neub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Sylhet International University,EDU-PRV,private,private,siu.edu.bd,name uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-International Islamic University Chittagong,EDU-PRV,private,private,iiuc.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Premier University Chittagong,EDU-PRV,private,private,puc.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Southern University Bangladesh,EDU-PRV,private,private,southern.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Science and Technology Chittagong,EDU-PRV,private,private,ustc.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-East Delta University,EDU-PRV,private,private,eastdelta.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-BGC Trust University Bangladesh,EDU-PRV,private,private,bgctub.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Port City International University,EDU-PRV,private,private,portcity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Chittagong Independent University,EDU-PRV,private,private,ciu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Varendra University,EDU-PRV,private,private,vu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-North Bengal International University,EDU-PRV,private,private,nbiu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Khwaja Yunus Ali University,EDU-PRV,private,private,kyau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Northern University of Business and Technology Khulna,EDU-PRV,private,private,nubtkhulna.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Khulna Khan Bahadur Ahsanullah University,EDU-PRV,private,private,kkbau.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Feni University,EDU-PRV,private,private,feniuniversity.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Britannia University,EDU-PRV,private,private,britannia.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-University of Creative Technology Chittagong,EDU-PRV,private,private,uctc.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-ZH Sikder University of Science and Technology,EDU-PRV,private,private,zhsust.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Times University Bangladesh,EDU-PRV,private,private,timesuniversitybd.com,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Ishakha International University,EDU-PRV,private,private,ishakha.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
+institution,sector,subtype,ownership,candidate_domain,notes,verification,verification_note,analysis_group,ugc_sl
+University of Dhaka,EDU-PUB,general,public,du.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Rajshahi,EDU-PUB,general,public,ru.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Chittagong,EDU-PUB,general,public,cu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Jahangirnagar University,EDU-PUB,general,public,juniv.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Islamic University Kushtia,EDU-PUB,general,public,iu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Jagannath University,EDU-PUB,general,public,jnu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Comilla University,EDU-PUB,general,public,cou.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Jatiya Kabi Kazi Nazrul Islam University,EDU-PUB,general,public,jkkniu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Begum Rokeya University Rangpur,EDU-PUB,general,public,brur.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Barishal,EDU-PUB,general,public,bu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Khulna University,EDU-PUB,general,public,ku.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Rabindra University Bangladesh,EDU-PUB,general,public,rub.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+National University,EDU-PUB,affiliating,public,nu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh Open University,EDU-PUB,open,public,bou.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Islamic Arabic University,EDU-PUB,affiliating,public,iau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh University of Engineering and Technology,EDU-PUB,engineering,public,buet.ac.bd,,script-checked 2026-11-27 + browser,browser: opens; script error was a malformed response header (illegal header line),domestic,
+Chittagong University of Engineering and Technology,EDU-PUB,engineering,public,cuet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Rajshahi University of Engineering and Technology,EDU-PUB,engineering,public,ruet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Khulna University of Engineering and Technology,EDU-PUB,engineering,public,kuet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Dhaka University of Engineering and Technology,EDU-PUB,engineering,public,duet.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh University of Textiles,EDU-PUB,engineering,public,butex.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Shahjalal University of Science and Technology,EDU-PUB,science & technology,public,sust.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Hajee Mohammad Danesh Science and Technology University,EDU-PUB,science & technology,public,hstu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Mawlana Bhashani Science and Technology University,EDU-PUB,science & technology,public,mbstu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Patuakhali Science and Technology University,EDU-PUB,science & technology,public,pstu.ac.bd,,script-checked 2026-11-27 + browser,"WEBSITE MISCONFIGURED: empty directory listing (""Index of /"") in script and browser, with and without www; Google confirms domain; DNS still measurable",domestic,
+Noakhali Science and Technology University,EDU-PUB,science & technology,public,nstu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Jashore University of Science and Technology,EDU-PUB,science & technology,public,just.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Pabna University of Science and Technology,EDU-PUB,science & technology,public,pust.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Gopalganj Science and Technology University,EDU-PUB,science & technology,public,gstu.edu.bd,renamed 2025 (formerly Bangabandhu Sheikh Mujibur Rahman STU); CHECK new domain,script-checked 2026-11-27 + browser,corrected after 2025 renaming (Gopalganj STU); OLD DOMAIN bsmrstu.edu.bd NO LONGER RESOLVES (legacy-domain risk),domestic,
+Rangamati Science and Technology University,EDU-PUB,science & technology,public,rmstu.ac.bd,domain uncertain,script-checked 2026-11-27 + browser,corrected (.ac.bd),domestic,
+Chandpur Science and Technology University,EDU-PUB,science & technology,public,cstu.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Jamalpur Science and Technology University,EDU-PUB,science & technology,public,jstu.ac.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Sunamganj Science and Technology University,EDU-PUB,science & technology,public,sstu.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh Agricultural University,EDU-PUB,agriculture,public,bau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Gazipur Agricultural University,EDU-PUB,agriculture,public,bsmrau.edu.bd,renamed 2025 (formerly BSMRAU); CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Sher-e-Bangla Agricultural University,EDU-PUB,agriculture,public,sau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Sylhet Agricultural University,EDU-PUB,agriculture,public,sau.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Chittagong Veterinary and Animal Sciences University,EDU-PUB,agriculture,public,cvasu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Khulna Agricultural University,EDU-PUB,agriculture,public,kau.ac.bd,domain uncertain,script-checked 2026-11-27 + browser,corrected (.ac.bd),domestic,
+Habiganj Agricultural University,EDU-PUB,agriculture,public,hau.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh Medical University,EDU-PUB,medical,public,bsmmu.ac.bd,renamed 2025 (formerly BSMMU); CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Rajshahi Medical University,EDU-PUB,medical,public,rmu.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Chittagong Medical University,EDU-PUB,medical,public,cmu.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Sylhet Medical University,EDU-PUB,medical,public,smu.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh University of Professionals,EDU-PUB,professional,public,bup.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh Maritime University,EDU-PUB,professional,public,bsmrmu.edu.bd,renamed 2025; CHECK new domain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Aviation and Aerospace University Bangladesh,EDU-PUB,professional,public,aaub.edu.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Frontier Technology Bangladesh (formerly Digital University Bangladesh),EDU-PUB,professional,public,bdu.ac.bd,renamed 2025; domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh Army University of Engineering and Technology,EDU-PRV,engineering,private,bauet.ac.bd,UGC lists as private (army-run trust),script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Military Institute of Science and Technology,EDU-PUB,engineering,public,mist.ac.bd,institute affiliated with BUP; CHECK whether UGC lists it,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+North South University,EDU-PRV,private,private,northsouth.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+BRAC University,EDU-PRV,private,private,bracu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Independent University Bangladesh,EDU-PRV,private,private,iub.ac.bd,,script-checked 2026-11-27 + browser,"corrected: website moved to iub.ac.bd (Google); old iub.edu.bd redirects to a Google sign-in page, i.e. still the Google Workspace MAIL domain",domestic,
+East West University,EDU-PRV,private,private,ewubd.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+American International University-Bangladesh,EDU-PRV,private,private,aiub.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+United International University,EDU-PRV,private,private,uiu.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Daffodil International University,EDU-PRV,private,private,daffodilvarsity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Ahsanullah University of Science and Technology,EDU-PRV,private,private,aust.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Liberal Arts Bangladesh,EDU-PRV,private,private,ulab.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Asian University of Bangladesh,EDU-PRV,private,private,aub.edu.bd,name/domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Asia Pacific,EDU-PRV,private,private,uap-bd.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Stamford University Bangladesh,EDU-PRV,private,private,stamforduniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+State University of Bangladesh,EDU-PRV,private,private,sub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Southeast University,EDU-PRV,private,private,seu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Green University of Bangladesh,EDU-PRV,private,private,green.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh University of Business and Technology,EDU-PRV,private,private,bubt.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Eastern University,EDU-PRV,private,private,easternuni.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Manarat International University,EDU-PRV,private,private,manarat.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Uttara University,EDU-PRV,private,private,uttarauniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Information Technology and Sciences,EDU-PRV,private,private,uits.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Northern University Bangladesh,EDU-PRV,private,private,nub.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Primeasia University,EDU-PRV,private,private,primeasia.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+World University of Bangladesh,EDU-PRV,private,private,wub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh University,EDU-PRV,private,private,bu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Prime University,EDU-PRV,private,private,primeuniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Dhaka International University,EDU-PRV,private,private,diu.ac,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,UGC flag * (unapproved campus),script-checked 2026-11-27 + browser,WEBSITE DOWN: 503 in script and browser (also on the page Google lists); domain confirmed via Google; DNS still measurable,domestic,
+Canadian University of Bangladesh,EDU-PRV,private,private,cub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Central Women's University,EDU-PRV,private,private,cwu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Presidency University,EDU-PRV,private,private,pu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Royal University of Dhaka,EDU-PRV,private,private,royal.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Sonargaon University,EDU-PRV,private,private,su.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Shanto-Mariam University of Creative Technology,EDU-PRV,private,private,smuct.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+European University of Bangladesh,EDU-PRV,private,private,eub.edu.bd,UGC flag ***,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Fareast International University,EDU-PRV,private,private,fiu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+IUBAT,EDU-PRV,private,private,iubat.edu,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Atish Dipankar University of Science and Technology,EDU-PRV,private,private,adust.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Bangladesh Islami University,EDU-PRV,private,private,biu.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+City University,EDU-PRV,private,private,cityuniversity.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Gono Bishwabidyalay,EDU-PRV,private,private,gonouniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Leading University,EDU-PRV,private,private,lus.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Metropolitan University,EDU-PRV,private,private,metrouni.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+North East University Bangladesh,EDU-PRV,private,private,neub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Sylhet International University,EDU-PRV,private,private,siu.edu.bd,name uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+International Islamic University Chittagong,EDU-PRV,private,private,iiuc.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Premier University Chittagong,EDU-PRV,private,private,puc.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Southern University Bangladesh,EDU-PRV,private,private,southern.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Science and Technology Chittagong,EDU-PRV,private,private,ustc.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+East Delta University,EDU-PRV,private,private,eastdelta.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+BGC Trust University Bangladesh,EDU-PRV,private,private,bgctub.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Port City International University,EDU-PRV,private,private,portcity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Chittagong Independent University,EDU-PRV,private,private,ciu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Varendra University,EDU-PRV,private,private,vu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+North Bengal International University,EDU-PRV,private,private,nbiu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Khwaja Yunus Ali University,EDU-PRV,private,private,kyau.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Northern University of Business and Technology Khulna,EDU-PRV,private,private,nubtkhulna.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Khulna Khan Bahadur Ahsanullah University,EDU-PRV,private,private,kkbau.ac.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Feni University,EDU-PRV,private,private,feniuniversity.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Britannia University,EDU-PRV,private,private,britannia.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+University of Creative Technology Chittagong,EDU-PRV,private,private,uctc.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+ZH Sikder University of Science and Technology,EDU-PRV,private,private,zhsust.ac.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Times University Bangladesh,EDU-PRV,private,private,timesuniversitybd.com,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+Ishakha International University,EDU-PRV,private,private,ishakha.edu.bd,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic,
+The People's University of Bangladesh,EDU-PRV,private,private,pub.ac.bd,domain from UGC list; UGC flag *,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list; UGC flag *,domestic,12
+University of Development Alternative,EDU-PRV,private,private,uoda.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,21
+Pundra University of Science & Technology,EDU-PRV,private,private,pundrauniversity.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,32
+The Millennium University,EDU-PRV,private,private,themillenniumuniversity.edu.bd,browser: opens (www); script DNS failure transient,UGC list 2026-11-28 + script/browser check 2026-11-28,browser: opens (www); script DNS failure transient,domestic,35
+University of South Asia,EDU-PRV,private,private,southasiauni.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,40
+ASA University Bangladesh,EDU-PRV,private,private,asaub.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,50
+Hamdard University Bangladesh,EDU-PRV,private,private,hamdarduniversity.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,54
+BGMEA University of Fashion & Technology(BUFT),EDU-PRV,private,private,buft.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,55
+First Capital University of Bangladesh,EDU-PRV,private,private,fcub.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,57
+"Exim Bank Agricultural University, Bangladesh",EDU-PRV,private,private,ebaub.ac.bd,corrected via Google; UGC list gives non-existent ebaub.edu.bd,UGC list 2026-11-28 + script/browser check 2026-11-28,corrected via Google; UGC list gives non-existent ebaub.edu.bd,domestic,60
+North Western University,EDU-PRV,private,private,nwu.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,61
+Bangladesh University of Health Sciences,EDU-PRV,private,private,buhs.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,67
+Notre Dame University Bangladesh,EDU-PRV,private,private,ndub.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,69
+"Rajshahi Science & Technology University (RSTU), Natore",EDU-PRV,private,private,rstu.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,73
+Brahmaputra International University,EDU-PRV,private,private,briu.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,74
+Cox's Bazar International University,EDU-PRV,private,private,cbiu.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,75
+R. P. Shaha University,EDU-PRV,private,private,rpsu.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,76
+German University Bangladesh,EDU-PRV,private,private,gub.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,77
+Global University Bangladesh,EDU-PRV,private,private,globaluniversity.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,78
+CCN University of Science & Technology,EDU-PRV,private,private,ccnust.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,79
+"Bangladesh Army University of Science and Technology (BAUST), Saidpur",EDU-PRV,private,private,baust.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,80
+"Bangladesh Army International University of Science & Technology(BAIUST) ,Comilla",EDU-PRV,private,private,baiust.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,82
+University of Scholars,EDU-PRV,private,private,ius.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,83
+N.P.I University of Bangladesh,EDU-PRV,private,private,npiub.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,85
+"Rabindra Maitree University, Kushtia",EDU-PRV,private,private,rmu.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,87
+Central University of Science and Technology,EDU-PRV,private,private,cust.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,89
+"Tagore University of Creative Arts, Uttara, Dhaka, Bangladesh",EDU-PRV,private,private,tuca.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,90
+University of Global Village,EDU-PRV,private,private,ugv.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,91
+Rupayan A.K.M Shamsuzzoha University,EDU-PRV,private,private,rakmsu-ac-bd.org,found via Google; NOTE look-alike of .ac.bd (actually .org),UGC list 2026-11-28 + script/browser check 2026-11-28,found via Google; NOTE look-alike of .ac.bd (actually .org),domestic,92
+Anwer Khan Modern University,EDU-PRV,private,private,akmu.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,93
+ZNRF University of Management Sciences,EDU-PRV,private,private,zums.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,94
+Ahsania Mission University of Science and Technology,EDU-PRV,private,private,amust.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,95
+Bandarban University,EDU-PRV,private,private,bubban.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,97
+"Shah Makhdum Management University, Rajshahi",EDU-PRV,private,private,smmuniversity.ac,found via Google; .ac = Ascension Island ccTLD,UGC list 2026-11-28 + script/browser check 2026-11-28,found via Google; .ac = Ascension Island ccTLD,domestic,98
+"Trust University, Barishal",EDU-PRV,private,private,trustuniversity.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,99
+University of Brahmanbaria,EDU-PRV,private,private,uob.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,101
+University of Skill Enrichment and Technology,EDU-PRV,private,private,uset.ac,corrected via Google; UGC list gives non-existent uset.ac.bd; .ac = Ascension Island ccTLD,UGC list 2026-11-28 + script/browser check 2026-11-28,corrected via Google; UGC list gives non-existent uset.ac.bd; .ac = Ascension Island ccTLD,domestic,102
+R.T.M Al-Kabir Technical University,EDU-PRV,private,private,rtm-aktu.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,104
+Dr. Momtaz Begum University of Science and Technology (MUST),EDU-PRV,private,private,must.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,105
+Chattogram BGMEA University of Fashion and Technology,EDU-PRV,private,private,cbuft.edu.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,106
+"Bangladesh Army University of Science and Technology, Khulna",EDU-PRV,private,private,baustkhulna.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,107
+"Teesta University, Rangpur",EDU-PRV,private,private,teestauniversity.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,108
+Lalon University of Science and Arts,EDU-PRV,private,private,lusa.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,110
+Grameen University,EDU-PRV,private,private,grameenu.ac,found via Google; .ac = Ascension Island ccTLD,UGC list 2026-11-28 + script/browser check 2026-11-28,found via Google; .ac = Ascension Island ccTLD,domestic,112
+IBAIS University,EDU-PRV,private,private,ibaisuniversity.org,found via Google; UGC flag ***,UGC list 2026-11-28 + script/browser check 2026-11-28,found via Google; UGC flag ***,domestic,113
+Queens University,EDU-PRV,private,private,queensuniversity.edu.bd,found via Google; UGC flag **,UGC list 2026-11-28 + script/browser check 2026-11-28,found via Google; UGC flag **,domestic,115
+America Bangladesh University,EDU-PRV,private,private,americabangladeshuniversity.education,found via Google; generic .education TLD; UGC flag ***,UGC list 2026-11-28 + script/browser check 2026-11-28,found via Google; generic .education TLD; UGC flag ***,domestic,116
+International Standard University,EDU-PRV,private,private,isu.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,100
+International Islami University of Science and Technology Bangladesh (IIUSTB),EDU-PRV,private,private,iiustb.ac.bd,domain from UGC list,UGC list 2026-11-28 + script/browser check 2026-11-28,domain from UGC list,domestic,109

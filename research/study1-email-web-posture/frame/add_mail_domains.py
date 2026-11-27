@@ -80,7 +80,11 @@ def main(code: str) -> None:
     decisions = load_decisions()
     alternates = load_alternates()
     frame = list(csv.DictReader(open(f"frame_{code}_v1.csv", encoding="utf-8-sig")))
-    checked = {r["candidate_domain"]: r for r in csv.DictReader(open(f"checked_{code}.csv", encoding="utf-8-sig"))}
+    import glob
+    checked = {}
+    for path in sorted(glob.glob(f"checked_{code}*.csv")):   # e.g. checked_EDU.csv + checked_EDU2.csv
+        for row in csv.DictReader(open(path, encoding="utf-8-sig")):
+            checked.setdefault(row["candidate_domain"], row)
     out = []
     print(f"{'institution':40} {'web domain':26} -> mail domain(s) / notes")
     for r in frame:
