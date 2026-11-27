@@ -1,0 +1,105 @@
+institution,sector,subtype,ownership,candidate_domain,notes,country,verification,verification_note,analysis_group
+Reserve Bank of India,BENCH-FIN,central bank,public,rbi.org.in,,IN,script-checked 2026-11-28,,benchmark
+State Bank of India,BENCH-FIN,top-10 bank,public,sbi.co.in,,IN,script-checked 2026-11-28,,benchmark
+HDFC Bank,BENCH-FIN,top-10 bank,private,hdfcbank.com,,IN,script-checked 2026-11-28,,benchmark
+ICICI Bank,BENCH-FIN,top-10 bank,private,icicibank.com,,IN,script-checked 2026-11-28,,benchmark
+Bank of Baroda,BENCH-FIN,top-10 bank,public,bankofbaroda.in,,IN,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Punjab National Bank,BENCH-FIN,top-10 bank,public,pnbindia.in,,IN,script-checked 2026-11-28,,benchmark
+Axis Bank,BENCH-FIN,top-10 bank,private,axisbank.com,,IN,script-checked 2026-11-28,,benchmark
+Canara Bank,BENCH-FIN,top-10 bank,public,canarabank.com,,IN,script-checked 2026-11-28,,benchmark
+Union Bank of India,BENCH-FIN,top-10 bank,public,unionbankofindia.co.in,,IN,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Kotak Mahindra Bank,BENCH-FIN,top-10 bank,private,kotak.com,,IN,script-checked 2026-11-28,,benchmark
+Bank of India,BENCH-FIN,top-10 bank,public,bankofindia.co.in,,IN,script-checked 2026-11-28,,benchmark
+Ministry of Finance (India),BENCH-GOV,ministry,public,finmin.gov.in,,IN,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Ministry of Home Affairs (India),BENCH-GOV,ministry,public,mha.gov.in,,IN,script-checked 2026-11-28,,benchmark
+Ministry of External Affairs (India),BENCH-GOV,ministry,public,mea.gov.in,,IN,script-checked 2026-11-28,,benchmark
+Ministry of Electronics and IT (India),BENCH-GOV,ministry,public,meity.gov.in,,IN,script-checked 2026-11-28,,benchmark
+Ministry of Health and Family Welfare (India),BENCH-GOV,ministry,public,mohfw.gov.in,,IN,script-checked 2026-11-28,,benchmark
+Indian Institute of Science,BENCH-EDU,top-10 university,public,iisc.ac.in,,IN,script-checked 2026-11-28,,benchmark
+Jawaharlal Nehru University,BENCH-EDU,top-10 university,public,jnu.ac.in,,IN,script-checked 2026-11-28,,benchmark
+Jamia Millia Islamia,BENCH-EDU,top-10 university,public,jmi.ac.in,,IN,script-checked 2026-11-28,,benchmark
+Manipal Academy of Higher Education,BENCH-EDU,top-10 university,private,manipal.edu,,IN,script-checked 2026-11-28,,benchmark
+Banaras Hindu University,BENCH-EDU,top-10 university,public,bhu.ac.in,,IN,script-checked 2026-11-28,,benchmark
+University of Delhi,BENCH-EDU,top-10 university,public,du.ac.in,,IN,script-checked 2026-11-28,,benchmark
+Amrita Vishwa Vidyapeetham,BENCH-EDU,top-10 university,private,amrita.edu,,IN,script-checked 2026-11-28,,benchmark
+Aligarh Muslim University,BENCH-EDU,top-10 university,public,amu.ac.in,,IN,script-checked 2026-11-28,,benchmark
+Jadavpur University,BENCH-EDU,top-10 university,public,jadavpuruniversity.in,,IN,script-checked 2026-11-28,,benchmark
+Vellore Institute of Technology,BENCH-EDU,top-10 university,private,vit.ac.in,,IN,script-checked 2026-11-28,,benchmark
+State Bank of Pakistan,BENCH-FIN,central bank,public,sbp.org.pk,,PK,script-checked 2026-11-28,temporary DNS failure (WSATRY_AGAIN) during check; well-known official domain kept,benchmark
+Habib Bank Limited,BENCH-FIN,top-10 bank,private,hbl.com,,PK,script-checked 2026-11-28,,benchmark
+National Bank of Pakistan,BENCH-FIN,top-10 bank,public,nbp.com.pk,,PK,script-checked 2026-11-28,,benchmark
+United Bank Limited,BENCH-FIN,top-10 bank,private,ubldigital.com,domain uncertain,PK,script-checked 2026-11-28,,benchmark
+MCB Bank,BENCH-FIN,top-10 bank,private,mcb.com.pk,,PK,script-checked 2026-11-28,,benchmark
+Meezan Bank,BENCH-FIN,top-10 bank,private,meezanbank.com,,PK,script-checked 2026-11-28,,benchmark
+Bank Alfalah,BENCH-FIN,top-10 bank,private,bankalfalah.com,,PK,script-checked 2026-11-28,,benchmark
+Allied Bank,BENCH-FIN,top-10 bank,private,abl.com,,PK,script-checked 2026-11-28,,benchmark
+Bank Al Habib,BENCH-FIN,top-10 bank,private,bankalhabib.com,,PK,script-checked 2026-11-28,,benchmark
+Askari Bank,BENCH-FIN,top-10 bank,private,askaribank.com,,PK,script-checked 2026-11-28,,benchmark
+Faysal Bank,BENCH-FIN,top-10 bank,private,faysalbank.com,,PK,script-checked 2026-11-28,,benchmark
+Finance Division (Pakistan),BENCH-GOV,ministry,public,finance.gov.pk,,PK,script-checked 2026-11-28,,benchmark
+Ministry of Interior (Pakistan),BENCH-GOV,ministry,public,interior.gov.pk,,PK,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Ministry of Foreign Affairs (Pakistan),BENCH-GOV,ministry,public,mofa.gov.pk,,PK,script-checked 2026-11-28,,benchmark
+Ministry of IT and Telecommunication (Pakistan),BENCH-GOV,ministry,public,moitt.gov.pk,,PK,script-checked 2026-11-28,,benchmark
+Ministry of National Health Services (Pakistan),BENCH-GOV,ministry,public,nhsrc.gov.pk,,PK,script-checked 2026-11-28,,benchmark
+Quaid-i-Azam University,BENCH-EDU,top-10 university,public,qau.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+National University of Sciences and Technology,BENCH-EDU,top-10 university,public,nust.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+Lahore University of Management Sciences,BENCH-EDU,top-10 university,private,lums.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+COMSATS University Islamabad,BENCH-EDU,top-10 university,public,comsats.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+University of Engineering and Technology Lahore,BENCH-EDU,top-10 university,public,uet.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+University of the Punjab,BENCH-EDU,top-10 university,public,pu.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+Aga Khan University,BENCH-EDU,top-10 university,private,aku.edu,,PK,script-checked 2026-11-28,,benchmark
+University of Agriculture Faisalabad,BENCH-EDU,top-10 university,public,uaf.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+PIEAS,BENCH-EDU,top-10 university,public,pieas.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+University of Karachi,BENCH-EDU,top-10 university,public,uok.edu.pk,,PK,script-checked 2026-11-28,,benchmark
+Central Bank of Sri Lanka,BENCH-FIN,central bank,public,cbsl.gov.lk,,LK,script-checked 2026-11-28,,benchmark
+Bank of Ceylon,BENCH-FIN,top-10 bank,public,boc.lk,,LK,script-checked 2026-11-28,,benchmark
+People's Bank,BENCH-FIN,top-10 bank,public,peoplesbank.lk,,LK,script-checked 2026-11-28,,benchmark
+Commercial Bank of Ceylon,BENCH-FIN,top-10 bank,private,combank.lk,,LK,script-checked 2026-11-28,,benchmark
+Hatton National Bank,BENCH-FIN,top-10 bank,private,hnb.lk,domain uncertain,LK,script-checked 2026-11-28,,benchmark
+Sampath Bank,BENCH-FIN,top-10 bank,private,sampath.lk,,LK,script-checked 2026-11-28,,benchmark
+Seylan Bank,BENCH-FIN,top-10 bank,private,seylan.lk,,LK,script-checked 2026-11-28,,benchmark
+National Savings Bank,BENCH-FIN,top-10 bank,public,nsb.lk,,LK,script-checked 2026-11-28,,benchmark
+National Development Bank,BENCH-FIN,top-10 bank,private,ndbbank.com,,LK,script-checked 2026-11-28,,benchmark
+DFCC Bank,BENCH-FIN,top-10 bank,private,dfcc.lk,,LK,script-checked 2026-11-28,,benchmark
+Nations Trust Bank,BENCH-FIN,top-10 bank,private,nationstrust.com,,LK,script-checked 2026-11-28,,benchmark
+Ministry of Finance (Sri Lanka),BENCH-GOV,ministry,public,treasury.gov.lk,domain uncertain,LK,script-checked 2026-11-28,,benchmark
+Ministry of Defence (Sri Lanka),BENCH-GOV,ministry,public,defence.lk,,LK,script-checked 2026-11-28,,benchmark
+Ministry of Foreign Affairs (Sri Lanka),BENCH-GOV,ministry,public,mfa.gov.lk,,LK,script-checked 2026-11-28,,benchmark
+Ministry of Digital Economy (Sri Lanka),BENCH-GOV,ministry,public,mode.gov.lk,domain uncertain,LK,script-checked 2026-11-28,,benchmark
+Ministry of Health (Sri Lanka),BENCH-GOV,ministry,public,health.gov.lk,,LK,script-checked 2026-11-28,,benchmark
+University of Colombo,BENCH-EDU,top-10 university,public,cmb.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+University of Peradeniya,BENCH-EDU,top-10 university,public,pdn.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+University of Moratuwa,BENCH-EDU,top-10 university,public,mrt.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+University of Sri Jayewardenepura,BENCH-EDU,top-10 university,public,sjp.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+University of Kelaniya,BENCH-EDU,top-10 university,public,kln.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+University of Ruhuna,BENCH-EDU,top-10 university,public,ruh.ac.lk,,LK,script-checked 2026-11-28,"PENDING: homepage title ""The Tudors"" - check for defacement/template",benchmark
+University of Jaffna,BENCH-EDU,top-10 university,public,jfn.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+Open University of Sri Lanka,BENCH-EDU,top-10 university,public,ou.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+Rajarata University of Sri Lanka,BENCH-EDU,top-10 university,public,rjt.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+Eastern University Sri Lanka,BENCH-EDU,top-10 university,public,esn.ac.lk,,LK,script-checked 2026-11-28,,benchmark
+Nepal Rastra Bank,BENCH-FIN,central bank,public,nrb.org.np,,NP,script-checked 2026-11-28,,benchmark
+NIC Asia Bank,BENCH-FIN,top-10 bank,private,nicasiabank.com,,NP,script-checked 2026-11-28,,benchmark
+Global IME Bank,BENCH-FIN,top-10 bank,private,globalimebank.com,,NP,script-checked 2026-11-28,,benchmark
+Nabil Bank,BENCH-FIN,top-10 bank,private,nabilbank.com,,NP,script-checked 2026-11-28,,benchmark
+Rastriya Banijya Bank,BENCH-FIN,top-10 bank,public,rbb.com.np,,NP,script-checked 2026-11-28,,benchmark
+Nepal Bank,BENCH-FIN,top-10 bank,public,nepalbank.com.np,,NP,script-checked 2026-11-28,,benchmark
+Agricultural Development Bank Nepal,BENCH-FIN,top-10 bank,public,adbl.gov.np,,NP,script-checked 2026-11-28,,benchmark
+Himalayan Bank,BENCH-FIN,top-10 bank,private,himalayanbank.com,,NP,script-checked 2026-11-28,,benchmark
+Kumari Bank,BENCH-FIN,top-10 bank,private,kumaribank.com,,NP,script-checked 2026-11-28,,benchmark
+Prabhu Bank,BENCH-FIN,top-10 bank,private,prabhubank.com,,NP,script-checked 2026-11-28,,benchmark
+NMB Bank,BENCH-FIN,top-10 bank,private,nmb.com.np,,NP,script-checked 2026-11-28,,benchmark
+Ministry of Finance (Nepal),BENCH-GOV,ministry,public,mof.gov.np,,NP,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Ministry of Home Affairs (Nepal),BENCH-GOV,ministry,public,moha.gov.np,,NP,script-checked 2026-11-28,,benchmark
+Ministry of Foreign Affairs (Nepal),BENCH-GOV,ministry,public,mofa.gov.np,,NP,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Ministry of Communication and IT (Nepal),BENCH-GOV,ministry,public,mocit.gov.np,,NP,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Ministry of Health and Population (Nepal),BENCH-GOV,ministry,public,mohp.gov.np,,NP,script-checked 2026-11-28,"WEBSITE UNREACHABLE from Bangladesh vantage point (timeout/503/404, likely geo-blocking or shared hosting); well-known official domain kept; DNS still measurable",benchmark
+Tribhuvan University,BENCH-EDU,top-10 university,public,tu.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Kathmandu University,BENCH-EDU,top-10 university,public,ku.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Pokhara University,BENCH-EDU,top-10 university,public,pu.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Purbanchal University,BENCH-EDU,top-10 university,public,purbanchaluniversity.edu.np,domain uncertain,NP,script-checked 2026-11-28,,benchmark
+B.P. Koirala Institute of Health Sciences,BENCH-EDU,top-10 university,public,bpkihs.edu,,NP,script-checked 2026-11-28,,benchmark
+Agriculture and Forestry University,BENCH-EDU,top-10 university,public,afu.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Mid-West University,BENCH-EDU,top-10 university,public,mu.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Far-western University,BENCH-EDU,top-10 university,public,fwu.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Nepal Open University,BENCH-EDU,top-10 university,public,nou.edu.np,,NP,script-checked 2026-11-28,,benchmark
+Lumbini Buddhist University,BENCH-EDU,top-10 university,public,lbu.edu.np,,NP,script-checked 2026-11-28,,benchmark
