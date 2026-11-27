@@ -24,7 +24,7 @@ The full gap analysis is in `gap_analysis.md`.
 | | Question | Hypothesis (direction fixed in advance) |
 |---|---|---|
 | **RQ1** | What share of Bangladeshi institutional domains are **spoofable** (§6.1), overall and by sector? What share lack HTTPS, accept outdated TLS, lack HSTS or lack DNSSEC? | Descriptive. No hypothesis |
-| **RQ2** | What predicts being spoofable? | **H1** Financial-sector domains (banks, MFS/PSPs) are *less* likely to be spoofable than universities and hospitals. **H2** Domains whose mail is run by a large managed provider (Google, Microsoft) are *less* likely to be spoofable than self-hosted or local-provider mail. **H3** Private institutions are less likely to be spoofable than public ones *within* the same sector. |
+| **RQ2** | What predicts being spoofable? | **H1** Financial-sector domains (banks, MFS/PSPs) are *less* likely to be spoofable than universities. **H2** Domains whose mail is run by a large managed provider (Google, Microsoft) are *less* likely to be spoofable than self-hosted or local-provider mail. **H3** Private institutions are less likely to be spoofable than public ones *within* the same sector. |
 | **RQ3** | How does Bangladesh compare with India, Pakistan, Sri Lanka and Nepal on matched institution types? | **H4** Bangladesh's spoofable share for central bank plus top banks is *not lower* than the regional median. Two-sided test; the stated direction is our expectation, not a constraint |
 | **RQ4** (exploratory) | Are institutions with spoofable domains named more often in news-reported phishing or fraud (Paper 2 data)? | Exploratory. Descriptive only, no inferential claim |
 | **RQ5** (exploratory) | Where are DMARC reports sent: in Bangladesh, the US, elsewhere? | Exploratory. Extends Cesar et al. (2026) beyond government |
@@ -53,7 +53,12 @@ The full gap analysis is in `gap_analysis.md`.
 | MED | National daily newspapers and TV news | DFP media list (national dailies) plus TV channels with BTRC licences, if they have a website | ~80 |
 | ECOM | Large e-commerce and ride or food platforms | e-CAB members, top 50 by Tranco rank **[CHECK]** | ~50 |
 
-**Expected total: about 700–900 domains.** All source lists are downloaded and archived, with the download date, **before** measurement.
+**Scope decision (27 Nov 2026, before registration):** this study covers **finance (FIN-BANK, FIN-MFS), government (GOV-MIN, GOV-AGY) and universities (EDU-PUB, EDU-PRV)**, about 330 domains.
+- Excluded from this study: NBFIs, insurers, hospitals, telecoms, media and e-commerce. They are named as a planned extension.
+- **Reason:** a complete, verified frame for three sector groups is better than an incomplete one for twelve.
+- **Analysis consequence:** the RQ2 regression uses the sector groups finance / government / education. H1 compares finance with universities (hospitals are dropped from H1).
+
+The table above shows the original plan; only the six sectors listed are in scope. Original expected total: about 700–900 domains. All source lists are downloaded and archived, with the download date, **before** measurement.
 
 ### 4.2 Regional benchmark (RQ3)
 

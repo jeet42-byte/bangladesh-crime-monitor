@@ -1,0 +1,114 @@
+institution,sector,subtype,ownership,candidate_domain,notes
+University of Dhaka,EDU-PUB,general,public,du.ac.bd,
+University of Rajshahi,EDU-PUB,general,public,ru.ac.bd,
+University of Chittagong,EDU-PUB,general,public,cu.ac.bd,
+Jahangirnagar University,EDU-PUB,general,public,juniv.edu,
+Islamic University Kushtia,EDU-PUB,general,public,iu.ac.bd,
+Jagannath University,EDU-PUB,general,public,jnu.ac.bd,
+Comilla University,EDU-PUB,general,public,cou.ac.bd,
+Jatiya Kabi Kazi Nazrul Islam University,EDU-PUB,general,public,jkkniu.edu.bd,
+Begum Rokeya University Rangpur,EDU-PUB,general,public,brur.ac.bd,
+University of Barishal,EDU-PUB,general,public,bu.ac.bd,
+Khulna University,EDU-PUB,general,public,ku.ac.bd,
+Rabindra University Bangladesh,EDU-PUB,general,public,rub.ac.bd,domain uncertain
+National University,EDU-PUB,affiliating,public,nu.ac.bd,
+Bangladesh Open University,EDU-PUB,open,public,bou.ac.bd,
+Islamic Arabic University,EDU-PUB,affiliating,public,iau.edu.bd,
+Bangladesh University of Engineering and Technology,EDU-PUB,engineering,public,buet.ac.bd,
+Chittagong University of Engineering and Technology,EDU-PUB,engineering,public,cuet.ac.bd,
+Rajshahi University of Engineering and Technology,EDU-PUB,engineering,public,ruet.ac.bd,
+Khulna University of Engineering and Technology,EDU-PUB,engineering,public,kuet.ac.bd,
+Dhaka University of Engineering and Technology,EDU-PUB,engineering,public,duet.ac.bd,
+Bangladesh University of Textiles,EDU-PUB,engineering,public,butex.edu.bd,
+Shahjalal University of Science and Technology,EDU-PUB,science & technology,public,sust.edu,
+Hajee Mohammad Danesh Science and Technology University,EDU-PUB,science & technology,public,hstu.ac.bd,
+Mawlana Bhashani Science and Technology University,EDU-PUB,science & technology,public,mbstu.ac.bd,
+Patuakhali Science and Technology University,EDU-PUB,science & technology,public,pstu.ac.bd,
+Noakhali Science and Technology University,EDU-PUB,science & technology,public,nstu.edu.bd,
+Jashore University of Science and Technology,EDU-PUB,science & technology,public,just.edu.bd,
+Pabna University of Science and Technology,EDU-PUB,science & technology,public,pust.ac.bd,
+Gopalganj Science and Technology University,EDU-PUB,science & technology,public,bsmrstu.edu.bd,renamed 2025 (formerly Bangabandhu Sheikh Mujibur Rahman STU); CHECK new domain
+Rangamati Science and Technology University,EDU-PUB,science & technology,public,rmstu.edu.bd,domain uncertain
+Chandpur Science and Technology University,EDU-PUB,science & technology,public,cstu.ac.bd,domain uncertain
+Jamalpur Science and Technology University,EDU-PUB,science & technology,public,jstu.ac.bd,renamed 2025; domain uncertain
+Sunamganj Science and Technology University,EDU-PUB,science & technology,public,sstu.ac.bd,domain uncertain
+Bangladesh Agricultural University,EDU-PUB,agriculture,public,bau.edu.bd,
+Gazipur Agricultural University,EDU-PUB,agriculture,public,bsmrau.edu.bd,renamed 2025 (formerly BSMRAU); CHECK new domain
+Sher-e-Bangla Agricultural University,EDU-PUB,agriculture,public,sau.edu.bd,
+Sylhet Agricultural University,EDU-PUB,agriculture,public,sau.ac.bd,
+Chittagong Veterinary and Animal Sciences University,EDU-PUB,agriculture,public,cvasu.ac.bd,
+Khulna Agricultural University,EDU-PUB,agriculture,public,kau.edu.bd,domain uncertain
+Habiganj Agricultural University,EDU-PUB,agriculture,public,hau.ac.bd,domain uncertain
+Bangladesh Medical University,EDU-PUB,medical,public,bsmmu.ac.bd,renamed 2025 (formerly BSMMU); CHECK new domain
+Rajshahi Medical University,EDU-PUB,medical,public,rmu.edu.bd,domain uncertain
+Chittagong Medical University,EDU-PUB,medical,public,cmu.edu.bd,domain uncertain
+Sylhet Medical University,EDU-PUB,medical,public,smu.edu.bd,domain uncertain
+Bangladesh University of Professionals,EDU-PUB,professional,public,bup.edu.bd,
+Bangladesh Maritime University,EDU-PUB,professional,public,bsmrmu.edu.bd,renamed 2025; CHECK new domain
+Aviation and Aerospace University Bangladesh,EDU-PUB,professional,public,aaub.edu.bd,renamed 2025; domain uncertain
+Digital University Bangladesh,EDU-PUB,professional,public,bdu.ac.bd,renamed 2025; domain uncertain
+Bangladesh Army University of Engineering and Technology,EDU-PUB,engineering,public,bauet.ac.bd,army-run; CHECK UGC category
+Military Institute of Science and Technology,EDU-PUB,engineering,public,mist.ac.bd,institute affiliated with BUP; CHECK whether UGC lists it
+North South University,EDU-PRV,private,private,northsouth.edu,
+BRAC University,EDU-PRV,private,private,bracu.ac.bd,
+Independent University Bangladesh,EDU-PRV,private,private,iub.edu.bd,
+East West University,EDU-PRV,private,private,ewubd.edu,
+American International University-Bangladesh,EDU-PRV,private,private,aiub.edu,
+United International University,EDU-PRV,private,private,uiu.ac.bd,
+Daffodil International University,EDU-PRV,private,private,daffodilvarsity.edu.bd,
+Ahsanullah University of Science and Technology,EDU-PRV,private,private,aust.edu,
+University of Liberal Arts Bangladesh,EDU-PRV,private,private,ulab.edu.bd,
+Asian University of Bangladesh,EDU-PRV,private,private,aub.edu.bd,name/domain uncertain
+University of Asia Pacific,EDU-PRV,private,private,uap-bd.edu,
+Stamford University Bangladesh,EDU-PRV,private,private,stamforduniversity.edu.bd,
+State University of Bangladesh,EDU-PRV,private,private,sub.edu.bd,
+Southeast University,EDU-PRV,private,private,seu.edu.bd,
+Green University of Bangladesh,EDU-PRV,private,private,green.edu.bd,
+Bangladesh University of Business and Technology,EDU-PRV,private,private,bubt.edu.bd,
+Eastern University,EDU-PRV,private,private,easternuni.edu.bd,
+Manarat International University,EDU-PRV,private,private,manarat.ac.bd,
+Uttara University,EDU-PRV,private,private,uttarauniversity.edu.bd,
+University of Information Technology and Sciences,EDU-PRV,private,private,uits.edu.bd,
+Northern University Bangladesh,EDU-PRV,private,private,nub.ac.bd,
+Primeasia University,EDU-PRV,private,private,primeasia.edu.bd,
+World University of Bangladesh,EDU-PRV,private,private,wub.edu.bd,
+Bangladesh University,EDU-PRV,private,private,bu.edu.bd,
+Prime University,EDU-PRV,private,private,primeuniversity.edu.bd,
+Dhaka International University,EDU-PRV,private,private,diu.ac,domain uncertain
+Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,
+Canadian University of Bangladesh,EDU-PRV,private,private,cub.edu.bd,
+Central Women's University,EDU-PRV,private,private,cwu.edu.bd,
+Presidency University,EDU-PRV,private,private,pu.edu.bd,
+Royal University of Dhaka,EDU-PRV,private,private,royal.edu.bd,
+Sonargaon University,EDU-PRV,private,private,su.edu.bd,
+Shanto-Mariam University of Creative Technology,EDU-PRV,private,private,smuct.ac.bd,
+European University of Bangladesh,EDU-PRV,private,private,eub.edu.bd,
+Fareast International University,EDU-PRV,private,private,fiu.edu.bd,
+IUBAT,EDU-PRV,private,private,iubat.edu,
+Atish Dipankar University of Science and Technology,EDU-PRV,private,private,adust.edu.bd,
+Bangladesh Islami University,EDU-PRV,private,private,biu.ac.bd,domain uncertain
+City University,EDU-PRV,private,private,cityuniversity.ac.bd,
+Gono Bishwabidyalay,EDU-PRV,private,private,gonouniversity.edu.bd,
+Leading University,EDU-PRV,private,private,lus.ac.bd,
+Metropolitan University,EDU-PRV,private,private,metrouni.edu.bd,
+North East University Bangladesh,EDU-PRV,private,private,neub.edu.bd,
+Sylhet International University,EDU-PRV,private,private,siu.edu.bd,name uncertain
+International Islamic University Chittagong,EDU-PRV,private,private,iiuc.ac.bd,
+Premier University Chittagong,EDU-PRV,private,private,puc.ac.bd,
+Southern University Bangladesh,EDU-PRV,private,private,southern.edu.bd,
+University of Science and Technology Chittagong,EDU-PRV,private,private,ustc.ac.bd,
+East Delta University,EDU-PRV,private,private,eastdelta.edu.bd,
+BGC Trust University Bangladesh,EDU-PRV,private,private,bgctub.ac.bd,
+Port City International University,EDU-PRV,private,private,portcity.edu.bd,
+Chittagong Independent University,EDU-PRV,private,private,ciu.edu.bd,
+Varendra University,EDU-PRV,private,private,vu.edu.bd,
+North Bengal International University,EDU-PRV,private,private,nbiu.edu.bd,
+Khwaja Yunus Ali University,EDU-PRV,private,private,kyau.edu.bd,
+Northern University of Business and Technology Khulna,EDU-PRV,private,private,nubtkhulna.ac.bd,
+Khulna Khan Bahadur Ahsanullah University,EDU-PRV,private,private,kkbau.ac.bd,domain uncertain
+Feni University,EDU-PRV,private,private,feniuniversity.ac.bd,
+Britannia University,EDU-PRV,private,private,britannia.edu.bd,
+University of Creative Technology Chittagong,EDU-PRV,private,private,uctc.edu.bd,
+ZH Sikder University of Science and Technology,EDU-PRV,private,private,zhsust.ac.bd,
+Times University Bangladesh,EDU-PRV,private,private,timesuniversitybd.com,domain uncertain
+Ishakha International University,EDU-PRV,private,private,ishakha.edu.bd,domain uncertain
