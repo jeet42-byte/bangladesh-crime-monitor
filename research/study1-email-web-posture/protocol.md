@@ -215,6 +215,13 @@ Every other domain is **spoofable**: no DMARC, `p=none`, `pct` below 100, or an 
   2. Clearer reporting of web reachability (verified HTTPS / HTTPS with an invalid certificate / HTTP only / unreachable).
   3. Version numbers from script URLs are filtered out of the scraped contact domains.
 
+## 10b. Pre-registration status
+
+| Item | Status | Evidence to archive on OSF |
+|---|---|---|
+| Ethics | Reported as completed by the author, 27 Nov 2026 | Supervisor's reply / UIU decision **[ATTACH]** |
+| 20% frame check (§10) | Reported as completed by the author, 27 Nov 2026 | Completed `frame_check_20pct.xlsx` with the error rate **[ATTACH; error rate to be filled in from the sheet]** |
+
 ## 11. Deviations log
 
 | Date | Change | Reason |

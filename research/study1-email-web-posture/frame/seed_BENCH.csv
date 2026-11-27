@@ -1,0 +1,105 @@
+institution,sector,subtype,ownership,candidate_domain,notes,country
+Reserve Bank of India,BENCH-FIN,central bank,public,rbi.org.in,,IN
+State Bank of India,BENCH-FIN,top-10 bank,public,sbi.co.in,,IN
+HDFC Bank,BENCH-FIN,top-10 bank,private,hdfcbank.com,,IN
+ICICI Bank,BENCH-FIN,top-10 bank,private,icicibank.com,,IN
+Bank of Baroda,BENCH-FIN,top-10 bank,public,bankofbaroda.in,,IN
+Punjab National Bank,BENCH-FIN,top-10 bank,public,pnbindia.in,,IN
+Axis Bank,BENCH-FIN,top-10 bank,private,axisbank.com,,IN
+Canara Bank,BENCH-FIN,top-10 bank,public,canarabank.com,,IN
+Union Bank of India,BENCH-FIN,top-10 bank,public,unionbankofindia.co.in,,IN
+Kotak Mahindra Bank,BENCH-FIN,top-10 bank,private,kotak.com,,IN
+Bank of India,BENCH-FIN,top-10 bank,public,bankofindia.co.in,,IN
+Ministry of Finance (India),BENCH-GOV,ministry,public,finmin.gov.in,,IN
+Ministry of Home Affairs (India),BENCH-GOV,ministry,public,mha.gov.in,,IN
+Ministry of External Affairs (India),BENCH-GOV,ministry,public,mea.gov.in,,IN
+Ministry of Electronics and IT (India),BENCH-GOV,ministry,public,meity.gov.in,,IN
+Ministry of Health and Family Welfare (India),BENCH-GOV,ministry,public,mohfw.gov.in,,IN
+Indian Institute of Science,BENCH-EDU,top-10 university,public,iisc.ac.in,,IN
+Jawaharlal Nehru University,BENCH-EDU,top-10 university,public,jnu.ac.in,,IN
+Jamia Millia Islamia,BENCH-EDU,top-10 university,public,jmi.ac.in,,IN
+Manipal Academy of Higher Education,BENCH-EDU,top-10 university,private,manipal.edu,,IN
+Banaras Hindu University,BENCH-EDU,top-10 university,public,bhu.ac.in,,IN
+University of Delhi,BENCH-EDU,top-10 university,public,du.ac.in,,IN
+Amrita Vishwa Vidyapeetham,BENCH-EDU,top-10 university,private,amrita.edu,,IN
+Aligarh Muslim University,BENCH-EDU,top-10 university,public,amu.ac.in,,IN
+Jadavpur University,BENCH-EDU,top-10 university,public,jadavpuruniversity.in,,IN
+Vellore Institute of Technology,BENCH-EDU,top-10 university,private,vit.ac.in,,IN
+State Bank of Pakistan,BENCH-FIN,central bank,public,sbp.org.pk,,PK
+Habib Bank Limited,BENCH-FIN,top-10 bank,private,hbl.com,,PK
+National Bank of Pakistan,BENCH-FIN,top-10 bank,public,nbp.com.pk,,PK
+United Bank Limited,BENCH-FIN,top-10 bank,private,ubldigital.com,domain uncertain,PK
+MCB Bank,BENCH-FIN,top-10 bank,private,mcb.com.pk,,PK
+Meezan Bank,BENCH-FIN,top-10 bank,private,meezanbank.com,,PK
+Bank Alfalah,BENCH-FIN,top-10 bank,private,bankalfalah.com,,PK
+Allied Bank,BENCH-FIN,top-10 bank,private,abl.com,,PK
+Bank Al Habib,BENCH-FIN,top-10 bank,private,bankalhabib.com,,PK
+Askari Bank,BENCH-FIN,top-10 bank,private,askaribank.com,,PK
+Faysal Bank,BENCH-FIN,top-10 bank,private,faysalbank.com,,PK
+Finance Division (Pakistan),BENCH-GOV,ministry,public,finance.gov.pk,,PK
+Ministry of Interior (Pakistan),BENCH-GOV,ministry,public,interior.gov.pk,,PK
+Ministry of Foreign Affairs (Pakistan),BENCH-GOV,ministry,public,mofa.gov.pk,,PK
+Ministry of IT and Telecommunication (Pakistan),BENCH-GOV,ministry,public,moitt.gov.pk,,PK
+Ministry of National Health Services (Pakistan),BENCH-GOV,ministry,public,nhsrc.gov.pk,,PK
+Quaid-i-Azam University,BENCH-EDU,top-10 university,public,qau.edu.pk,,PK
+National University of Sciences and Technology,BENCH-EDU,top-10 university,public,nust.edu.pk,,PK
+Lahore University of Management Sciences,BENCH-EDU,top-10 university,private,lums.edu.pk,,PK
+COMSATS University Islamabad,BENCH-EDU,top-10 university,public,comsats.edu.pk,,PK
+University of Engineering and Technology Lahore,BENCH-EDU,top-10 university,public,uet.edu.pk,,PK
+University of the Punjab,BENCH-EDU,top-10 university,public,pu.edu.pk,,PK
+Aga Khan University,BENCH-EDU,top-10 university,private,aku.edu,,PK
+University of Agriculture Faisalabad,BENCH-EDU,top-10 university,public,uaf.edu.pk,,PK
+PIEAS,BENCH-EDU,top-10 university,public,pieas.edu.pk,,PK
+University of Karachi,BENCH-EDU,top-10 university,public,uok.edu.pk,,PK
+Central Bank of Sri Lanka,BENCH-FIN,central bank,public,cbsl.gov.lk,,LK
+Bank of Ceylon,BENCH-FIN,top-10 bank,public,boc.lk,,LK
+People's Bank,BENCH-FIN,top-10 bank,public,peoplesbank.lk,,LK
+Commercial Bank of Ceylon,BENCH-FIN,top-10 bank,private,combank.lk,,LK
+Hatton National Bank,BENCH-FIN,top-10 bank,private,hnb.lk,domain uncertain,LK
+Sampath Bank,BENCH-FIN,top-10 bank,private,sampath.lk,,LK
+Seylan Bank,BENCH-FIN,top-10 bank,private,seylan.lk,,LK
+National Savings Bank,BENCH-FIN,top-10 bank,public,nsb.lk,,LK
+National Development Bank,BENCH-FIN,top-10 bank,private,ndbbank.com,,LK
+DFCC Bank,BENCH-FIN,top-10 bank,private,dfcc.lk,,LK
+Nations Trust Bank,BENCH-FIN,top-10 bank,private,nationstrust.com,,LK
+Ministry of Finance (Sri Lanka),BENCH-GOV,ministry,public,treasury.gov.lk,domain uncertain,LK
+Ministry of Defence (Sri Lanka),BENCH-GOV,ministry,public,defence.lk,,LK
+Ministry of Foreign Affairs (Sri Lanka),BENCH-GOV,ministry,public,mfa.gov.lk,,LK
+Ministry of Digital Economy (Sri Lanka),BENCH-GOV,ministry,public,mode.gov.lk,domain uncertain,LK
+Ministry of Health (Sri Lanka),BENCH-GOV,ministry,public,health.gov.lk,,LK
+University of Colombo,BENCH-EDU,top-10 university,public,cmb.ac.lk,,LK
+University of Peradeniya,BENCH-EDU,top-10 university,public,pdn.ac.lk,,LK
+University of Moratuwa,BENCH-EDU,top-10 university,public,mrt.ac.lk,,LK
+University of Sri Jayewardenepura,BENCH-EDU,top-10 university,public,sjp.ac.lk,,LK
+University of Kelaniya,BENCH-EDU,top-10 university,public,kln.ac.lk,,LK
+University of Ruhuna,BENCH-EDU,top-10 university,public,ruh.ac.lk,,LK
+University of Jaffna,BENCH-EDU,top-10 university,public,jfn.ac.lk,,LK
+Open University of Sri Lanka,BENCH-EDU,top-10 university,public,ou.ac.lk,,LK
+Rajarata University of Sri Lanka,BENCH-EDU,top-10 university,public,rjt.ac.lk,,LK
+Eastern University Sri Lanka,BENCH-EDU,top-10 university,public,esn.ac.lk,,LK
+Nepal Rastra Bank,BENCH-FIN,central bank,public,nrb.org.np,,NP
+NIC Asia Bank,BENCH-FIN,top-10 bank,private,nicasiabank.com,,NP
+Global IME Bank,BENCH-FIN,top-10 bank,private,globalimebank.com,,NP
+Nabil Bank,BENCH-FIN,top-10 bank,private,nabilbank.com,,NP
+Rastriya Banijya Bank,BENCH-FIN,top-10 bank,public,rbb.com.np,,NP
+Nepal Bank,BENCH-FIN,top-10 bank,public,nepalbank.com.np,,NP
+Agricultural Development Bank Nepal,BENCH-FIN,top-10 bank,public,adbl.gov.np,,NP
+Himalayan Bank,BENCH-FIN,top-10 bank,private,himalayanbank.com,,NP
+Kumari Bank,BENCH-FIN,top-10 bank,private,kumaribank.com,,NP
+Prabhu Bank,BENCH-FIN,top-10 bank,private,prabhubank.com,,NP
+NMB Bank,BENCH-FIN,top-10 bank,private,nmb.com.np,,NP
+Ministry of Finance (Nepal),BENCH-GOV,ministry,public,mof.gov.np,,NP
+Ministry of Home Affairs (Nepal),BENCH-GOV,ministry,public,moha.gov.np,,NP
+Ministry of Foreign Affairs (Nepal),BENCH-GOV,ministry,public,mofa.gov.np,,NP
+Ministry of Communication and IT (Nepal),BENCH-GOV,ministry,public,mocit.gov.np,,NP
+Ministry of Health and Population (Nepal),BENCH-GOV,ministry,public,mohp.gov.np,,NP
+Tribhuvan University,BENCH-EDU,top-10 university,public,tu.edu.np,,NP
+Kathmandu University,BENCH-EDU,top-10 university,public,ku.edu.np,,NP
+Pokhara University,BENCH-EDU,top-10 university,public,pu.edu.np,,NP
+Purbanchal University,BENCH-EDU,top-10 university,public,purbanchaluniversity.edu.np,domain uncertain,NP
+B.P. Koirala Institute of Health Sciences,BENCH-EDU,top-10 university,public,bpkihs.edu,,NP
+Agriculture and Forestry University,BENCH-EDU,top-10 university,public,afu.edu.np,,NP
+Mid-West University,BENCH-EDU,top-10 university,public,mu.edu.np,,NP
+Far-western University,BENCH-EDU,top-10 university,public,fwu.edu.np,,NP
+Nepal Open University,BENCH-EDU,top-10 university,public,nou.edu.np,,NP
+Lumbini Buddhist University,BENCH-EDU,top-10 university,public,lbu.edu.np,,NP
