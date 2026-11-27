@@ -92,3 +92,14 @@ def test_separate_mail_domain_is_primary_for_email():
     assert r["email_domain"] == "bank.com.bd" and not r["spoofable"]
     assert r["spoofable_web_domain"] and r["any_domain_spoofable"]
     assert domain_row(dict(rec, mail_dns={}))["email_domain"] == "bank.com"
+
+
+def test_alternate_domain_counts_only_in_any_domain():
+    from outcomes import domain_row
+    web = {"https": {"status": 200, "headers": {}}, "http": {}, "cert": {"valid": True}}
+    rec = {"domain": "uni.edu", "frame_row": {}, "web": web,
+           "dns": _dns(["10 mx.uni.edu."], ["v=DMARC1; p=reject"]),
+           "alt_dns": {"uni.ac.bd": _dns(["10 mx.uni.ac.bd."], [])}}
+    r = domain_row(rec)
+    assert r["email_domain"] == "uni.edu" and not r["spoofable"]
+    assert r["any_domain_spoofable"] and r["alt_domains_measured"] == 1

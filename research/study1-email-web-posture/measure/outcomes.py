@@ -225,7 +225,10 @@ def domain_row(rec: dict) -> dict:
     v["email_domain"] = chosen_domain
     v.update(chosen)
     v["spoofable_web_domain"] = web_email["spoofable"]
-    v["any_domain_spoofable"] = web_email["spoofable"] or any(c[1]["spoofable"] for c in candidates)
+    alts = [email_vars(d, m) for m, d in sorted((rec.get("alt_dns") or {}).items())]
+    v["alt_domains_measured"] = len(alts)
+    v["any_domain_spoofable"] = (web_email["spoofable"] or any(c[1]["spoofable"] for c in candidates)
+                                 or any(a["spoofable"] for a in alts))
     v.update(web_vars(rec["web"]))
     v["email_score"] = email_score(v)
     v["web_score"] = web_score(v)

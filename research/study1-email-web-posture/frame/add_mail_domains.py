@@ -65,8 +65,20 @@ def load_decisions() -> dict:
     return {(r["web_domain"], r["mail_domain"]): r["decision"] for r in rows}
 
 
+def load_alternates() -> dict:
+    try:
+        rows = csv.DictReader(open("alt_domains.csv", encoding="utf-8-sig"))
+    except FileNotFoundError:
+        return {}
+    out: dict = {}
+    for r in rows:
+        out.setdefault(r["web_domain"], []).append(r["alt_domain"])
+    return out
+
+
 def main(code: str) -> None:
     decisions = load_decisions()
+    alternates = load_alternates()
     frame = list(csv.DictReader(open(f"frame_{code}_v1.csv", encoding="utf-8-sig")))
     checked = {r["candidate_domain"]: r for r in csv.DictReader(open(f"checked_{code}.csv", encoding="utf-8-sig"))}
     out = []
@@ -88,6 +100,9 @@ def main(code: str) -> None:
         r["mail_domains"] = ";".join(sorted(set(own)))
         r["contact_uses_free_mail"] = "yes" if free else ""
         r["mail_domains_unmatched"] = ";".join(sorted(set(other)))
+        # A second live domain of the same institution (not necessarily used
+        # for mail): measured, counted only in any_domain_spoofable.
+        r["alt_domains"] = ";".join(alternates.get(web, []))
         if own or free or other:
             note = []
             if own:

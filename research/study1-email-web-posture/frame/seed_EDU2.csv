@@ -2,13 +2,13 @@ institution,sector,subtype,ownership,candidate_domain,notes,ugc_sl
 The People's University of Bangladesh,EDU-PRV,private,private,pub.ac.bd,domain from UGC list; UGC flag *,12
 University of Development Alternative,EDU-PRV,private,private,uoda.edu.bd,domain from UGC list,21
 Pundra University of Science & Technology,EDU-PRV,private,private,pundrauniversity.ac.bd,domain from UGC list,32
-The Millennium University,EDU-PRV,private,private,themillenniumuniversity.edu.bd,domain from UGC list,35
+The Millennium University,EDU-PRV,private,private,themillenniumuniversity.edu.bd,browser: opens (www); script DNS failure transient,35
 University of South Asia,EDU-PRV,private,private,southasiauni.ac.bd,domain from UGC list,40
 ASA University Bangladesh,EDU-PRV,private,private,asaub.edu.bd,domain from UGC list,50
 Hamdard University Bangladesh,EDU-PRV,private,private,hamdarduniversity.edu.bd,domain from UGC list,54
 BGMEA University of Fashion & Technology(BUFT),EDU-PRV,private,private,buft.edu.bd,domain from UGC list,55
 First Capital University of Bangladesh,EDU-PRV,private,private,fcub.edu.bd,domain from UGC list,57
-"Exim Bank Agricultural University, Bangladesh",EDU-PRV,private,private,ebaub.edu.bd,domain from UGC list,60
+"Exim Bank Agricultural University, Bangladesh",EDU-PRV,private,private,ebaub.ac.bd,corrected via Google; UGC list gives non-existent ebaub.edu.bd,60
 North Western University,EDU-PRV,private,private,nwu.ac.bd,domain from UGC list,61
 Bangladesh University of Health Sciences,EDU-PRV,private,private,buhs.ac.bd,domain from UGC list,67
 Notre Dame University Bangladesh,EDU-PRV,private,private,ndub.edu.bd,domain from UGC list,69
@@ -35,7 +35,7 @@ Bandarban University,EDU-PRV,private,private,bubban.ac.bd,domain from UGC list,9
 "Shah Makhdum Management University, Rajshahi",EDU-PRV,private,private,smmuniversity.ac,found via Google; .ac = Ascension Island ccTLD,98
 "Trust University, Barishal",EDU-PRV,private,private,trustuniversity.edu.bd,domain from UGC list,99
 University of Brahmanbaria,EDU-PRV,private,private,uob.edu.bd,domain from UGC list,101
-University of Skill Enrichment and Technology,EDU-PRV,private,private,uset.ac.bd,domain from UGC list,102
+University of Skill Enrichment and Technology,EDU-PRV,private,private,uset.ac,corrected via Google; UGC list gives non-existent uset.ac.bd; .ac = Ascension Island ccTLD,102
 R.T.M Al-Kabir Technical University,EDU-PRV,private,private,rtm-aktu.edu.bd,domain from UGC list,104
 Dr. Momtaz Begum University of Science and Technology (MUST),EDU-PRV,private,private,must.ac.bd,domain from UGC list,105
 Chattogram BGMEA University of Fashion and Technology,EDU-PRV,private,private,cbuft.edu.bd,domain from UGC list,106

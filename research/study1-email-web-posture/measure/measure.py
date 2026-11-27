@@ -263,6 +263,8 @@ def main() -> None:
         rec = {"domain": dom, "frame_row": r, "round": a.round,
                "dns": dns_block(dom),
                "mail_dns": {m: dns_block(m) for m in mail_domains},
+               "alt_dns": {m: dns_block(m) for m in (r.get("alt_domains") or "").split(";")
+                           if m and m != dom and m not in mail_domains},
                "web": web_block(r.get("web_host") or dom),
                "python": sys.version.split()[0], "openssl": ssl.OPENSSL_VERSION}
         path.write_text(json.dumps(rec, ensure_ascii=False, indent=1), encoding="utf-8")
