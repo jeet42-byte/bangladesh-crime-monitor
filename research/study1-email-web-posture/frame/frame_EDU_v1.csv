@@ -75,7 +75,7 @@ World University of Bangladesh,EDU-PRV,private,private,wub.edu.bd,,script-checke
 Bangladesh University,EDU-PRV,private,private,bu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Prime University,EDU-PRV,private,private,primeuniversity.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Dhaka International University,EDU-PRV,private,private,diu.ac,domain uncertain,script-checked 2026-11-27 (title matched or bot-check page),,domestic
-Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,,script-checked 2026-11-27 + browser,PENDING: 503 in script and browser; awaiting Google confirmation of domain,domestic
+Victoria University of Bangladesh,EDU-PRV,private,private,vub.edu.bd,,script-checked 2026-11-27 + browser,WEBSITE DOWN: 503 in script and browser (also on the page Google lists); domain confirmed via Google; DNS still measurable,domestic
 Canadian University of Bangladesh,EDU-PRV,private,private,cub.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Central Women's University,EDU-PRV,private,private,cwu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
 Presidency University,EDU-PRV,private,private,pu.edu.bd,,script-checked 2026-11-27 (title matched or bot-check page),,domestic
